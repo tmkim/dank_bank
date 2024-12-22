@@ -19,6 +19,6 @@ from django.urls import include, path
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('api_dank_bank', include('api_dank_bank.urls')),
+    path('api_dank_bank/', include('api_dank_bank.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]
