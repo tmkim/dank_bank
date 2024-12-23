@@ -1,64 +1,67 @@
 from django.db import models
 
 # Create your models here.
-class Tag(models.Model):
-    name = models.CharField(max_length=33)
-    
+
+class Entry(models.Model):
+    categories = {
+        '': '',
+        'R1': 'Restaurant',
+        'F1': 'Food',
+        'M1': 'Music',
+        'T1': 'Travel',
+    }
+
+    category = models.CharField(choices=categories, default='')
+    name = models.CharField(max_length=200)
+    review = models.CharField(max_length=710)
+    rating = models.IntegerField(default=0) # max = 100
+
     class Meta:
         ordering = ['name']
-        
+
 class Restaurant(models.Model):
-    name = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
     area = models.CharField(max_length=200)
     gmap = models.CharField(max_length=200)
     website = models.CharField(max_length=200)
     price = models.CharField(max_length=5)
     cuisine = models.CharField(max_length=200)
-    review = models.CharField(max_length=710)
-    rating = models.IntegerField(default=0) #max = 5
-    tag = models.ManyToManyField(Tag)
 
     class Meta:
         ordering = ['name']
 
 class RestaurantFood(models.Model):
-    name = models.CharField(max_length=200)
     restaurant = models.CharField(max_length=200) # change to restuarant id later to link
     price = models.DecimalField(decimal_places=2, max_digits=14)
     description = models.CharField(max_length=420)
-    review = models.CharField(max_length=710)
-    rating = models.IntegerField(default=0) #max = 5
     
     class Meta:
         ordering = ['name']
 
 class Music(models.Model):
     urlTypes = {
-        'SC': 'SoundCloud',
         'SP': 'Spotify',
-        'YT': 'YouTube',
+        'SC': 'SoundCloud',
+        'YT': 'YouTube'
     }
-        
-    name = models.CharField(max_length=200)
     artist = models.CharField(max_length=200)
     songUrl = models.CharField(max_length=200)
-    urlType = models.CharField(choices=urlTypes, default='SC') # enumerate : Spotify / Soundcloud / Youtube
+    urlType = models.CharField(choices=['']) # enumerate : Spotify / Soundcloud / Youtube
     genre = models.CharField(max_length=200)
-    review = models.CharField(max_length=710)
-    rating = models.IntegerField(default=0) #max = 5
     
     class Meta:
         ordering = ['song']
 
 class Travel(models.Model):
-    name = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
     area = models.CharField(max_length=200)
-    notes = models.CharField(max_length=200)
     website = models.CharField(max_length=200)
-    review = models.CharField(max_length=710)
-    rating = models.IntegerField(default=0) #max = 5
+    
+    class Meta:
+        ordering = ['name']
+
+class Tag(models.Model):
+    name = models.CharField(max_length=33)
     
     class Meta:
         ordering = ['name']
@@ -72,11 +75,7 @@ class Image(models.Model):
 
 class Tag2Entry(models.Model):
     tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    restaurant_id = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    rfood_id = models.ForeignKey(RestaurantFood, on_delete=models.CASCADE)
-    music_id = models.ForeignKey(Music, on_delete=models.CASCADE)
-    travel_id = models.ForeignKey(Travel, on_delete=models.CASCADE)
-
+    entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE)
     class Meta:
         ordering = ['tag_id']
 

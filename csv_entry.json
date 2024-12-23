@@ -1,0 +1,259 @@
+[
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 1,
+        "fields": {
+            "name": "Rice & Shine Restaurant",
+            "review": "Great traditional taiwanese food with rice and sides",
+            "rating": "85"
+        }
+    },
+    {
+        "model": "api_dank_bank.restaurant",
+        "pk": 1,
+        "fields": {
+            "location": "No. 329號, Section 1, Dihua St, Datong District, Taipei City, Taiwan 103",
+            "area": "Datong District, Taipei City, Taiwan",
+            "gmap": "https://maps.app.goo.gl/XHwaJ2nzer9818r96",
+            "website": "https://www.ricenshine329.com/dihua",
+            "price": "10:20",
+            "cuisine": "Taiwanese"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 2,
+        "fields": {
+            "name": "He Bao Fantuan Breakfast Restaurant",
+            "review": "Favorite quick breakfast to-go in Taipei.",
+            "rating": "90"
+        }
+    },
+    {
+        "model": "api_dank_bank.restaurant",
+        "pk": 2,
+        "fields": {
+            "location": "No. 288號, Section 4, Yanping N Rd, Datong District, Taipei City, Taiwan 103",
+            "area": "Datong District, Taipei City, Taiwan",
+            "gmap": "https://maps.app.goo.gl/u6z4StBbgwt5J9MM7",
+            "website": "",
+            "price": "0:5",
+            "cuisine": "Taiwanese"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 3,
+        "fields": {
+            "name": "Prawns with Salted Egg Sauce Set",
+            "review": "Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
+            "rating": "87"
+        }
+    },
+    {
+        "model": "api_dank_bank.restaurantfood",
+        "pk": 1,
+        "fields": {
+            "restaurant_id": "2",
+            "price": "$13",
+            "description": "Dinner set with Prawns entry, rice, 3 sides dishes, and soup"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 4,
+        "fields": {
+            "name": "Fantuan Jia Dan",
+            "review": "Fast and fresh. Very filling and delicious.",
+            "rating": "90"
+        }
+    },
+    {
+        "model": "api_dank_bank.restaurantfood",
+        "pk": 2,
+        "fields": {
+            "restaurant_id": "1",
+            "price": "$1.30",
+            "description": "Yummy breakfast wrapped in sticky rice, with egg added"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 5,
+        "fields": {
+            "name": "ASS THROWERS ANONYMOUS: SESSION 2",
+            "review": "Dank bass + hip hop = ass thrown",
+            "rating": "99"
+        }
+    },
+    {
+        "model": "api_dank_bank.music",
+        "pk": 1,
+        "fields": {
+            "song": "",
+            "artist": "Super Future & Wreckno",
+            "songUrl": "https://soundcloud.com/superxfuture/ata2?si=ab7fb433a2434d96a1b9b11fdcd9e5cc",
+            "urlType": "soundcloud",
+            "genre": "Bass"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry",
+        "pk": 6,
+        "fields": {
+            "name": "Osulloc Tea Museum",
+            "review": "Beautiful tea museum with delicious green tea and green tea based snacks",
+            "rating": "99"
+        }
+    },
+    {
+        "model": "api_dank_bank.travel",
+        "pk": 1,
+        "fields": {
+            "location": "15 Sinhwayeoksa-ro, Andeok-myeon, 특별자치도, Seogwipo-si, Jeju-do, South Korea",
+            "area": "Jeju-do, South Korea",
+            "website": "https://www.osulloc.com/kr/ko/museum"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag",
+        "pk": 1,
+        "fields": {
+            "name": "Dank"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag",
+        "pk": 2,
+        "fields": {
+            "name": "Breakfast"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag",
+        "pk": 3,
+        "fields": {
+            "name": "Lunch"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag",
+        "pk": 4,
+        "fields": {
+            "name": "Dinner"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "1",
+            "entry_id": "1"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "1",
+            "entry_id": "3"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "1",
+            "entry_id": "5"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "1",
+            "restaurant_id": "",
+            "entry_id": "6"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "2",
+            "entry_id": "1"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "3",
+            "entry_id": "1"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "3",
+            "entry_id": "2"
+        }
+    },
+    {
+        "model": "api_dank_bank.tag2entry",
+        "fields": {
+            "tag_id": "4",
+            "entry_id": "2"
+        }
+    },
+    {
+        "model": "api_dank_bank.image",
+        "pk": 1,
+        "fields": {
+            "imgUrl": "{Dank url}",
+            "description": "Dank Seal of Approval"
+        }
+    },
+    {
+        "model": "api_dank_bank.image",
+        "pk": 2,
+        "fields": {
+            "imgUrl": "{Food url 1}",
+            "description": "Food 1"
+        }
+    },
+    {
+        "model": "api_dank_bank.image",
+        "pk": 3,
+        "fields": {
+            "imgUrl": "{Food url 2}",
+            "description": "Food 2"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry2image",
+        "pk": 1,
+        "fields": {
+            "entry_id": "1",
+            "image_id": "1"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry2image",
+        "pk": 2,
+        "fields": {
+            "entry_id": "2",
+            "image_id": "1"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry2image",
+        "pk": 3,
+        "fields": {
+            "entry_id": "1",
+            "image_id": "2"
+        }
+    },
+    {
+        "model": "api_dank_bank.entry2image",
+        "pk": 4,
+        "fields": {
+            "entry_id": "2",
+            "image_id": "2"
+        }
+    }
+]

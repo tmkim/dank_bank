@@ -25,3 +25,25 @@ TODO :
 - Build some entries, populate database
     > Let's start by using a simple fixture to populate one or two entries per model 
     > Then we can build a Next.js app to build forms that use api to populate db 
+    
+    > Made some progress building test entries and fleshing out data models 
+
+12/23/2024
+- Finish setting up test db fixture + import data 
+    > Should I implement polymorphic tables instead of keeping them separate?
+        Pros:
+            aggregates all entries into single table
+            easy to associate tags and images by entry_id
+        Cons:
+            more complex queries (have to grab category, then query appropriate table)
+            risk data integrity
+
+        I think for this project I will skip using polymorphic tables
+        This database is not complex enough to justify it
+        But I have prepared models for both so I may test later
+
+    > Added choices for Music url types
+    > 
+    
+
+- test API endpoints
