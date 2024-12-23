@@ -20,3 +20,8 @@ TODO LATER : Look into benefit of hyperlinking (performance)
 TODO : 
         Build some entries, populate database
         Set up proper testing
+
+12/22/2024
+- Build some entries, populate database
+    > Let's start by using a simple fixture to populate one or two entries per model 
+    > Then we can build a Next.js app to build forms that use api to populate db 
