@@ -57,4 +57,16 @@ TODO :
 
     Still having some issues with loading data. Need to do some more work on this.
 
-- test API endpoints
+12/24/2024
+- Finish database setup and loading initial data fixture 
+    > successfully loaded fixture
+        - few inconsistencies with fields
+        - enabled null on association table foreign keys
+- Test API endpoints
+    > All of the models have appropriate actions available
+
+    LATER : Experiment with different model structures for many-to-many relations (tags, images)
+        > Can try ManyToMany model
+
+Need to create some custom API endpoints
+    ViewSet actions?

@@ -19,7 +19,7 @@ class MusicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Music
-        fields = ['id', 'song', 'artist', 'songUrl', 'urlType', 'genre', 'review', 'rating'] 
+        fields = ['id', 'name', 'artist', 'songUrl', 'urlType', 'genre', 'review', 'rating'] 
 
 class TravelSerializer(serializers.ModelSerializer):
 
@@ -49,5 +49,5 @@ class Image2ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image2Item
-        fields = ['id', 'restaurant_id', 'rfood_id', 'music_id', 'travel_id'] 
+        fields = ['id', 'image_id', 'restaurant_id', 'rfood_id', 'music_id', 'travel_id'] 
 

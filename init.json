@@ -10,8 +10,8 @@
             "website": "https://www.ricenshine329.com/dihua",
             "price": "10:20",
             "cuisine": "Taiwanese",
-            "review": "85",
-            "notes": "Great traditional taiwanese food with rice and sides"
+            "review": "Great traditional taiwanese food with rice and sides",
+            "rating": "85"
         }
     },
     {
@@ -25,8 +25,8 @@
             "website": "",
             "price": "0:5",
             "cuisine": "Taiwanese",
-            "rating": "90",
-            "review": "Great traditional taiwanese food with rice and sides"
+            "review": "Best spot for quick breakfast to-go ",
+            "rating": "90"
         }
     },
     {
@@ -35,7 +35,7 @@
         "fields": {
             "name": "Prawns with Salted Egg Sauce Set",
             "restaurant_id": "2",
-            "price": "$13",
+            "price": "13.00",
             "description": "Dinner set with Prawns entree, rice, 3 sides dishes, and soup",
             "review": "Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
             "rating": "87"
@@ -47,7 +47,7 @@
         "fields": {
             "name": "Fantuan Jia Dan",
             "restaurant_id": "1",
-            "price": "$1.30",
+            "price": "1.30",
             "description": "Yummy breakfast wrapped in sticky rice, with egg added",
             "review": "Favorite quick breakfast to-go in Taipei. Fast and fresh. Very filling and delicious.",
             "rating": "90"
@@ -57,11 +57,12 @@
         "model": "api_dank.music",
         "pk": 1,
         "fields": {
-            "song": "ASS THROWERS ANONYMOUS: SESSION 2",
+            "name": "ASS THROWERS ANONYMOUS: SESSION 2",
             "artist": "Super Future & Wreckno",
             "songUrl": "https://soundcloud.com/superxfuture/ata2?si=ab7fb433a2434d96a1b9b11fdcd9e5cc",
             "urlType": "soundcloud",
             "genre": "Bass",
+            "review": "Dank bass make your ass shake",
             "rating": "99"
         }
     },
@@ -73,8 +74,8 @@
             "location": "15 Sinhwayeoksa-ro, Andeok-myeon, 특별자치도, Seogwipo-si, Jeju-do, South Korea",
             "area": "Jeju-do, South Korea",
             "website": "https://www.osulloc.com/kr/ko/museum",
-            "notes": "Beautiful tea museum with delicious green tea and green tea based snacks",
-            "rating": "99"
+            "rating": "99",
+            "review": "Beautiful tea museum with delicious green tea and green tea based snacks"
         }
     },
     {
@@ -110,38 +111,38 @@
         "fields": {
             "tag_id": "1",
             "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
+            "restaurant_id": null,
             "rfood_id": "1",
-            "music_id": "",
-            "travel_id": ""
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
+            "restaurant_id": null,
+            "rfood_id": null,
             "music_id": "1",
-            "travel_id": ""
+            "travel_id": null
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "",
+            "restaurant_id": null,
+            "rfood_id": null,
+            "music_id": null,
             "travel_id": "1"
         }
     },
@@ -150,9 +151,9 @@
         "fields": {
             "tag_id": "2",
             "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -160,9 +161,9 @@
         "fields": {
             "tag_id": "3",
             "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -170,9 +171,9 @@
         "fields": {
             "tag_id": "3",
             "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -180,9 +181,9 @@
         "fields": {
             "tag_id": "4",
             "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -215,9 +216,9 @@
         "fields": {
             "image_id": "1",
             "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -225,10 +226,10 @@
         "pk": 2,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
+            "restaurant_id": null,
             "rfood_id": "1",
-            "music_id": "",
-            "travel_id": ""
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -236,10 +237,10 @@
         "pk": 3,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
+            "restaurant_id": null,
+            "rfood_id": null,
             "music_id": "1",
-            "travel_id": ""
+            "travel_id": null
         }
     },
     {
@@ -247,9 +248,9 @@
         "pk": 4,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "",
+            "restaurant_id": null,
+            "rfood_id": null,
+            "music_id": null,
             "travel_id": "1"
         }
     },
@@ -259,9 +260,9 @@
         "fields": {
             "image_id": "1",
             "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     },
     {
@@ -270,9 +271,9 @@
         "fields": {
             "image_id": "2",
             "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "rfood_id": null,
+            "music_id": null,
+            "travel_id": null
         }
     }
 ]

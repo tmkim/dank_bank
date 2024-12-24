@@ -72,20 +72,20 @@ class Image(models.Model):
 
 class Tag2Item(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    rfood = models.ForeignKey(RestaurantFood, on_delete=models.CASCADE)
-    music = models.ForeignKey(Music, on_delete=models.CASCADE)
-    travel = models.ForeignKey(Travel, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
+    rfood = models.ForeignKey(RestaurantFood, on_delete=models.CASCADE, null=True)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE, null=True)
+    travel = models.ForeignKey(Travel, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ['tag_id']
 
 class Image2Item(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    rfood = models.ForeignKey(RestaurantFood, on_delete=models.CASCADE)
-    music = models.ForeignKey(Music, on_delete=models.CASCADE)
-    travel = models.ForeignKey(Travel, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True)
+    rfood = models.ForeignKey(RestaurantFood, on_delete=models.CASCADE, null=True)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE, null=True)
+    travel = models.ForeignKey(Travel, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering=['image_id']
