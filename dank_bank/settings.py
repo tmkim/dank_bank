@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'api_dank_bank',
+    'api_dank',
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Restaurant, RestaurantFood, Music, Travel, Tag, Tag2Entry
+from .models import Restaurant, RestaurantFood, Music, Travel, Tag, Tag2Item, Image, Image2Item
 from django.contrib.auth.models import User
 
 # class RestaurantSerializer(serializers.HyperlinkedModelSerializer):
@@ -33,8 +33,21 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = ['id', 'name'] 
 
-class Tag2EntrySerializer(serializers.ModelSerializer):
+class Tag2ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Tag2Entry
+        model = Tag2Item
         fields = ['id', 'restaurant_id', 'rfood_id', 'music_id', 'travel_id'] 
+
+class ImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Image
+        fields = ['id', 'name', 'imgUrl', 'description'] 
+
+class Image2ItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Image2Item
+        fields = ['id', 'restaurant_id', 'rfood_id', 'music_id', 'travel_id'] 
+

@@ -42,8 +42,19 @@ TODO :
         This database is not complex enough to justify it
         But I have prepared models for both so I may test later
 
+        LATER : Research~
+        - best way to set up tag mapping for multiple tables
+
     > Added choices for Music url types
-    > 
-    
+    > Tables/Models structure set for now, need to fix fixture for data import
+
+    Having a bit of trouble making sure database is set up properly with all correct tables and fields
+        .. found it, there was a mismatch between models.py and serializers.py, so table wasn't being picked up
+
+    Had to rebuild the app because migration tracking got messed up. Renamed app to api_dank
+    Adding foreign key columns caused double _id in naming ("music_id_id")
+        -- removing "_id" from model name fixed issue. I guess Foreign Key fields automatically have _id appended.
+
+    Still having some issues with loading data. Need to do some more work on this.
 
 - test API endpoints

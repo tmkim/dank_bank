@@ -1,6 +1,6 @@
 [
     {
-        "model": "api_dank_bank.restaurant",
+        "model": "api_dank.restaurant",
         "pk": 1,
         "fields": {
             "name": "Rice & Shine Restaurant",
@@ -15,7 +15,7 @@
         }
     },
     {
-        "model": "api_dank_bank.restaurant",
+        "model": "api_dank.restaurant",
         "pk": 2,
         "fields": {
             "name": "He Bao Fantuan Breakfast Restaurant",
@@ -30,19 +30,19 @@
         }
     },
     {
-        "model": "api_dank_bank.restaurantfood",
+        "model": "api_dank.restaurantfood",
         "pk": 1,
         "fields": {
             "name": "Prawns with Salted Egg Sauce Set",
             "restaurant_id": "2",
             "price": "$13",
-            "description": "Dinner set with Prawns entry, rice, 3 sides dishes, and soup",
+            "description": "Dinner set with Prawns entree, rice, 3 sides dishes, and soup",
             "review": "Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
             "rating": "87"
         }
     },
     {
-        "model": "api_dank_bank.restaurantfood",
+        "model": "api_dank.restaurantfood",
         "pk": 2,
         "fields": {
             "name": "Fantuan Jia Dan",
@@ -54,7 +54,7 @@
         }
     },
     {
-        "model": "api_dank_bank.music",
+        "model": "api_dank.music",
         "pk": 1,
         "fields": {
             "song": "ASS THROWERS ANONYMOUS: SESSION 2",
@@ -66,7 +66,7 @@
         }
     },
     {
-        "model": "api_dank_bank.travel",
+        "model": "api_dank.travel",
         "pk": 1,
         "fields": {
             "name": "Osulloc Tea Museum",
@@ -78,35 +78,35 @@
         }
     },
     {
-        "model": "api_dank_bank.tag",
+        "model": "api_dank.tag",
         "pk": 1,
         "fields": {
             "name": "Dank"
         }
     },
     {
-        "model": "api_dank_bank.tag",
+        "model": "api_dank.tag",
         "pk": 2,
         "fields": {
             "name": "Breakfast"
         }
     },
     {
-        "model": "api_dank_bank.tag",
+        "model": "api_dank.tag",
         "pk": 3,
         "fields": {
             "name": "Lunch"
         }
     },
     {
-        "model": "api_dank_bank.tag",
+        "model": "api_dank.tag",
         "pk": 4,
         "fields": {
             "name": "Dinner"
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
             "restaurant_id": "1",
@@ -116,7 +116,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
             "restaurant_id": "",
@@ -126,7 +126,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
             "restaurant_id": "",
@@ -136,7 +136,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
             "restaurant_id": "",
@@ -146,7 +146,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "2",
             "restaurant_id": "1",
@@ -156,7 +156,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "3",
             "restaurant_id": "1",
@@ -166,7 +166,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "3",
             "restaurant_id": "2",
@@ -176,7 +176,7 @@
         }
     },
     {
-        "model": "api_dank_bank.tag2entry",
+        "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "4",
             "restaurant_id": "2",
@@ -186,7 +186,7 @@
         }
     },
     {
-        "model": "api_dank_bank.image",
+        "model": "api_dank.image",
         "pk": 1,
         "fields": {
             "imgUrl": "{Dank url}",
@@ -194,7 +194,7 @@
         }
     },
     {
-        "model": "api_dank_bank.image",
+        "model": "api_dank.image",
         "pk": 2,
         "fields": {
             "imgUrl": "{Food url 1}",
@@ -202,7 +202,7 @@
         }
     },
     {
-        "model": "api_dank_bank.image",
+        "model": "api_dank.image",
         "pk": 3,
         "fields": {
             "imgUrl": "{Food url 2}",
@@ -210,35 +210,69 @@
         }
     },
     {
-        "model": "api_dank_bank.entry2image",
+        "model": "api_dank.image2item",
         "pk": 1,
         "fields": {
-            "entry_id": "1",
-            "image_id": "1"
+            "image_id": "1",
+            "restaurant_id": "1",
+            "rfood_id": "",
+            "music_id": "",
+            "travel_id": ""
         }
     },
     {
-        "model": "api_dank_bank.entry2image",
+        "model": "api_dank.image2item",
         "pk": 2,
         "fields": {
-            "entry_id": "2",
-            "image_id": "1"
+            "image_id": "1",
+            "restaurant_id": "",
+            "rfood_id": "1",
+            "music_id": "",
+            "travel_id": ""
         }
     },
     {
-        "model": "api_dank_bank.entry2image",
+        "model": "api_dank.image2item",
         "pk": 3,
         "fields": {
-            "entry_id": "1",
-            "image_id": "2"
+            "image_id": "1",
+            "restaurant_id": "",
+            "rfood_id": "",
+            "music_id": "1",
+            "travel_id": ""
         }
     },
     {
-        "model": "api_dank_bank.entry2image",
+        "model": "api_dank.image2item",
         "pk": 4,
         "fields": {
-            "entry_id": "2",
-            "image_id": "2"
+            "image_id": "1",
+            "restaurant_id": "",
+            "rfood_id": "",
+            "music_id": "",
+            "travel_id": "1"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 5,
+        "fields": {
+            "image_id": "1",
+            "restaurant_id": "2",
+            "rfood_id": "",
+            "music_id": "",
+            "travel_id": ""
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 6,
+        "fields": {
+            "image_id": "2",
+            "restaurant_id": "1",
+            "rfood_id": "",
+            "music_id": "",
+            "travel_id": ""
         }
     }
 ]
