@@ -70,3 +70,31 @@ TODO :
 
 Need to create some custom API endpoints
     ViewSet actions?
+
+12/25/2024
+Let me take another look at model structures.
+
+1: Separate table per model, association tables have several columns
+    Pros:
+        Data integrity
+        Easy to do separate API calls
+    Cons:
+        Association tables need a column for each model
+            or a separate table for each association?
+
+2: Single table with all models, association tables have 2 columns
+    Pros:
+        Everything stored in a single table
+        Association table only needs item_id, assoc_id
+    Cons:
+        Include category in Item table, need to include when query
+
+
+3: Polymorphic table - single table with common columns, separate tables with unique columns
+    Pros:
+        All items are stored in a single table
+        Association table only needs item_id, assoc_id
+        Data integrity
+    Cons:
+        Complex queries (need to do an extra join based on first query)
+        Many tables (separate per model + 1 common)
