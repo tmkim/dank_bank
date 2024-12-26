@@ -1,5 +1,6 @@
-from .models import Item, Tag, Tag2Item, Image, Image2Item
-from .serializers import ItemSerializer, DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
+from .models import Restaurant, RestaurantFood, Music, Travel, Tag, Tag2Item, Image, Image2Item
+from .serializers import RestaurantSerializer, RestaurantFoodSerializer, MusicSerializer
+from .serializers import TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
 from django.db import models
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -11,9 +12,8 @@ from rest_framework.reverse import reverse
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'item': reverse('item-list', request=request, format=format),
-        'dining': reverse('dining-list', request=request, format=format),
-        'foods': reverse('foods-list', request=request, format=format),
+        'restaurants': reverse('restaurant-list', request=request, format=format),
+        'restaurantfoods': reverse('restaurantfoods-list', request=request, format=format),
         'music': reverse('music-list', request=request, format=format),
         'travel': reverse('travel-list', request=request, format=format),
         'tags': reverse('tag-list', request=request, format=format),
@@ -29,24 +29,20 @@ This ViewSet automatically provides `list`, `create`, `retrieve`,
 Can add this later 
 # permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 """
-class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
+class RestaurantViewSet(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
 
-class DiningViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Dining')
-    serializer_class = DiningSerializer
-
-class FoodViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Food')
-    serializer_class = FoodSerializer
+class RestaurantFoodViewSet(viewsets.ModelViewSet):
+    queryset = RestaurantFood.objects.all()
+    serializer_class = RestaurantFoodSerializer
 
 class MusicViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Music')
+    queryset = Music.objects.all()
     serializer_class = MusicSerializer
 
 class TravelViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Travel')
+    queryset = Travel.objects.all()
     serializer_class = TravelSerializer
 
 class TagViewSet(viewsets.ModelViewSet):

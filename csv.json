@@ -1,79 +1,82 @@
 [
     {
-        "model": "api_dank.restaurant",
+        "model": "api_dank.item",
         "pk": 1,
         "fields": {
+            "category": "Dining",
             "name": "Rice & Shine Restaurant",
-            "location": "No. 329號, Section 1, Dihua St, Datong District, Taipei City, Taiwan 103",
-            "area": "Datong District, Taipei City, Taiwan",
-            "gmap": "https://maps.app.goo.gl/XHwaJ2nzer9818r96",
-            "website": "https://www.ricenshine329.com/dihua",
-            "price": "10:20",
+            "address": "No. 329號, Section 1, Dihua St, Datong District, Taipei City, Taiwan 103",
+            "location": "Datong District, Taipei City, Taiwan",
+            "gmap_url": "https://maps.app.goo.gl/XHwaJ2nzer9818r96",
+            "item_url": "https://www.ricenshine329.com/dihua",
+            "price_range": "$$",
             "cuisine": "Taiwanese",
-            "review": "85",
-            "notes": "Great traditional taiwanese food with rice and sides"
+            "review": "Great traditional taiwanese food with rice and sides",
+            "rating": "85"
         }
     },
     {
-        "model": "api_dank.restaurant",
+        "model": "api_dank.item",
         "pk": 2,
         "fields": {
+            "category": "Dining",
             "name": "He Bao Fantuan Breakfast Restaurant",
-            "location": "No. 288號, Section 4, Yanping N Rd, Datong District, Taipei City, Taiwan 103",
-            "area": "Datong District, Taipei City, Taiwan",
-            "gmap": "https://maps.app.goo.gl/u6z4StBbgwt5J9MM7",
-            "website": "",
-            "price": "0:5",
+            "address": "No. 288號, Section 4, Yanping N Rd, Datong District, Taipei City, Taiwan 103",
+            "location": "Datong District, Taipei City, Taiwan",
+            "gmap_url": "https://maps.app.goo.gl/u6z4StBbgwt5J9MM7",
+            "price_range": "$",
             "cuisine": "Taiwanese",
             "rating": "90",
             "review": "Great traditional taiwanese food with rice and sides"
         }
     },
     {
-        "model": "api_dank.restaurantfood",
-        "pk": 1,
+        "model": "api_dank.item",
+        "pk": 3,
         "fields": {
+            "category": "Food",
             "name": "Prawns with Salted Egg Sauce Set",
-            "restaurant_id": "2",
-            "price": "$13",
-            "description": "Dinner set with Prawns entree, rice, 3 sides dishes, and soup",
-            "review": "Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
+            "location": "Rice & Shine Restaurant",
+            "cost": "13.00",
+            "review": "Dinner set with Prawns entree, rice, 3 sides dishes, and soup. Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
             "rating": "87"
         }
     },
     {
-        "model": "api_dank.restaurantfood",
-        "pk": 2,
+        "model": "api_dank.item",
+        "pk": 4,
         "fields": {
+            "category": "Food",
             "name": "Fantuan Jia Dan",
-            "restaurant_id": "1",
-            "price": "$1.30",
-            "description": "Yummy breakfast wrapped in sticky rice, with egg added",
-            "review": "Favorite quick breakfast to-go in Taipei. Fast and fresh. Very filling and delicious.",
+            "location": "He Bao Fantuan Breakfast Restaurant",
+            "cost": "1.30",
+            "review": "Yummy breakfast wrapped in sticky rice, with egg added. Favorite quick breakfast to-go in Taipei. Fast and fresh. Very filling and delicious.",
             "rating": "90"
         }
     },
     {
-        "model": "api_dank.music",
-        "pk": 1,
+        "model": "api_dank.item",
+        "pk": 5,
         "fields": {
-            "song": "ASS THROWERS ANONYMOUS: SESSION 2",
+            "category": "Music",
+            "name": "ASS THROWERS ANONYMOUS: SESSION 2",
             "artist": "Super Future & Wreckno",
-            "songUrl": "https://soundcloud.com/superxfuture/ata2?si=ab7fb433a2434d96a1b9b11fdcd9e5cc",
-            "urlType": "soundcloud",
-            "genre": "Bass",
+            "item_url": "https://soundcloud.com/superxfuture/ata2?si=ab7fb433a2434d96a1b9b11fdcd9e5cc",
+            "music_source": "SoundCloud",
+            "review": "Bass that makes your butt move",
             "rating": "99"
         }
     },
     {
-        "model": "api_dank.travel",
-        "pk": 1,
+        "model": "api_dank.item",
+        "pk": 6,
         "fields": {
+            "category": "Travel",
             "name": "Osulloc Tea Museum",
-            "location": "15 Sinhwayeoksa-ro, Andeok-myeon, 특별자치도, Seogwipo-si, Jeju-do, South Korea",
-            "area": "Jeju-do, South Korea",
-            "website": "https://www.osulloc.com/kr/ko/museum",
-            "notes": "Beautiful tea museum with delicious green tea and green tea based snacks",
+            "location": "Jeju-do, South Korea",
+            "address": "15 Sinhwayeoksa-ro, Andeok-myeon, 특별자치도, Seogwipo-si, Jeju-do, South Korea",
+            "item_url": "https://www.osulloc.com/kr/ko/museum",
+            "review": "Beautiful tea museum with delicious green tea and green tea based snacks",
             "rating": "99"
         }
     },
@@ -109,87 +112,63 @@
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "1"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "1",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "2"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "1",
-            "travel_id": ""
+            "item_id": "3"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": "1"
+            "item_id": "4"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "2",
-            "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "2"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "3",
-            "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "2"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "3",
-            "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "1"
         }
     },
     {
         "model": "api_dank.tag2item",
         "fields": {
             "tag_id": "4",
-            "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "1"
         }
     },
     {
         "model": "api_dank.image",
         "pk": 1,
         "fields": {
-            "imgUrl": "{Dank url}",
+            "img_url": "{Dank url}",
             "description": "Dank Seal of Approval"
         }
     },
@@ -197,7 +176,7 @@
         "model": "api_dank.image",
         "pk": 2,
         "fields": {
-            "imgUrl": "{Food url 1}",
+            "img_url": "{Food url 1}",
             "description": "Food 1"
         }
     },
@@ -205,7 +184,7 @@
         "model": "api_dank.image",
         "pk": 3,
         "fields": {
-            "imgUrl": "{Food url 2}",
+            "img_url": "{Food url 2}",
             "description": "Food 2"
         }
     },
@@ -214,10 +193,7 @@
         "pk": 1,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "1"
         }
     },
     {
@@ -225,10 +201,7 @@
         "pk": 2,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "1",
-            "music_id": "",
-            "travel_id": ""
+            "item_id": "3"
         }
     },
     {
@@ -236,10 +209,7 @@
         "pk": 3,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "1",
-            "travel_id": ""
+            "item_id": "5"
         }
     },
     {
@@ -247,32 +217,23 @@
         "pk": 4,
         "fields": {
             "image_id": "1",
-            "restaurant_id": "",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": "1"
+            "item_id": "6"
         }
     },
     {
         "model": "api_dank.image2item",
         "pk": 5,
         "fields": {
-            "image_id": "1",
-            "restaurant_id": "2",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "image_id": "2",
+            "item_id": "3"
         }
     },
     {
         "model": "api_dank.image2item",
         "pk": 6,
         "fields": {
-            "image_id": "2",
-            "restaurant_id": "1",
-            "rfood_id": "",
-            "music_id": "",
-            "travel_id": ""
+            "image_id": "3",
+            "item_id": "1"
         }
     }
 ]

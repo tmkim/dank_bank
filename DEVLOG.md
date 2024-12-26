@@ -98,3 +98,30 @@ Let me take another look at model structures.
     Cons:
         Complex queries (need to do an extra join based on first query)
         Many tables (separate per model + 1 common)
+
+So, realistically data integrity is not a major concern for me due to nature of project 
+While I should also practice #1 and #3, I will go ahead with #2 for this app
+Keep It Simple, Stupid. (next apps will use methods 1 and 3 for more practice)
+
+12/26/2024
+Today we'll go ahead and implement the Single Table db structure.
+Currently it is set up for #1, we can keep this to the side for v2 practice
+This should impact - models, serializers, views, urls
+
+> Created Item model
+    Updated serializers, views, urls
+
+> Updated csv.json for new Item model, loaded fixture
+> Update viewsets to filter Item table by category
+
+OK So let's think about what our api endpoints are.
+
+Get: All Items
+Get: Items in Category
+Get, Add, Update, Remove: single Item
+Get, Add, Update, Remove: images
+Get, Add, Update, Remove: tags
+Get, Add, Remove: image association (image2item)
+Get, Add, Remove: tag association (tag2item)
+
+Next : Start making basic frontend with next.js
