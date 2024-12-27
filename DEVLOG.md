@@ -124,4 +124,34 @@ Get, Add, Update, Remove: tags
 Get, Add, Remove: image association (image2item)
 Get, Add, Remove: tag association (tag2item)
 
-Next : Start making basic frontend with next.js
+From what I gather, we want a separate view for each API call
+We should have these set up, so now we need to work on building a front-end to call this API.
+
+Now, let's create a next.js app to give us some frontend to call our API.
+Next.js will be great because we can leverage its server-side rendering to load tables/images faster
+
+12/27/2024
+Today:
+    Continue working on Next.js application
+
+    So currently, we have the basic setup. What we need to do next is actually build some front-end html.
+    The basic version of this website should be quite simple:
+    Views:
+        1. Welcome Page - Generic welcome. No auth necessary at this point.
+        2. Main Page - This will contain a table, details, and a few buttons
+            Buttons will be used to filter the table by category 
+            Also button for adding a new item 
+        3. New Item Form - Potentially Modal?
+            Allow you to choose a category, then populates appropriate input fields
+        3.5 > New Item Form can also be used as basis for Update Item Form
+        4. Delete Item 
+            I don't think we need a whole view for this? But should have a confirmation form.
+
+    Today, we will work on:
+
+    1. Simple Welcome Page 
+    2. Simple main page (table with loading)
+    3. Delete Item 
+    4. New Item Form
+
+    
