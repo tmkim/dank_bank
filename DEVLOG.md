@@ -147,11 +147,33 @@ Today:
         4. Delete Item 
             I don't think we need a whole view for this? But should have a confirmation form.
 
-    Today, we will work on:
+    For front-end, we will need:
 
     1. Simple Welcome Page 
     2. Simple main page (table with loading)
     3. Delete Item 
     4. New Item Form
 
-    
+    For today, I'm going to do a bit of research on integrating Django with NextJs
+    It's definitely not a "waste of time" to just start building and figure it out later 
+    But I would like to be sure in my approach so I'm not doing unnecessary work.
+
+    From what I can tell, it looks like I will create a NextJs app same as usual
+    Main difference will be in app/api/route.ts, I call my Django API rather than build NextJs query
+    Which can be done by setting getApiClient() to my DRF API URL (localhost for now)
+
+    LATER : look into using django_filters to further customize API queries
+    (https://stackoverflow.com/questions/50370692/custom-query-for-django-rest-framework)
+    ALSO : DRF - Requests (https://www.django-rest-framework.org/api-guide/requests/)
+
+    MAYBE : need to look into strength of adding custom methods and actions to ViewSet
+
+    Take a look at dis : https://github.com/QueraTeam/django-nextjs
+                         https://medium.com/@danialkeimasi/django-next-js-the-easy-way-655efb6d28e1
+
+                         https://github.com/unfoldadmin/turbo
+                         (Plenty of details in the README)
+
+    Random but side benefit of using DRF + Next, DRF api will be reusable for other apps
+
+    LATER : Django-Ninja appears to be a pretty good solution 
