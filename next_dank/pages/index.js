@@ -1,6 +1,6 @@
 import Head from "next/head"
 import "../app/globals.css";
-import NavBar from "@/components/NavBar";
+// import NavBar from "@/components/NavBar";
 
 export default function Home(){
     return (
@@ -9,9 +9,6 @@ export default function Home(){
             <Head>
                 <title>Welcome to the Dank Bank</title>
             </Head>
-        </div>
-        <div>
-            <NavBar/>
         </div>
     </div>
     )

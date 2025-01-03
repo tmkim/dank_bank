@@ -177,3 +177,43 @@ Today:
     Random but side benefit of using DRF + Next, DRF api will be reusable for other apps
 
     LATER : Django-Ninja appears to be a pretty good solution 
+
+1/3/2025:
+    Welcome back from New Years vacation! Today we will work on making our front-end Next JS app 
+
+    next.js app : next_dank
+
+    + public //static resources  // use next/image to optimize images using <Image> component
+        + hero-desktop.png
+        
+    + app/
+        + lib/
+            + definitions.ts
+        + ui/                           # This directory is for ui components
+            + global.css
+            + fonts.ts
+            + dankbank-logo.tsx
+            + dankbank-logo-sidenav.tsx **** Need to fix up how the logo looks
+            + items/
+                + category.tsx
+            + dashboard/
+                + sidenav.tsx           **** Need to fix up how the logo looks
+            + nav-links.tsx             # Use next/link:<Link> instead of <a> for optimized routing
+                                        # Use next/navigation:{usePathname} to know current path 
+        + dashboard/                    # This directory is for routing (important : layout.tsx, page.tsx)
+            + page.tsx
+            + layout.tsx
+            + items/
+                + dining/
+                    + page.tsx
+                + food/
+                    + page.tsx
+                + music/
+                    + page.tsx
+                + travel/
+                    + page.tsx
+
+        + layout.tsx
+        + page.tsx
+
+    + import clsx [https://www.npmjs.com/package/clsx] - library to toggle css class names based on condition
