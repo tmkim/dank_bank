@@ -218,3 +218,14 @@ Today:
 
     + import clsx [https://www.npmjs.com/package/clsx] - library to toggle css class names based on condition
     + pnpm i @vercel/postgres
+        >> so I currently have node_modules in both /dank_bank/ and /dank_bank/frontend_dank
+            It doesn't work if I just remove from frontend, but I'm not sure that's supposed to be there?
+            either way i'm not sure if this is necessary when I start using my DRF api. So we'll save this for LATER
+
+    *** Fetching data from DRF API in Next JS
+        > const res = await fetch('API_URL', {cache: 'force-cache / force-dynamic'})    // force-cache is default
+            -- Client side: use fetch with cached data
+            -- Server side: use fetch with dynamic data
+        ~~ If your Next.js app and DRF API are hosted on different domains, you might need to configure Cross-Origin Resource Sharing (CORS) on your API.
+
+    TODO : work on fetching data from API to populate Items list
