@@ -5,7 +5,7 @@ const client = await db.connect();
 async function listInvoices() {
 	const data = await client.sql`
     SELECT items.category, items.name, items.review
-    FROM items
+    FROM api_dank_item items
   `;
 
 	return data.rows;

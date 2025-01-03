@@ -217,3 +217,4 @@ Today:
         + page.tsx
 
     + import clsx [https://www.npmjs.com/package/clsx] - library to toggle css class names based on condition
+    + pnpm i @vercel/postgres
