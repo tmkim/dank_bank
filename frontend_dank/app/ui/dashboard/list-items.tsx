@@ -11,7 +11,7 @@ export default async function ListItems({
   return (
     <div className="flex w-full flex-col md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        All Items
+        Dank Items
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         <div className="bg-white px-6">
@@ -36,10 +36,10 @@ export default async function ListItems({
                   /> */}
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold md:text-base">
-                      {item.category}
+                      {item.name}
                     </p>
                     <p className="hidden text-sm text-gray-500 sm:block">
-                      {item.name}
+                      {item.category}
                     </p>
                   </div>
                 </div>

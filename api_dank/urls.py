@@ -4,7 +4,7 @@ from . import views
 
 # Create a router and register our ViewSets with it.
 router = DefaultRouter()
-router.register(r'item', views.ItemViewSet, basename='item')
+router.register(r'items', views.ItemViewSet, basename='items')
 router.register(r'dining', views.DiningViewSet, basename='dining')
 router.register(r'food', views.FoodViewSet, basename='food')
 router.register(r'music', views.MusicViewSet, basename='music')

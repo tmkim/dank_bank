@@ -228,4 +228,37 @@ Today:
             -- Server side: use fetch with dynamic data
         ~~ If your Next.js app and DRF API are hosted on different domains, you might need to configure Cross-Origin Resource Sharing (CORS) on your API.
 
-    TODO : work on fetching data from API to populate Items list
+    TODO : work on fetching data from API to populate Items list https://nextjs.org/learn/dashboard-app/fetching-data
+
+1/4/2025
+    Today we will be focusing on correctly retrieving data from our API, and formatting it to populate a list in Next.js 
+
+    So right now, we are able to interact with our api endpoint api_dank/items, but we need to format it properly for list usage
+    Ahhh. I had to add "await" to res.json() call.
+        - Realized this because my res.json() was returning a Promise rather than readable Json
+        So now we're getting a data json with {count, next, previous, results}
+
+    Aaand there we go! 
+        Updated items/page.tsx to handle api response properly
+        Make sure that ui/list-items.tsx is displaying a table with appropriate information
+            LATER : work on formatting, make it pretty
+
+    Alright, so we can go ahead and apply the same logic to our category pages
+    I can reuse our list-items table since we would like to maintain the same format, just display different information
+    Sick, we got basic lists out on all of our categories.
+
+    So the way I am envisioning the website will look.
+    We have our list covering the left portion of our window, and there is plenty of room to display title/category/rating.
+    I want to make the table interactive, where you may click on an item and see further details on the right side.
+        This will include details such as images, tags, review, etc depending on the category (this is already set up via models and what info is available to query)
+
+    So I think the next things we need will be:
+        Detail component (different per category? Might be able to resue some components)
+        Form to post new items (similar to above?)
+
+        I might be able to do something like reuse a component with clsx to determine which fields are available based on the category.
+        I considered reusing the same component for Detail and Form, but they have different functions and should not look the same anyways.
+
+        Extra : Format nav links to put categories as sub-tabs from Items expansion
+
+        LATER : auth is unnecessary for viewing, require permission to add/change/remove items (I don't want strangers to be allowed)

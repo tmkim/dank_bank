@@ -6,7 +6,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'review', 'rating']
+        fields = ['id', 'category', 'name', 'review', 'rating']
 
 # class DiningSerializer(serializers.HyperlinkedModelSerializer):
 class DiningSerializer(serializers.ModelSerializer):
