@@ -15,6 +15,16 @@ export type Item = {
   name: string;
   review: string;
   rating: number;
+  address: string;
+  location: string;
+  gmap_url: string;
+  item_url: string;
+  price_range: '' | '$' | '$$' | '$$$' | '$$$$' | '$$$$$';
+  cost: string;
+  cuisine: string;
+  music_source: '' | 'SoundCloud' | 'Spotify' | 'YouTube';
+  artist: string;
+  music_meta: string;
 }
 
 export type ItemTable = {

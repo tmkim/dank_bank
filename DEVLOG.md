@@ -262,3 +262,36 @@ Today:
         Extra : Format nav links to put categories as sub-tabs from Items expansion
 
         LATER : auth is unnecessary for viewing, require permission to add/change/remove items (I don't want strangers to be allowed)
+                Add search and pagination
+
+    OK so ............
+
+    Let's make the detail component. I should be able to re-use a component from the tutorial?
+
+        NOTE :  On desktop it makes sense to simply display the details on the right side of the page.
+                However, on mobile, it would make more sense for it to be modal, or go to a new page.
+                Since there will be no option to make changes when viewing details, modal should be safe.
+
+        Alright I got a basic detail component down. Got a bit distracted with formatting my pages and tables.
+        Still need to do more work on:
+            -- Format things to look pretty
+            -- Individualize details component
+                >> Works for "Item" table
+                -- Need to consider logic for passing different model types into Details component
+            -- Details updates when an item from the table is clicked
+
+    ACTUALLY. You know what. Now that I'm thinking through this more.
+
+    I don't need to have separate pages/tables per category. I just need checkbox buttons to determine the filter.
+    So let's just focus on our Items table which will simply be labeled as the Dank Bank.
+    Since I already have everything set up as a single table, I should keep consistent and use a single large Item definition, using conditions to know which fields to show.
+    LATER : in future, I can look at splitting it up into multiple tables or using multiple endpoints.
+    Maybe I can call each API endpoint depending on the filters applied?
+    Either way for now I want to keep everything within "Item".
+
+    ** updated nextjs definition, api serializer
+
+    TODO Tomorrow:
+        Flesh out details for different categories
+        Make it pretty
+        Add search, pagination, filter
