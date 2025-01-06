@@ -295,3 +295,13 @@ Today:
         Flesh out details for different categories
         Make it pretty
         Add search, pagination, filter
+        Make table rows interactive
+
+1/6/2025
+    Flesh out details for different categories
+        - done
+
+    Make it pretty
+        - uhhhhhhhhh
+
+    Add search, pagination, filter
