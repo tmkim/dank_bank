@@ -5,7 +5,7 @@ import ItemDetails from '@/app/ui/items/details';
 export default async function Page() {
   const items_res = await fetch("http://localhost:8000/api_dank/items");
   const data = await items_res.json()
-  console.log(data.results) //json array where each object is an item returned from the api
+  // console.log(data.results) //json array where each object is an item returned from the api
 
   return (
     <main>

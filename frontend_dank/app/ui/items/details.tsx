@@ -12,7 +12,7 @@ const ItemDetails = ({ item }: { item: Item }) => {
     return (
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
-                <div className="h-[80vh] border-separate overflow-clip rounded-xl border border-solid flex flex-col">
+                <div className="h-[80vh] border-separate overflow-clip rounded-xl border border-solid flex flex-col text-xl">
                     <div className={clsx()}>
                         {item.category === 'Dining' ? (
                             // fields = ['id', 'name', 'location', 'address', 'gmap_url', 'item_url',  'price_range', 'cuisine', 'review', 'rating'] 
@@ -20,14 +20,12 @@ const ItemDetails = ({ item }: { item: Item }) => {
                                 <li>
                                     <strong>{item.name}</strong>
                                 </li>
+                                <li> </li>
                                 <li>
                                     <strong>Location:</strong> {item.location}
                                 </li>
                                 <li>
-                                    <strong>Address:</strong> {item.address}
-                                </li>
-                                <li>
-                                    <strong>Google Map:</strong> {item.gmap_url}
+                                    <strong>Address:</strong> <Link href={item.gmap_url} className="button">{item.address}</Link>
                                 </li>
                                 <li>
                                     <strong>Price Range:</strong> {item.price_range}
@@ -69,7 +67,7 @@ const ItemDetails = ({ item }: { item: Item }) => {
                             </ul>
                         ) : null}
                         {item.category === 'Travel' ? (
-                            // fields = ['id', 'name', 'location', 'address', 'item_url', 'review', 'rating'] 
+                            // fields = ['id', 'name', 'location', 'address', 'item_url', 'gmap_url', 'review', 'rating'] 
                             <ul>
                                 <li>
                                     <strong>{item.name}</strong>
@@ -78,7 +76,7 @@ const ItemDetails = ({ item }: { item: Item }) => {
                                     <strong>Location:</strong> {item.location}
                                 </li>
                                 <li>
-                                    <strong>Address:</strong> {item.address}
+                                    <strong>Address:</strong> <Link href={item.gmap_url} className="button">{item.address}</Link>
                                 </li>
                             </ul>
                         ) : null}

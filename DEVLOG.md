@@ -300,6 +300,8 @@ Today:
 1/6/2025
     Flesh out details for different categories
         - done
+        ** updated Travel to include google map url
+        ** updated Address in detail component to be Link using gmap url
 
     Make it pretty
         - uhhhhhhhhh

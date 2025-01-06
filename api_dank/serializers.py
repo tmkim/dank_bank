@@ -31,7 +31,7 @@ class TravelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'location', 'address', 'item_url', 'review', 'rating'] 
+        fields = ['id', 'name', 'location', 'address', 'item_url', 'gmap_url', 'review', 'rating'] 
 
 class TagSerializer(serializers.ModelSerializer):
 
