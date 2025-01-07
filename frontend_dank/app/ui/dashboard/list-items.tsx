@@ -6,7 +6,7 @@ import { Item } from '@/app/lib/definitions';
 export default async function ListItems({
   items,
 }: {
-  items: any[];
+  items: Item[];
 }) {
   return (
     <div className="mt-6 flow-root">

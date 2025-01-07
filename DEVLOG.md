@@ -298,6 +298,12 @@ Today:
         Make table rows interactive
 
 1/6/2025
+    Thoughts regarding storing images:
+        At this point, storing images in the public folder is sufficient for testing purposes.
+        HOWEVER, I will want to move to blob storage when I actually deploy
+            - allow me to upload images from the website
+            - associating images to items using foreign keys
+
     Flesh out details for different categories
         - done
         ** updated Travel to include google map url
@@ -307,3 +313,9 @@ Today:
         - uhhhhhhhhh
 
     Add search, pagination, filter
+        - need to update API to accept parameters
+            ** updated api views.py to include query and pagination 
+            ** updated item table to accept query/pagination
+        ** install django-cors-headers and update django settings.py
+        
+        ** Basic search, pagination working! 

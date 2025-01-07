@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.pagination import PageNumberPagination
 # Create your views here.
 
 @api_view(['GET'])
@@ -29,9 +30,19 @@ This ViewSet automatically provides `list`, `create`, `retrieve`,
 Can add this later 
 # permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 """
+class ItemPagination(PageNumberPagination):
+    page_size_query_param = 'limit'  # Allow `limit` parameter for page size
+    max_page_size = 100  # Optional: Set a maximum limit
+
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    pagination_class = ItemPagination
+
+    def get_queryset(self):
+        """Override the default queryset to include filtering by query."""
+        query = self.request.query_params.get('query', '')
+        return self.queryset.filter(name__icontains=query)
 
 class DiningViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.filter(category='Dining')
