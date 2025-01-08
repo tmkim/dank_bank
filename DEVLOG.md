@@ -319,3 +319,14 @@ Today:
         ** install django-cors-headers and update django settings.py
         
         ** Basic search, pagination working! 
+
+1/6/2025
+    OK so today we'll be fleshing out our table, search, pagination 
+    Then we can start adding buttons
+        - Filter buttons 
+        - Create, Update, Delete 
+    We will also need to make our Create and Update forms 
+
+    ++ cleaned up table 
+
+    
