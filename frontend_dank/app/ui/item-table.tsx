@@ -90,27 +90,27 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
         </div>
       </div>
 
-      <div className="mt-4">
-        <button
+      <div className="mt-4 flex justify-end">
+        <button className="px-4"
           onClick={() => onPageChange(Math.max(page - 1, 1))}
           disabled={page === 1}
         >
-          Previous
+          Previous 
         </button>
-        <span> Page {page} of {totalPages} </span>
-        <button
+        <span className="px-2"> Page {page} of {totalPages} </span>
+        <button className="px-4"
           onClick={() => onPageChange(Math.min(page + 1, totalPages))}
           disabled={page === totalPages}
         >
           Next
         </button>
-        <select
+        <select className=""
           value={limit}
           onChange={(e) => onLimitChange(Number(e.target.value))}
         >
+          <option value={2}>2</option>
+          <option value={5}>5</option>
           <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
         </select>
       </div>
     </>

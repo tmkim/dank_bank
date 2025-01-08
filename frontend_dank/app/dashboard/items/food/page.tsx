@@ -1,5 +1,6 @@
 import ListItems from '@/app/ui/dashboard/list-items';
 import { lusitana } from '@/app/ui/fonts';
+import CreateForm from '@/app/ui/items/create-form';
 import ItemDetails from '@/app/ui/items/details';
 
 export default async function Page() {
@@ -13,12 +14,7 @@ export default async function Page() {
         Dank Food
       </h1>
       <div className="flex flex-col md:flex-row space-x-4">
-        <div className="md:w-1/2 grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-          <ListItems items={data.results} />
-        </div>
-        <div className="md:w-1/2 grid-cols-1 bg-red-300">
-          <ItemDetails item = {data.results[0]}/>
-        </div>
+        <CreateForm/>
       </div>
     </main>
   );

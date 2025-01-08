@@ -320,7 +320,7 @@ Today:
         
         ** Basic search, pagination working! 
 
-1/6/2025
+1/7/2025
     OK so today we'll be fleshing out our table, search, pagination 
     Then we can start adding buttons
         - Filter buttons 
@@ -335,3 +335,18 @@ Today:
                 we need the OnClick logic in page.tsx so we can maintain the state for both comps
         .. We can pass our OnClick function to Table component 
 
+1/8/2025
+    ok so today our main focus should be : 
+        - create form, update form
+        - buttons
+        - extra : "loading" text shifts table down -> don't do that
+    
+    Working on my create form
+        > set up options to pull enumeration from Item definition
+        > learn that switch/case > clsx when conditionally rendering components
+            clsx is better for pure css
+            ok to use both, depending on needs
+            .. will need to update my details component
+
+        ++ updated details to use switch/case for conditional rendering rather than clsx
+        ++ set up basic create form with different input options depending on category

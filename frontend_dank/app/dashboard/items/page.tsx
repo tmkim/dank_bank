@@ -81,9 +81,12 @@ const ItemsPage: React.FC = () => {
 
   return (
     <main>
+      <h1 className="text-xl py-4">
+        The Dank Bank
+      </h1>
       <div className="flex flex-col md:flex-row space-x-4">
         <div className="md:w-1/2 grid-cols-1 md:grid-cols-4 lg:grid-cols-8">
-          <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+          <div className="flex flex-col w-10/12">
             <input
               type="text"
               placeholder="Search items"
@@ -105,16 +108,9 @@ const ItemsPage: React.FC = () => {
           <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
             Details
           </h1>
-          <ItemDetails item={item}/>
+          <ItemDetails item={item} />
         </div>
       </div>
-      <div>
-
-        <h1>Items</h1>
-
-
-      </div>
-
     </main>
   );
 };

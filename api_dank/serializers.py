@@ -19,7 +19,7 @@ class FoodSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'name', 'location', 'cost', 'review', 'rating'] 
+        fields = ['id', 'name', 'cuisine', 'location', 'cost', 'review', 'rating'] 
 
 class MusicSerializer(serializers.ModelSerializer):
 
