@@ -45,6 +45,7 @@ import { useSearchParams } from 'next/navigation';
 import ItemTable from '@/app/ui/item-table';
 import { lusitana } from '@/app/ui/fonts';
 import ItemDetails from '@/app/ui/items/details';
+import { Item } from '@/app/lib/definitions';
 // import ItemTable from '../components/ItemTable';
 
 const ItemsPage: React.FC = () => {
@@ -72,6 +73,12 @@ const ItemsPage: React.FC = () => {
     setPageLimit(parseInt(limitParam, 10));
   }, [pageParam, queryParam, limitParam]);
 
+  const [item, setItemDetail] = useState<Item | null>(null);
+  const handleRowClick = (rowData: Item) => {
+    setItemDetail(rowData)
+    console.log(rowData)
+  }
+
   return (
     <main>
       <div className="flex flex-col md:flex-row space-x-4">
@@ -91,13 +98,14 @@ const ItemsPage: React.FC = () => {
             limit={pageLimit}
             onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
             onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+            onRowClick={handleRowClick}
           />
         </div>
         <div className="md:w-1/2 grid-cols-1 gap-6">
           <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
             Details
           </h1>
-          {/* <ItemDetails/> */}
+          <ItemDetails item={item}/>
         </div>
       </div>
       <div>

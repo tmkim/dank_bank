@@ -4,10 +4,24 @@ import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-const ItemDetails = ({ item }: { item: Item }) => {
+interface ItemDetailsProps {
+    item: Item | null;
+  }
+
+// const ItemDetails = ({ item }: { item: Item }) => {
+const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
+    // console.log("Selected Row in DetailsPanel:", item);  
+    if (!item) {
+        return <p className="text-gray-500">Select a row to view details.</p>;
+    }
+
     if (item.item_url == null) {
         item.item_url = ''
     }
+    if (item.gmap_url == null) {
+        item.gmap_url = ''
+    }
+    
 
     return (
         <div className="mt-6 flow-root">

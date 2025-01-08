@@ -10,9 +10,10 @@ type ItemTableProps = {
   limit: number;
   onPageChange: (newPage: number) => void;
   onLimitChange: (newLimit: number) => void;
+  onRowClick: (item: Item) => void; 
 };
 
-const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange, onLimitChange }) => {
+const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange, onLimitChange, onRowClick }) => {
   const [results, setResults] = useState<Item[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,11 +62,12 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
                   <tr
                     key={item.id}
                     className={clsx(
-                      'flex items-center justify-between py-4 pl-4 pr-4',
+                      'flex items-center justify-between py-4 pl-4 pr-4 cursor-pointer',
                       {
                         'border-t': i !== 0,
                       },
                     )}
+                    onClick={() => onRowClick(item)}
                   >
                     <td>
                         <p className="truncate text-sm font-semibold md:text-base">

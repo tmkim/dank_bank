@@ -328,5 +328,10 @@ Today:
     We will also need to make our Create and Update forms 
 
     ++ cleaned up table 
+    ++ made table-details interactable
+        ** need to add props to details to accept input from table
+        ** table needs useState to handle row clicks and pick which item to pass
+        .. since table and details are 2 separate components, 
+                we need the OnClick logic in page.tsx so we can maintain the state for both comps
+        .. We can pass our OnClick function to Table component 
 
-    
