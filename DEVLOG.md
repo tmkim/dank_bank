@@ -350,3 +350,24 @@ Today:
 
         ++ updated details to use switch/case for conditional rendering rather than clsx
         ++ set up basic create form with different input options depending on category
+            > fields exist and will render depending on chosen category
+            > need to make it pretty~
+
+        ** edit form can copy the create form + parameter
+            have information pre-populated based on input item
+        > the specific item can be passed by an "edit" button
+
+1/9/2025
+    Alright today we will work on our update form + basic buttons
+    First.. let's create an "update" button to add to our table.
+        Working on making it modal
+        ++ make edit form and update fields to listen for onChange
+        .. apparently better for inputs to be string then convert to number later?
+                -- LATER : will have to look into updating definition/model
+        .. Basic set up of edit form is done, need to make some tweaks
+
+    Need to work on formatting, but clicking on "Edit" button will display Modal edit form
+        .. need to add funciontality to Update
+            + update handleSubmit to PUT json using DRF api endpoint
+    
+    update item table to handle state of items list (important to listen for updates)

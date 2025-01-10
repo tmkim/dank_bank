@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Item } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { lusitana } from '@/app/ui/fonts';
+import { PencilIcon } from '@heroicons/react/20/solid';
+import UpdateModal from '@/app/ui/items/edit-form';
 
 type ItemTableProps = {
   query: string;
@@ -14,30 +16,46 @@ type ItemTableProps = {
 };
 
 const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange, onLimitChange, onRowClick }) => {
+
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
   const [results, setResults] = useState<Item[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const fetchResults = async (): Promise<void> => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}`
-      );
-      const data = await response.json();
-
-      setResults(data.results);
-      setTotalPages(Math.ceil(data.count / limit));
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchResults();
-  }, [page, query, limit]);
+    const fetchItems = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}`
+          );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setResults(data.results); // Populate items with fetched data
+        setTotalPages(Math.ceil(data.count / limit));
+        setLoading(false); // Stop loading
+      } catch (err) {
+        // console.error('Failed to fetch items:', err);
+        setError('Failed to load items.');
+        setLoading(false);
+      }
+    };
+  
+    fetchItems(); // Fetch data on component mount
+  }, []); // Empty dependency array ensures this runs only once
+
+
+  const handleUpdate = (updatedItem: Item) => {
+    setResults((prevItems) =>
+      prevItems.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
+      )
+    );
+  };
+  
 
   return (
     <>
@@ -54,6 +72,9 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
                   </th>
                   <th scope="col" className="px-4 py-2 text-right pr-7 w-4/5">
                     Rating
+                  </th>
+                  <th scope="col" className="px-4 py-2 text-right pr-7 w-4/5">
+                    Edit
                   </th>
                 </tr>
               </thead>
@@ -82,10 +103,20 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
                     >
                       {item.rating} / 100
                     </td>
+                    <td>
+                      <button onClick={() => setSelectedItem(item)}><PencilIcon className="w-5" /></button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            {selectedItem && (
+              <UpdateModal
+              item={selectedItem}
+              onClose={() => setSelectedItem(null)}
+              onUpdate={handleUpdate}
+            />
+            )}
           </div>
         </div>
       </div>
