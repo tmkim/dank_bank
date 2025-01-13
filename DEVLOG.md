@@ -371,3 +371,38 @@ Today:
             + update handleSubmit to PUT json using DRF api endpoint
     
     update item table to handle state of items list (important to listen for updates)
+
+1/13/2025
+    Welcome back boys let's get this dank 
+
+    Alright so let's go through the current state of our app and see what needs work.
+    We can separate this by what needs work - function vs format
+
+    So taking a look at our main page with the items list..
+        * Table displays list of items with pagination and search 
+            -- something broke while updating our table :(
+            So right now search/pagination do not update the table 
+            I think this is because we updated how data is fetched
+            -- need to make pretty
+
+        * Clicking on an item will properly populate Details component 
+            -- need to make pretty
+        
+        * Clicking edit button wil load Update Modal with prepopulated data
+            -- update not updating
+        
+        * Create form will load appropriate input options per category 
+            -- need to make pretty
+            -- need to add verification for required fields?
+            -- adding new item does not update database 
+        
+        * Need button for New Entry 
+        * Need buttons for filter item table 
+
+    FUNCTION --
+        >> Item Table - pagination & search - need to update items displayed on table 
+        >> Update Form - make sure updating details updates database 
+        >> Create Form - make sure new entries are added to database
+                       - make sure new entries display in Item Table 
+        >> Create Item button - open fresh Create form 
+        >> Category filter buttons - determine which categories appear in Item Table 
