@@ -402,7 +402,13 @@ Today:
     FUNCTION --
         >> Item Table - pagination & search - need to update items displayed on table 
         >> Update Form - make sure updating details updates database 
+                       - make sure new details appear in Item Table (without refresh)
         >> Create Form - make sure new entries are added to database
-                       - make sure new entries display in Item Table 
-        >> Create Item button - open fresh Create form 
+                       - make sure new entries display in Item Table (without refresh)
+        ~~ Create Item button - open fresh Create form 
         >> Category filter buttons - determine which categories appear in Item Table 
+
+    ++ Create Form turned into Modal
+    ++ New Entry button to activate Create Modal
+        .. "Cancel" works as expected
+        *** need to add Create functionality

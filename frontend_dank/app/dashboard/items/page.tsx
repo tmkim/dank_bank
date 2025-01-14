@@ -46,6 +46,8 @@ import ItemTable from '@/app/ui/item-table';
 import { lusitana } from '@/app/ui/fonts';
 import ItemDetails from '@/app/ui/items/details';
 import { Item } from '@/app/lib/definitions';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import CreateModal from '@/app/ui/items/create-modal';
 // import ItemTable from '../components/ItemTable';
 
 const ItemsPage: React.FC = () => {
@@ -58,6 +60,9 @@ const ItemsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>(queryParam);
   const [currentPage, setCurrentPage] = useState<number>(parseInt(pageParam, 10));
   const [pageLimit, setPageLimit] = useState<number>(parseInt(limitParam, 10));
+
+  const [createModal, setCreateModal] = useState<boolean>(false);
+  
 
   const updateQueryParams = (newQuery: string, newPage: number, newLimit: number) => {
     const newUrl = new URL(window.location.href);
@@ -86,14 +91,16 @@ const ItemsPage: React.FC = () => {
       </h1>
       <div className="flex flex-col md:flex-row space-x-4">
         <div className="md:w-1/2 grid-cols-1 md:grid-cols-4 lg:grid-cols-8">
-          <div className="flex flex-col w-10/12">
-            <input
+          <div className="flex space-x-2 w-full">
+            <input className="flex-grow w-3/4 p-2 border border-gray-300 rounded-md"
               type="text"
               placeholder="Search items"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}  // Reset to page 1 on query change
             />
+            <button className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
+             onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
           </div>
           <ItemTable
             query={searchQuery}
@@ -110,6 +117,11 @@ const ItemsPage: React.FC = () => {
           </h1>
           <ItemDetails item={item} />
         </div>
+      {createModal && (
+        <CreateModal
+        onClose={() => setCreateModal(false)}
+      />
+      )}
       </div>
     </main>
   );
