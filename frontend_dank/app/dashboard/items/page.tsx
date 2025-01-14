@@ -50,6 +50,13 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import CreateModal from '@/app/ui/items/create-modal';
 // import ItemTable from '../components/ItemTable';
 
+type FilterChecks = {
+  dining: boolean;
+  food: boolean;
+  music: boolean;
+  travel: boolean;
+}
+
 const ItemsPage: React.FC = () => {
   const searchParams = useSearchParams();
 
@@ -62,7 +69,21 @@ const ItemsPage: React.FC = () => {
   const [pageLimit, setPageLimit] = useState<number>(parseInt(limitParam, 10));
 
   const [createModal, setCreateModal] = useState<boolean>(false);
-  
+
+  const [filterCheck, setFilterCheck] = useState<FilterChecks>({
+    dining: false,
+    food: false,
+    music: false,
+    travel: false,
+  });
+
+  const handleFilterCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setFilterCheck((prevState) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
 
   const updateQueryParams = (newQuery: string, newPage: number, newLimit: number) => {
     const newUrl = new URL(window.location.href);
@@ -100,7 +121,28 @@ const ItemsPage: React.FC = () => {
               onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}  // Reset to page 1 on query change
             />
             <button className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
-             onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
+              onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
+          </div>
+          <div className="flex space-x-2 mt-2">
+            {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
+              const key = option.toLowerCase(); // Convert option to lowercase for keys
+              return (
+                <label
+                  key={index}
+                  className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${filterCheck[key as keyof FilterChecks] ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
+                    }`}
+                >
+                  <input
+                    type="checkbox"
+                    name={key}
+                    className="hidden peer  "
+                    checked={filterCheck[key as keyof FilterChecks]}
+                    onChange={handleFilterCheckboxChange}
+                  />
+                  {option}
+                </label>
+              );
+            })}
           </div>
           <ItemTable
             query={searchQuery}
@@ -117,11 +159,11 @@ const ItemsPage: React.FC = () => {
           </h1>
           <ItemDetails item={item} />
         </div>
-      {createModal && (
-        <CreateModal
-        onClose={() => setCreateModal(false)}
-      />
-      )}
+        {createModal && (
+          <CreateModal
+            onClose={() => setCreateModal(false)}
+          />
+        )}
       </div>
     </main>
   );

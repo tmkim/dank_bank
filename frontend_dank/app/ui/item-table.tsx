@@ -59,7 +59,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
 
   return (
     <>
-      <div className="mt-6 flow-root">
+      <div className="mt-2 flow-root">
         {isLoading && <p>Loading...</p>}
         {!isLoading && results.length === 0 && <p>No items found.</p>}
         <div className="inline-block min-w-full align-middle">
