@@ -41,9 +41,17 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Override the default queryset to include filtering by query."""
+        queryset = self.queryset
         query = self.request.query_params.get('query', '')
-        return self.queryset.filter(name__icontains=query)
+        if query:
+            queryset = queryset.filter(name__icontains=query)
+        
+        categories = self.request.query_params.getlist('category', None)  
+        if categories:
+            queryset = queryset.filter(category__in=categories)            
 
+        return queryset
+    
 class DiningViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.filter(category='Dining')
     serializer_class = DiningSerializer

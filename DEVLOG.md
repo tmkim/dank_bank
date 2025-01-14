@@ -415,3 +415,10 @@ Today:
         *** need to add Create functionality
     ++ Added checkboxes as Category Filter Buttons
     ++ Made sure item table fetch() uses [page, query, limit] as dependencies
+    ++ Update API to accept list of categories as query input
+
+    .. Working on adding functionality to filter buttons to include category in API query
+    .. Running into issue with infinite looping
+        -- need to revisit how my states and useEffect are implemented
+        -- basically my state changes are triggering effects that change states and trigger effects again
+    .. also tried implementing lodash debounce but having trouble installing ?

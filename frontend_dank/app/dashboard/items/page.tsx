@@ -40,7 +40,7 @@
 
 'use client';  // Explicitly mark the file as client-side
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ItemTable from '@/app/ui/item-table';
 import { lusitana } from '@/app/ui/fonts';
@@ -71,10 +71,10 @@ const ItemsPage: React.FC = () => {
   const [createModal, setCreateModal] = useState<boolean>(false);
 
   const [filterCheck, setFilterCheck] = useState<FilterChecks>({
-    dining: false,
-    food: false,
-    music: false,
-    travel: false,
+    dining: true,
+    food: true,
+    music: true,
+    travel: true,
   });
 
   const handleFilterCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,11 +85,19 @@ const ItemsPage: React.FC = () => {
     }));
   };
 
-  const updateQueryParams = (newQuery: string, newPage: number, newLimit: number) => {
+  const updateQueryParams = (newQuery: string, newPage: number, newLimit: number, selectedCategories: string[]) => {
+    const uniqueCategories = Array.from(new Set(selectedCategories));
+
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set('query', newQuery);
     newUrl.searchParams.set('page', newPage.toString());
     newUrl.searchParams.set('limit', newLimit.toString());
+
+    // Add selected categories with the first letter capitalized
+    uniqueCategories.forEach((category) => {
+      newUrl.searchParams.append('category', category.charAt(0).toUpperCase() + category.slice(1));
+    });
+
     window.history.pushState({}, '', newUrl.toString());
   };
 
@@ -99,11 +107,55 @@ const ItemsPage: React.FC = () => {
     setPageLimit(parseInt(limitParam, 10));
   }, [pageParam, queryParam, limitParam]);
 
+  const selectedCategories = Object.keys(filterCheck).filter((key) => filterCheck[key as keyof FilterChecks]);
+
+  // useRef to track the previous query parameters
+  const prevQueryParams = useRef<{
+    query: string;
+    page: number;
+    limit: number;
+    categories: string[]; // Change category to categories
+  } | null>({
+    query: searchQuery,
+    page: currentPage, // store as number
+    limit: pageLimit,   // store as number
+    categories: [], // Set the categories array initially as empty
+  });
+
+  useEffect(() => {
+    const currentQueryParams = new URLSearchParams(window.location.search);
+    const currentCategoryParams = currentQueryParams.getAll('category');
+
+    const newQueryParams = {
+      query: searchQuery,
+      page: currentPage.toString(),
+      limit: pageLimit.toString(),
+      categories: selectedCategories.map((category) => category.charAt(0).toUpperCase() + category.slice(1)), // Ensure categories key is used here
+    };
+
+    // Check if the parameters have changed compared to the previous state
+    const hasCategoryChanged = JSON.stringify(currentCategoryParams.sort()) !== JSON.stringify(newQueryParams.categories.sort());
+    const hasQueryChanged = currentQueryParams.get('query') !== newQueryParams.query;
+    const hasPageChanged = currentQueryParams.get('page') !== newQueryParams.page;
+    const hasLimitChanged = currentQueryParams.get('limit') !== newQueryParams.limit;
+
+    // Only update if there is a change in any query parameter
+    if (hasCategoryChanged || hasQueryChanged || hasPageChanged || hasLimitChanged) {
+      updateQueryParams(newQueryParams.query, parseInt(newQueryParams.page, 10), parseInt(newQueryParams.limit, 10), newQueryParams.categories);
+      prevQueryParams.current = { // Update previous params correctly
+        query: newQueryParams.query,
+        page: parseInt(newQueryParams.page, 10), // Convert to number
+        limit: parseInt(newQueryParams.limit, 10), // Convert to number
+        categories: newQueryParams.categories,
+      };
+    }
+  }, [searchQuery, currentPage, pageLimit, selectedCategories]);
+
   const [item, setItemDetail] = useState<Item | null>(null);
   const handleRowClick = (rowData: Item) => {
-    setItemDetail(rowData)
-    console.log(rowData)
-  }
+    setItemDetail(rowData);
+    console.log(rowData);
+  };
 
   return (
     <main>
@@ -118,7 +170,7 @@ const ItemsPage: React.FC = () => {
               placeholder="Search items"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}  // Reset to page 1 on query change
+              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit, selectedCategories)}  // Reset to page 1 on query change
             />
             <button className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
               onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
@@ -148,8 +200,9 @@ const ItemsPage: React.FC = () => {
             query={searchQuery}
             page={currentPage}
             limit={pageLimit}
-            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
-            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+            categories={selectedCategories} 
+            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit, selectedCategories)}
+            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit, selectedCategories)}
             onRowClick={handleRowClick}
           />
         </div>

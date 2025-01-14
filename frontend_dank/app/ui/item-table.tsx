@@ -10,12 +10,13 @@ type ItemTableProps = {
   query: string;
   page: number;
   limit: number;
+  categories: string[];
   onPageChange: (newPage: number) => void;
   onLimitChange: (newLimit: number) => void;
   onRowClick: (item: Item) => void; 
 };
 
-const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange, onLimitChange, onRowClick }) => {
+const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onPageChange, onLimitChange, onRowClick }) => {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
@@ -27,9 +28,11 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        const categoryParams = categories.join('&category=');
         const response = await fetch(
-          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}`
-          );
+          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}&category=${categoryParams}`
+        );
+        console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}&category=${categoryParams}`)
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
@@ -45,7 +48,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
     };
   
     fetchItems(); // Fetch data on component mount
-  }, [page, query, limit]); // Dependencies call useEffect() when changed
+  }, [page, query, limit, categories]); // Dependencies call useEffect() when changed
 
 
   const handleUpdate = (updatedItem: Item) => {
