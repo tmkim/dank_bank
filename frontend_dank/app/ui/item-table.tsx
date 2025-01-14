@@ -45,7 +45,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, onPageChange,
     };
   
     fetchItems(); // Fetch data on component mount
-  }, []); // Empty dependency array ensures this runs only once
+  }, [page, query, limit]); // Dependencies call useEffect() when changed
 
 
   const handleUpdate = (updatedItem: Item) => {
