@@ -407,7 +407,16 @@ Today:
                        - make sure new entries display in Item Table (without refresh)
         ~~ Create Item button - open fresh Create form 
         ~~ Category filter buttons - determine which categories appear in Item Table 
-                       - need to add query functionality
+                       ~~ need to add query functionality
+
+    FASHION --
+        Formatting : 
+            Item Table
+            Update Form
+            Create Form
+            Details 
+            Side nav
+            Overall 
 
     ++ Create Form turned into Modal
     ++ New Entry button to activate Create Modal
@@ -422,3 +431,25 @@ Today:
         -- need to revisit how my states and useEffect are implemented
         -- basically my state changes are triggering effects that change states and trigger effects again
     .. also tried implementing lodash debounce but having trouble installing ?
+
+1/15
+    Ok, so today's first focus is fixing my infinite looping UseEffect() when applying filters
+
+    -- quick fix "bug" where category filter wasn't working due to capitalization
+    -- made category filter off by default : will show all results until a filter is added
+
+    .. so right now, starting with all filters off, I can choose ONE filter without it breaking. URL is updated.
+    -- deselecting the category will update the table but not the URL
+    -- deselecting and reselecting the same category is ok
+    -- selecting 2nd category causes infinite loop
+
+    AWWW YEAH IT WORKS BROTHERRRR
+    I just don't have to update my URL when filters are selected/deselected
+    ++ confirmed that it work with searching
+
+    Tomorrow --
+        >>> Update Form - make sure updating details updates database 
+                        - make sure new details appear in Item Table (without refresh)
+        >>> Create Form - make sure new entries are added to database
+                        - make sure new entries display in Item Table (without refresh)
+                        

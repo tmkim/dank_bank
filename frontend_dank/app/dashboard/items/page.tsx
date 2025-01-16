@@ -1,43 +1,3 @@
-// import ListItems from '@/app/ui/dashboard/list-items';
-// import { lusitana } from '@/app/ui/fonts';
-// import ItemDetails from '@/app/ui/items/details';
-// import Search from '@/app/ui/search';
-
-// export default async function Page() {
-// const items_res = await fetch("http://localhost:8000/api_dank/items");
-// const data = await items_res.json()
-//   // console.log(data.results) //json array where each object is an item returned from the api
-
-//   return (
-// <main>
-//   <div className="flex flex-col md:flex-row space-x-4">
-//     <div className="md:w-1/2 grid-cols-1 md:grid-cols-4 lg:grid-cols-8">
-//       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-//         Items
-//       </h1>
-//       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-//         <Search placeholder="Search Dank Bank..." />
-//         {/* <CreateItem /> -------- need to make button */}
-//       </div>
-//             {/*  <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-//     <Table query={query} currentPage={currentPage} />
-//   </Suspense> */}
-//       <ListItems items={data.results} />
-//     </div>
-//     <div className="md:w-1/2 grid-cols-1 gap-6">
-//       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-//         Details
-//       </h1>
-//       <ItemDetails item = {data.results[0]}/>
-//     </div>
-//   </div>
-// </main>
-//   );
-// }
-
-
-
-
 'use client';  // Explicitly mark the file as client-side
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -51,10 +11,10 @@ import CreateModal from '@/app/ui/items/create-modal';
 // import ItemTable from '../components/ItemTable';
 
 type FilterChecks = {
-  dining: boolean;
-  food: boolean;
-  music: boolean;
-  travel: boolean;
+  Dining: boolean;
+  Food: boolean;
+  Music: boolean;
+  Travel: boolean;
 }
 
 const ItemsPage: React.FC = () => {
@@ -71,10 +31,10 @@ const ItemsPage: React.FC = () => {
   const [createModal, setCreateModal] = useState<boolean>(false);
 
   const [filterCheck, setFilterCheck] = useState<FilterChecks>({
-    dining: true,
-    food: true,
-    music: true,
-    travel: true,
+    Dining: false,
+    Food: false,
+    Music: false,
+    Travel: false,
   });
 
   const handleFilterCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +45,7 @@ const ItemsPage: React.FC = () => {
     }));
   };
 
-  const updateQueryParams = (newQuery: string, newPage: number, newLimit: number, selectedCategories: string[]) => {
+  const updateQueryParams = (newQuery: string, newPage: number, newLimit: number) => {
     const uniqueCategories = Array.from(new Set(selectedCategories));
 
     const newUrl = new URL(window.location.href);
@@ -95,7 +55,7 @@ const ItemsPage: React.FC = () => {
 
     // Add selected categories with the first letter capitalized
     uniqueCategories.forEach((category) => {
-      newUrl.searchParams.append('category', category.charAt(0).toUpperCase() + category.slice(1));
+      newUrl.searchParams.append('category', category);
     });
 
     window.history.pushState({}, '', newUrl.toString());
@@ -141,7 +101,7 @@ const ItemsPage: React.FC = () => {
 
     // Only update if there is a change in any query parameter
     if (hasCategoryChanged || hasQueryChanged || hasPageChanged || hasLimitChanged) {
-      updateQueryParams(newQueryParams.query, parseInt(newQueryParams.page, 10), parseInt(newQueryParams.limit, 10), newQueryParams.categories);
+      updateQueryParams(newQueryParams.query, parseInt(newQueryParams.page, 10), parseInt(newQueryParams.limit, 10));
       prevQueryParams.current = { // Update previous params correctly
         query: newQueryParams.query,
         page: parseInt(newQueryParams.page, 10), // Convert to number
@@ -149,7 +109,7 @@ const ItemsPage: React.FC = () => {
         categories: newQueryParams.categories,
       };
     }
-  }, [searchQuery, currentPage, pageLimit, selectedCategories]);
+  }, [searchQuery, currentPage, pageLimit]);
 
   const [item, setItemDetail] = useState<Item | null>(null);
   const handleRowClick = (rowData: Item) => {
@@ -170,14 +130,14 @@ const ItemsPage: React.FC = () => {
               placeholder="Search items"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit, selectedCategories)}  // Reset to page 1 on query change
+              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}  // Reset to page 1 on query change
             />
             <button className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
               onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
           </div>
           <div className="flex space-x-2 mt-2">
             {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
-              const key = option.toLowerCase(); // Convert option to lowercase for keys
+              const key = option;
               return (
                 <label
                   key={index}
@@ -187,7 +147,7 @@ const ItemsPage: React.FC = () => {
                   <input
                     type="checkbox"
                     name={key}
-                    className="hidden peer  "
+                    className="hidden peer"
                     checked={filterCheck[key as keyof FilterChecks]}
                     onChange={handleFilterCheckboxChange}
                   />
@@ -201,8 +161,8 @@ const ItemsPage: React.FC = () => {
             page={currentPage}
             limit={pageLimit}
             categories={selectedCategories} 
-            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit, selectedCategories)}
-            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit, selectedCategories)}
+            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
+            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
             onRowClick={handleRowClick}
           />
         </div>

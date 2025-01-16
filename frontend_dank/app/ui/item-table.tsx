@@ -28,15 +28,16 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const categoryParams = categories.join('&category=');
+        const categoryParams = categories.length > 0 ? '&category=' + categories.join('&category=') : '';
         const response = await fetch(
-          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}&category=${categoryParams}`
+          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`
         );
-        console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}&category=${categoryParams}`)
+        console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`)
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
         setLoading(false); // Stop loading
@@ -142,9 +143,9 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
           value={limit}
           onChange={(e) => onLimitChange(Number(e.target.value))}
         >
-          <option value={2}>2</option>
-          <option value={5}>5</option>
           <option value={10}>10</option>
+          <option value={20}>20</option>
+          <option value={50}>50</option>
         </select>
       </div>
     </>
