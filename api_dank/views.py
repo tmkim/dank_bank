@@ -3,11 +3,15 @@ from .serializers import ItemSerializer, DiningSerializer, FoodSerializer, Music
 from django.db import models
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework import status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
 # Create your views here.
+import logging
+
+logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -51,6 +55,19 @@ class ItemViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__in=categories)            
 
         return queryset
+    
+        # Override the create method
+    def create(self, request, *args, **kwargs):
+        logger.debug("Received data: %s", request.data)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)  # This triggers validation
+        self.perform_create(serializer)  # Save the object
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        # Add any additional custom save logic here
+        serializer.save()
     
 class DiningViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.filter(category='Dining')

@@ -129,7 +129,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           <>
             <div>
               <label htmlFor="location">Location:</label>
-              <input type="text" value={location} onChange={(e) => setName(e.target.value)} />
+              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div>
               <label htmlFor="address">Address:</label>
@@ -195,19 +195,19 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           <>
             <div>
               <label htmlFor="location">Location:</label>
-              <input type="text" value={location} onChange={(e) => setName(e.target.value)} />
+              <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div>
               <label htmlFor="address">Address:</label>
-              <input type="text" value={address} onChange={(e) => setName(e.target.value)} />
+              <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
             </div>
             <div>
               <label htmlFor="gmap_url">Google Map:</label>
-              <input type="text" value={gmap_url} onChange={(e) => setName(e.target.value)} />
+              <input type="text" value={gmap_url} onChange={(e) => setGmap_url(e.target.value)} />
             </div>
             <div>
               <label htmlFor="item_url">Website:</label>
-              <input type="text" value={item_url} onChange={(e) => setName(e.target.value)} />
+              <input type="text" value={item_url} onChange={(e) => setItem_url(e.target.value)} />
             </div>
           </>
         );
@@ -256,7 +256,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
             </div>
             <div>
               <label htmlFor="review">Review:</label>
-              <textarea value={name} onChange={(e) => setName(e.target.value)} />
+              <textarea value={review} onChange={(e) => setReview(e.target.value)} />
             </div>
             <div>
               <label htmlFor="rating">Rating:</label>

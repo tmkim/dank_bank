@@ -22,7 +22,7 @@ interface CreateProps {
 const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     const categories: Category[] = ['Dining', 'Food', 'Music', 'Travel'];
-    const [selectedCategory, setSelectedCategory] = useState<Category>('Dining');
+    const [selectedCategory, setSelectedCategory] = useState<Category>('');
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value as Category);
@@ -104,10 +104,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div>
-                            <label htmlFor="name">Name:</label>
-                            <input id="name" name="name" type="text" />
-                        </div>
-                        <div>
                             <label htmlFor="location">Location:</label>
                             <input id="location" name="location" type="text" />
                         </div>
@@ -137,10 +133,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div>
-                            <label htmlFor="name">Name:</label>
-                            <input id="name" name="name" type="text" />
-                        </div>
-                        <div>
                             <label htmlFor="artist">Artist:</label>
                             <input id="artist" name="artist" type="text" />
                         </div>
@@ -157,10 +149,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             case 'Travel':
                 return (
                     <>
-                        <div>
-                            <label htmlFor="name">Name:</label>
-                            <input id="name" name="name" type="text" />
-                        </div>
                         <div>
                             <label htmlFor="location">Location:</label>
                             <input id="location" name="location" type="text" />

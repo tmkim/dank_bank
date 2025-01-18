@@ -6,7 +6,37 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
-        fields = ['id', 'category', 'name', 'review', 'rating', 'item_url', 'location', 'address', 'gmap_url', 'item_url',  'price_range', 'cuisine', 'cost', 'music_source', 'artist']
+        fields = '__all__'
+        # fields = ['id', 'category', 'name', 'review', 'rating', 'item_url', 'location', 'address', 'gmap_url', 'item_url',  'price_range', 'cuisine', 'cost', 'music_source', 'artist']
+
+    def validate_name(self, value):
+        if len(value) < 1:
+            raise serializers.ValidationError("Entry must have a name")
+        return value
+    
+    def validate_rating(self, value):
+        if value == '':
+            raise serializers.ValidationError("Entry must have a rating.")
+        return value
+        
+    def validate_review(self, value):
+        if len(value) < 1:
+            raise serializers.ValidationError("Entry must have a review.")
+        return value
+    
+    def validate(self, data):
+        if data['category'] == '':
+            raise serializers.ValidationError("Entry must have a category")
+        return data
+
+    
+    # def validate(self, data):
+    #     if data['category'] == 'Dining' and not data.get('location'):
+    #         raise serializers.ValidationError({
+    #             'location': "Location is required for the Dining category."
+    #         })
+    #     return data
+    
 
 # class DiningSerializer(serializers.HyperlinkedModelSerializer):
 class DiningSerializer(serializers.ModelSerializer):

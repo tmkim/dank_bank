@@ -450,6 +450,13 @@ Today:
     Tomorrow --
         >>> Update Form - make sure updating details updates database 
                         - make sure new details appear in Item Table (without refresh)
-        >>> Create Form - make sure new entries are added to database
-                        - make sure new entries display in Item Table (without refresh)
+        ++ Create Form  + make sure new entries are added to database
+                        + make sure new entries display in Item Table (without refresh)
                         
+1/16
+    Create form is fully functional!
+
+    Update form -- i'm getting a weird error when trying to update fields
+                .. some fields just keep deleting whatever I type
+                .. some fields change when I change other fields
+                .. going to have to do a slight rehaul of update modal

@@ -22,21 +22,28 @@ class Item(models.Model):
         'SP': 'Spotify',
         'YT': 'YouTube',
     }
+    category_choices = {
+        '':'',
+        'Dining': 'Dining',
+        'Food': 'Food',
+        'Music': 'Music',
+        'Travel': 'Travel'
+    }
     # tag = models.ManyToManyField(Tag)
-    category = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
-    review = models.CharField(max_length=710)
-    rating = models.IntegerField(default=0)
-    address = models.CharField(max_length=200, null=True)
-    location = models.CharField(max_length=200, null=True)
-    gmap_url = models.CharField(max_length=200, null=True)
-    item_url = models.CharField(max_length=200, null=True)
+    category = models.CharField(choices=category_choices, default='', blank=False)
+    name = models.CharField(max_length=200, blank=False)
+    review = models.CharField(max_length=710, blank=False)
+    rating = models.IntegerField(default=0, blank=False)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    gmap_url = models.CharField(max_length=200, blank=True, null=True)
+    item_url = models.CharField(max_length=200, blank=True, null=True)
     price_range = models.CharField(choices=price_ranges, default='') # $, $$,
-    cost = models.DecimalField(decimal_places=2, max_digits=14, null=True)
-    cuisine = models.CharField(max_length=200, null=True)
+    cost = models.DecimalField(decimal_places=2, max_digits=14, blank=True, null=True)
+    cuisine = models.CharField(max_length=200, blank=True, null=True)
     music_source = models.CharField(choices=music_source, default='') # enumerate : Spotify / Soundcloud / Youtube
-    artist = models.CharField(max_length=200, null=True)
-    music_meta = models.CharField(max_length=200, null=True)
+    artist = models.CharField(max_length=200, blank=True, null=True)
+    music_meta = models.CharField(max_length=200, blank=True, null=True)
 
 class Image(models.Model):
     name = models.CharField(max_length=200)
