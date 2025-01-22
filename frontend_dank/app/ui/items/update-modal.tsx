@@ -11,6 +11,8 @@ import { Button } from '@/app/ui/button';
 import { useState } from 'react';
 
 type Category = Item['category'];
+type PRange = Item['price_range'];
+type MSource = Item['music_source'];
 
 interface UpdateProps {
   item: Item;
@@ -45,6 +47,20 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value as Category);
   };
+
+  const prices: PRange[] = ['$', '$$', '$$$', '$$$$', '$$$$$'];
+  const [selectedPriceRange, setSelectedPRange] = useState<PRange>('');
+
+  const handlePriceRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedPRange(event.target.value as PRange);
+  }
+
+  const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
+  const [selectedMSource, setSelectedMSource] = useState<MSource>('');
+
+  const handleMusicSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedMSource(event.target.value as MSource);
+  }
 
   // ------------------------------- modal
 
@@ -143,11 +159,24 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
               <label htmlFor="item_url">Website:</label>
               <input type="text" value={item_url} onChange={(e) => setItem_url(e.target.value)} />
             </div>
-            <div>
-              {/* make this a select  */}
+            <div className="relative">
               <label htmlFor="price_range">Price Range:</label>
-              <input type="text" />
-              {/* <input type="text" value={price_range} onChange={(e) => setPrice_range(e.target.value)} /> */}
+              <select
+                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                id="price_range"
+                name="price_range"
+                value={selectedPriceRange}
+                onChange={handlePriceRangeChange}
+              >
+                <option value="" disabled>
+                  
+                </option>
+                {prices.map((pr) => (
+                  <option key={pr} value={pr}>
+                    {pr}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label htmlFor="cuisine">Cuisine:</label>
@@ -163,7 +192,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
               <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
             </div>
             <div>
-              <label htmlFor="cuisine">Cuisine Type:</label>
+              <label htmlFor="cuisine">Cuisine:</label>
               <input type="text" value={cuisine} onChange={(e) => setCuisine(e.target.value)} />
             </div>
             <div>
@@ -174,15 +203,29 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         );
       case 'Music':
         return (
-          <>=
+          <>
             <div>
               <label htmlFor="artist">Artist:</label>
               <input type="text" value={artist} onChange={(e) => setArtist(e.target.value)} />
             </div>
-            <div>
-              <label htmlFor="music_source">Source:</label>
-              {/* <input type="text" value={music_source} onChange={(e) => setMusic_source(e.target.value)} /> */}
-              <input id="music_source" name="music_source" type="text" />
+            <div className="relative">
+              <label htmlFor="music_source">Music Source:</label>
+              <select
+                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                id="music_source"
+                name="music_source"
+                value={selectedMSource}
+                onChange={handleMusicSourceChange}
+              >
+                <option value="" disabled>
+                  
+                </option>
+                {msources.map((ms) => (
+                  <option key={ms} value={ms}>
+                    {ms}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label htmlFor="item_url">URL:</label>
@@ -260,8 +303,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
             </div>
             <div>
               <label htmlFor="rating">Rating:</label>
-              {/* <input type="text" value={rating} onChange={(e) => setRating(e.target.value)} /> */}
-              <input type="number" />
+              <input id="rating" name="rating" type="number" min="0" max="100" step="1" />
             </div>
             <div className="mt-6 flex justify-end gap-4">
               <button type="button" onClick={onClose}>

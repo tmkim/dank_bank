@@ -460,3 +460,24 @@ Today:
                 .. some fields just keep deleting whatever I type
                 .. some fields change when I change other fields
                 .. going to have to do a slight rehaul of update modal
+
+1/22
+    What's up chat, I had to step away for a bit to focus on interview preparations but i'm back!
+    Today, the plan is simple -- we're going to make sure our update form works.
+    If we have additional time, I believe we can start working on making things pretty?
+        But of course, we'll do a run through to make sure our components are functional
+        +++ need to improve field validation !
+        Selects are not prepopulating correctly?
+            > Categories good. Price Range and MSource, no.
+        Rating also not pre-populating correctly
+        
+
+    WEEEEEEEEEEEELP
+    Of course I was just importing the wrong component. Oopsie! Easy fix!
+    Still, a few things are not populating as expected.
+
+    Common - Rating
+    Dining - Price Range
+    Travel - Gmap
+    Food - Cuisine
+    Music - Source

@@ -4,7 +4,7 @@ import { Item } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { lusitana } from '@/app/ui/fonts';
 import { PencilIcon } from '@heroicons/react/20/solid';
-import UpdateModal from '@/app/ui/items/edit-form';
+import UpdateModal from '@/app/ui/items/update-modal';
 
 type ItemTableProps = {
   query: string;
@@ -32,12 +32,12 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         const response = await fetch(
           `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`
         );
-        console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`)
+        // console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`)
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
         setLoading(false); // Stop loading
