@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import { lusitana } from '@/app/ui/fonts';
 import { PencilIcon } from '@heroicons/react/20/solid';
 import UpdateModal from '@/app/ui/items/update-modal';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
 
 type ItemTableProps = {
   query: string;
@@ -13,12 +15,14 @@ type ItemTableProps = {
   categories: string[];
   onPageChange: (newPage: number) => void;
   onLimitChange: (newLimit: number) => void;
-  onRowClick: (item: Item) => void; 
+  onRowClick: (item: Item) => void;
 };
 
 const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onPageChange, onLimitChange, onRowClick }) => {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
+  // ------------ populate list with results -------------
 
   const [results, setResults] = useState<Item[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -47,10 +51,49 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         setLoading(false);
       }
     };
-  
+
     fetchItems(); // Fetch data on component mount
   }, [page, query, limit, categories]); // Dependencies call useEffect() when changed
 
+  // ------------- Delete Item + Modal ---------------
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
+  const [items, setItems] = useState<Item[]>([]);
+
+  const confirmDelete = (item: Item) => {
+    setItemToDelete(item);
+    setIsDeleteModalOpen(true); // Show the delete confirmation modal
+  };
+
+  const handleDelete = async () => {
+    if (itemToDelete) {
+      try {
+        const response = await fetch(`http://localhost:8000/api_dank/items/${itemToDelete.id}/`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        setResults((prevResults) => prevResults.filter((item) => item.id !== itemToDelete.id));
+        setIsDeleteModalOpen(false); // Close the modal after deleting
+
+      } catch (error) {
+        console.error('Failed to delete item:', error);
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+  // -------------- Handle Update Modal ----------------
 
   const handleUpdate = (updatedItem: Item) => {
     setResults((prevItems) =>
@@ -59,7 +102,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
       )
     );
   };
-  
+
 
   return (
     <>
@@ -78,7 +121,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                     Rating
                   </th>
                   <th scope="col" className="px-4 py-2 text-right pr-7 w-4/5">
-                    Edit
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -95,12 +138,12 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                     onClick={() => onRowClick(item)}
                   >
                     <td>
-                        <p className="truncate text-sm font-semibold md:text-base">
-                          {item.name}
-                        </p>
-                        <p className="hidden text-sm text-gray-500 sm:block">
-                          {item.category}
-                        </p>
+                      <p className="truncate text-sm font-semibold md:text-base">
+                        {item.name}
+                      </p>
+                      <p className="hidden text-sm text-gray-500 sm:block">
+                        {item.category}
+                      </p>
                     </td>
                     <td
                       className={`${lusitana.className} truncate text-xl font-medium`}
@@ -108,7 +151,12 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                       {item.rating} / 100
                     </td>
                     <td>
-                      <button onClick={() => setSelectedItem(item)}><PencilIcon className="w-5" /></button>
+                      <button onClick={() => setSelectedItem(item)}
+                        className="border border-gray-300 p-1 mr-1 rounded-md hover:border-gray-500 focus:outline-none">
+                          <PencilIcon className="w-6" /></button>
+                      <button onClick={() => confirmDelete(item)}
+                        className="border border-gray-300 p-1 ml-1 rounded-md hover:border-gray-500 focus:outline-none">
+                          <TrashIcon className="w-6" /></button>
                     </td>
                   </tr>
                 ))}
@@ -116,11 +164,17 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
             </table>
             {selectedItem && (
               <UpdateModal
-              item={selectedItem}
-              onClose={() => setSelectedItem(null)}
-              onUpdate={handleUpdate}
-            />
+                item={selectedItem}
+                onClose={() => setSelectedItem(null)}
+                onUpdate={handleUpdate}
+              />
             )}
+            <ConfirmDeleteModal
+              isOpen={isDeleteModalOpen}
+              itemName={itemToDelete?.name || ''}
+              onConfirm={handleDelete}
+              onCancel={handleCancelDelete}
+            />
           </div>
         </div>
       </div>
@@ -130,7 +184,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
           onClick={() => onPageChange(Math.max(page - 1, 1))}
           disabled={page === 1}
         >
-          Previous 
+          Previous
         </button>
         <span className="px-2"> Page {page} of {totalPages} </span>
         <button className="px-4"
