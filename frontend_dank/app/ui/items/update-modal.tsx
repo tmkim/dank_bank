@@ -49,14 +49,14 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
   };
 
   const prices: PRange[] = ['$', '$$', '$$$', '$$$$', '$$$$$'];
-  const [selectedPriceRange, setSelectedPRange] = useState<PRange>('');
+  const [selectedPriceRange, setSelectedPRange] = useState<PRange>(item.price_range);
 
   const handlePriceRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setSelectedPRange(event.target.value as PRange);
   }
 
   const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
-  const [selectedMSource, setSelectedMSource] = useState<MSource>('');
+  const [selectedMSource, setSelectedMSource] = useState<MSource>(item.music_source);
 
   const handleMusicSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
       setSelectedMSource(event.target.value as MSource);
@@ -165,12 +165,9 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                 className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
                 id="price_range"
                 name="price_range"
-                value={selectedPriceRange}
+                value={selectedPriceRange || ""}
                 onChange={handlePriceRangeChange}
               >
-                <option value="" disabled>
-                  
-                </option>
                 {prices.map((pr) => (
                   <option key={pr} value={pr}>
                     {pr}
@@ -195,10 +192,24 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
               <label htmlFor="cuisine">Cuisine:</label>
               <input type="text" value={cuisine} onChange={(e) => setCuisine(e.target.value)} />
             </div>
-            <div>
-              <label htmlFor="cost">Cost:</label>
-              <input type="text" value={cost} onChange={(e) => setCost(e.target.value)} />
-            </div>
+              <div>
+                  <div className="relative mt-2 rounded-md">
+                      <div className="relative">
+                          <label htmlFor="cost">Cost:</label>
+                          <input
+                              id="cost"
+                              name="cost"
+                              type="number"
+                              step="0.01"
+                              placeholder="Enter USD amount"
+                              value={cost}
+                              onChange={(e) => setCost(Number(e.target.value))}
+                              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+                          />
+                          <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-6 w-6 text-gray-500 peer-focus:text-gray-900" />
+                      </div>
+                  </div>
+              </div>
           </>
         );
       case 'Music':
@@ -303,7 +314,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
             </div>
             <div>
               <label htmlFor="rating">Rating:</label>
-              <input id="rating" name="rating" type="number" min="0" max="100" step="1" />
+              <input id="rating" name="rating" type="number" min="0" max="100" step="1" 
+              value={rating} onChange={(e) => setRating(Number(e.target.value))}/>
             </div>
             <div className="mt-6 flex justify-end gap-4">
               <button type="button" onClick={onClose}>

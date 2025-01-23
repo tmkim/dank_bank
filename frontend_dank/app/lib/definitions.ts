@@ -20,7 +20,7 @@ export type Item = {
   gmap_url: string;
   item_url: string;
   price_range: '' | '$' | '$$' | '$$$' | '$$$$' | '$$$$$';
-  cost: string;
+  cost: number;
   cuisine: string;
   music_source: '' | 'SoundCloud' | 'Spotify' | 'YouTube';
   artist: string;

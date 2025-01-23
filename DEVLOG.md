@@ -481,3 +481,21 @@ Today:
     Travel - Gmap
     Food - Cuisine
     Music - Source
+
+1/23
+    So let's take another look at our update form... Currently most things are populating except..
+
+    - Dining Price Range
+    - Food Cost -> Populating if exists, but Create isn't saving
+    - Music Source
+    - Rating
+
+    OK~~~ From what I can see, we have full (basic) functionality set up!
+    Item table good
+    Searchable + Pagination + Filters good
+    Details good
+    Create, Update good
+    
+    !!! Need Delete !!!
+
+    and then we can work on formatting to make things look better.
