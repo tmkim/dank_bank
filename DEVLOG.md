@@ -512,9 +512,9 @@ Today:
     So let's look at formatting..
 
     DONE - Item Table Columns
+    DONE / IN PROG - Create Form
 
     TODO - Item Table Skeleton
     TODO - Details layout
-    TODO - Create Form
     TODO - Update Form
     TODO - Overall Page (especially when shrinking window)
