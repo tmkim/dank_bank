@@ -55,73 +55,21 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     fetchItems(); // Fetch data on component mount
   }, [page, query, limit, categories]); // Dependencies call useEffect() when changed
 
-  // ------------- Delete Item + Modal ---------------
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
-  const [items, setItems] = useState<Item[]>([]);
-
-  const confirmDelete = (item: Item) => {
-    setItemToDelete(item);
-    setIsDeleteModalOpen(true); // Show the delete confirmation modal
-  };
-
-  const handleDelete = async () => {
-    if (itemToDelete) {
-      try {
-        const response = await fetch(`http://localhost:8000/api_dank/items/${itemToDelete.id}/`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-
-        setResults((prevResults) => prevResults.filter((item) => item.id !== itemToDelete.id));
-        setIsDeleteModalOpen(false); // Close the modal after deleting
-
-      } catch (error) {
-        console.error('Failed to delete item:', error);
-      }
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setIsDeleteModalOpen(false);
-  };
-
-  // -------------- Handle Update Modal ----------------
-
-  const handleUpdate = (updatedItem: Item) => {
-    setResults((prevItems) =>
-      prevItems.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item
-      )
-    );
-  };
-
-
   return (
     <>
       <div className="mt-2 flow-root">
         {isLoading && <p>Loading...</p>}
         {!isLoading && results.length === 0 && <p>No items found.</p>}
         <div className="inline-block min-w-full align-middle">
-          <div className="h-[70vh] border-separate overflow-clip rounded-xl border border-solid flex flex-col">
+          <div className="h-[70vh] overflow-auto rounded-xl border border-solid">
             <table className="min-w-full table-fixed border-collapse text-gray-900">
-              <thead className="sticky bg-green-300 rounded-lg text-left text-md font-bold h-[5vh]">
+              <thead className="sticky top-0 bg-green-300 rounded-lg text-left text-md font-bold h-[5vh]">
                 <tr className="flex items-center justify-between py-4">
-                  <th scope="col" className="px-4 py-2 text-left pl-4 w-3/5">
+                  <th scope="col" className="px-4 py-2 text-left pl-4 w-1/3">
                     Name
                   </th>
-                  <th scope="col" className="px-4 py-2 text-right pr-7 w-1/5">
+                  <th scope="col" className="px-4 py-2 text-right pr-7 w-1/3">
                     Rating
-                  </th>
-                  <th scope="col" className="px-4 py-2 text-right pr-7 w-1/5">
-                    Actions
                   </th>
                 </tr>
               </thead>
@@ -135,7 +83,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                     )}
                     onClick={() => onRowClick(item)}
                   >
-                    <td className="w-3/5">
+                    <td className="w-1/3">
                       <p className="truncate text-sm font-semibold md:text-base">
                         {item.name}
                       </p>
@@ -143,42 +91,15 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                         {item.category}
                       </p>
                     </td>
-                    <td className="w-1/5 text-right">
+                    <td className="w-1/3 text-right">
                       <p className={`${lusitana.className} truncate text-xl font-medium`}>
                         {item.rating} / 100
                       </p>
-                    </td>
-                    <td className="w-1/5 text-right">
-                      <button
-                        onClick={() => setSelectedItem(item)}
-                        className="border border-gray-300 p-1 mr-1 rounded-md hover:border-gray-500 focus:outline-none"
-                      >
-                        <PencilIcon className="w-6" />
-                      </button>
-                      <button
-                        onClick={() => confirmDelete(item)}
-                        className="border border-gray-300 p-1 ml-1 rounded-md hover:border-gray-500 focus:outline-none"
-                      >
-                        <TrashIcon className="w-6" />
-                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {selectedItem && (
-              <UpdateModal
-                item={selectedItem}
-                onClose={() => setSelectedItem(null)}
-                onUpdate={handleUpdate}
-              />
-            )}
-            <ConfirmDeleteModal
-              isOpen={isDeleteModalOpen}
-              itemName={itemToDelete?.name || ''}
-              onConfirm={handleDelete}
-              onCancel={handleCancelDelete}
-            />
           </div>
         </div>
 

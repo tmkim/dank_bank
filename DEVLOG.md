@@ -497,5 +497,24 @@ Today:
     Create, Update good
     
     !!! Need Delete !!!
+    Delete has been implemented using a custom modal!
 
-    and then we can work on formatting to make things look better.
+    and now we can work on formatting to make things look better.
+
+1/24
+    Alright, so I think we are set with basic functionality.
+    Future work--
+        Images
+        Tags
+        "admin auth" (have to log in to perform actions)
+        Item table loading skeleton
+
+    So let's look at formatting..
+
+    DONE - Item Table Columns
+
+    TODO - Item Table Skeleton
+    TODO - Details layout
+    TODO - Create Form
+    TODO - Update Form
+    TODO - Overall Page (especially when shrinking window)

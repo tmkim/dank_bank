@@ -86,201 +86,329 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     const renderCategorySpecificInputs = () => {
         switch (selectedCategory) {
-            case 'Dining':
-                return (
-                    <>
-                        <div>
-                            <label htmlFor="location">Location:</label>
-                            <input id="location" name="location" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="address">Address:</label>
-                            <input id="address" name="address" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="gmap_url">Google Map:</label>
-                            <input id="gmap_url" name="gmap_url" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="item_url">Website:</label>
-                            <input id="item_url" name="item_url" type="text" />
-                        </div>
-                        <div className="relative">
-                            <label htmlFor="price_range">Price Range:</label>
-                            <select
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                id="price_range"
-                                name="price_range"
-                                value={selectedPriceRange}
-                                onChange={handlePriceRangeChange}
-                            >
-                                <option value="" disabled>
-                                    Select A Price Range
-                                </option>
-                                {prices.map((pr) => (
-                                    <option key={pr} value={pr}>
-                                        {pr}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="cuisine">Cuisine:</label>
-                            <input id="cuisine" name="cuisine" type="text" />
-                        </div>
-                    </>
-                );
-            case 'Food':
-                return (
-                    <>
-                        <div>
-                            <label htmlFor="location">Location:</label>
-                            <input id="location" name="location" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="cuisine">Cuisine Type:</label>
-                            <input id="cuisine" name="cuisine" type="text" />
-                        </div>
-                        <div>
-                            <div className="relative mt-2 rounded-md">
-                                <div className="relative">
-                                    <label htmlFor="cost">Cost:</label>
-                                    <input
-                                        id="cost"
-                                        name="cost"
-                                        type="number"
-                                        step="0.01"
-                                        placeholder="Enter USD amount"
-                                        className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                    />
-                                    <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-6 w-6 text-gray-500 peer-focus:text-gray-900" />
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                );
-            case 'Music':
-                return (
-                    <>
-                        <div>
-                            <label htmlFor="artist">Artist:</label>
-                            <input id="artist" name="artist" type="text" />
-                        </div>
-                        <div className="relative">
-                            <label htmlFor="music_source">Music Source:</label>
-                            <select
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                id="music_source"
-                                name="music_source"
-                                value={selectedSource}
-                                onChange={handleMusicSourceChange}
-                            >
-                                <option value="" disabled>
-                                    Select A Music Source
-                                </option>
-                                {msources.map((ms) => (
-                                    <option key={ms} value={ms}>
-                                        {ms}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <label htmlFor="item_url">URL:</label>
-                            <input id="item_url" name="item_url" type="text" />
-                        </div>
-                    </>
-                );
-            case 'Travel':
-                return (
-                    <>
-                        <div>
-                            <label htmlFor="location">Location:</label>
-                            <input id="location" name="location" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="address">Address:</label>
-                            <input id="address" name="address" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="gmap_url">Google Map:</label>
-                            <input id="gmap_url" name="gmap_url" type="text" />
-                        </div>
-                        <div>
-                            <label htmlFor="item_url">Website:</label>
-                            <input id="item_url" name="item_url" type="text" />
-                        </div>
-                    </>
-                );
-            default:
-                return null;
+          case 'Dining':
+            return (
+              <>
+                <div className="mb-4">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                    Location
+                  </label>
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                    Address
+                  </label>
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="gmap_url" className="block text-sm font-medium text-gray-700 mb-2">
+                    Google Map
+                  </label>
+                  <input
+                    id="gmap_url"
+                    name="gmap_url"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                    Website
+                  </label>
+                  <input
+                    id="item_url"
+                    name="item_url"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4 relative">
+                  <label htmlFor="price_range" className="block text-sm font-medium text-gray-700 mb-2">
+                    Price Range
+                  </label>
+                  <select
+                    className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="price_range"
+                    name="price_range"
+                    value={selectedPriceRange}
+                    onChange={handlePriceRangeChange}
+                  >
+                    <option value="" disabled>
+                      Select A Price Range
+                    </option>
+                    {prices.map((pr) => (
+                      <option key={pr} value={pr}>
+                        {pr}
+                      </option>
+                    ))}
+                  </select>
+                  <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 text-gray-500 transform -translate-y-1/2" />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
+                    Cuisine
+                  </label>
+                  <input
+                    id="cuisine"
+                    name="cuisine"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              </>
+            );
+          case 'Food':
+            return (
+              <>
+                <div className="mb-4">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                    Location
+                  </label>
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
+                    Cuisine Type
+                  </label>
+                  <input
+                    id="cuisine"
+                    name="cuisine"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4 relative">
+                  <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-2">
+                    Cost
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="cost"
+                      name="cost"
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter USD amount"
+                      className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+                    <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 text-gray-500 transform -translate-y-1/2" />
+                  </div>
+                </div>
+              </>
+            );
+          case 'Music':
+            return (
+              <>
+                <div className="mb-4">
+                  <label htmlFor="artist" className="block text-sm font-medium text-gray-700 mb-2">
+                    Artist
+                  </label>
+                  <input
+                    id="artist"
+                    name="artist"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4 relative">
+                  <label htmlFor="music_source" className="block text-sm font-medium text-gray-700 mb-2">
+                    Music Source
+                  </label>
+                  <select
+                    className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="music_source"
+                    name="music_source"
+                    value={selectedSource}
+                    onChange={handleMusicSourceChange}
+                  >
+                    <option value="" disabled>
+                      Select A Music Source
+                    </option>
+                    {msources.map((ms) => (
+                      <option key={ms} value={ms}>
+                        {ms}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                    URL
+                  </label>
+                  <input
+                    id="item_url"
+                    name="item_url"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              </>
+            );
+          case 'Travel':
+            return (
+              <>
+                <div className="mb-4">
+                  <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                    Location
+                  </label>
+                  <input
+                    id="location"
+                    name="location"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                    Address
+                  </label>
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="gmap_url" className="block text-sm font-medium text-gray-700 mb-2">
+                    Google Map
+                  </label>
+                  <input
+                    id="gmap_url"
+                    name="gmap_url"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                    Website
+                  </label>
+                  <input
+                    id="item_url"
+                    name="item_url"
+                    type="text"
+                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+              </>
+            );
+          default:
+            return null;
         }
-    };
+      };
+      
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white w-[300px] p-5 rounded-lg">
-                <form onSubmit={handleSubmit}>
-                    <div className="rounded-md bg-gray-50 p-4 md:p-6">
-                        {/* Customer Name */}
-                        <div className="mb-4">
-                            <label htmlFor="category" className="mb-2 block text-sm font-medium">
-                                Choose category
-                            </label>
-                            <div className="relative">
-                                <select
-                                    className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-                                    id="category"
-                                    name="category"
-                                    value={selectedCategory}
-                                    onChange={handleCategoryChange}
-                                >
-                                    <option value="" disabled>
-                                        Select a category
-                                    </option>
-                                    {categories.map((cat) => (
-                                        <option key={cat} value={cat}>
-                                            {cat}
-                                        </option>
-                                    ))}
-                                </select>
-                                <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
-                            </div>
-                        </div>
-                        {/* <legend className="mb-2 block text-sm font-medium">
-            Set the invoice status
-          </legend> */}
-                        <div>
-                            <label htmlFor="name">Name:</label>
-                            <input id="name" name="name" type="text" />
-                        </div>
-                        <div>
-                            {renderCategorySpecificInputs()}
-                        </div>
-                        <div>
-                            <label htmlFor="review">Review:</label>
-                            <textarea id="review" name="review" />
-                        </div>
-                        <div>
-                            <label htmlFor="rating">Rating:</label>
-                            <input id="rating" name="rating" type="number" min="0" max="100" step="1" />
-                        </div>
-                        <div className="mb-4">
-                            {/* <label htmlFor="amount" className="mb-2 block text-sm font-medium">
-            Choose an amount
-          </label> */}
-
-                        </div>
-                        <div className="mt-6 flex justify-end gap-4">
-                            <button type="button" onClick={onClose}>
-                                Cancel
-                            </button>
-                            <Button type="submit">Create Item</Button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+  <div className="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg">
+    <form onSubmit={handleSubmit}>
+      <div className="space-y-6">
+        {/* Category Selector */}
+        <div className="mb-4">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+            Choose category
+          </label>
+          <div className="relative">
+            <select
+              className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+              id="category"
+              name="category"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 text-gray-500 transform -translate-y-1/2" />
+          </div>
         </div>
+
+        {/* Name Input */}
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        {/* Category Specific Inputs */}
+        <div>
+          {renderCategorySpecificInputs()}
+        </div>
+
+        {/* Review Input */}
+        <div className="mb-4">
+          <label htmlFor="review" className="block text-sm font-medium text-gray-700 mb-2">
+            Review
+          </label>
+          <textarea
+            id="review"
+            name="review"
+            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        {/* Rating Input */}
+        <div className="mb-4">
+          <label htmlFor="rating" className="block text-sm font-medium text-gray-700 mb-2">
+            Rating
+          </label>
+          <input
+            id="rating"
+            name="rating"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        {/* Buttons */}
+        <div className="mt-6 flex justify-end gap-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Cancel
+          </button>
+          <Button type="submit" className="px-4 py-2 text-sm font-semibold text-white bg-green-500 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+            Create Item
+          </Button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
     );
 };
 
