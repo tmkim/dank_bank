@@ -118,67 +118,77 @@ const ItemsPage: React.FC = () => {
   };
 
   return (
-    <main>
-      <h1 className="text-xl py-4">
-        The Dank Bank
-      </h1>
-      <div className="flex flex-col md:flex-row space-x-4">
-        <div className="md:w-1/2 grid-cols-1 md:grid-cols-4 lg:grid-cols-8">
-          <div className="flex space-x-2 w-full">
-            <input className="flex-grow w-3/4 p-2 border border-gray-300 rounded-md"
-              type="text"
-              placeholder="Search items"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}  // Reset to page 1 on query change
-            />
-            <button className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
-              onClick={() => setCreateModal(true)}><PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry </button>
-          </div>
-          <div className="flex space-x-2 mt-2">
-            {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
-              const key = option;
-              return (
-                <label
-                  key={index}
-                  className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${filterCheck[key as keyof FilterChecks] ? "bg-blue-500 text-white" : "bg-gray-200 hover:bg-gray-300"
-                    }`}
-                >
-                  <input
-                    type="checkbox"
-                    name={key}
-                    className="hidden peer"
-                    checked={filterCheck[key as keyof FilterChecks]}
-                    onChange={handleFilterCheckboxChange}
-                  />
-                  {option}
-                </label>
-              );
-            })}
-          </div>
-          <ItemTable
-            query={searchQuery}
-            page={currentPage}
-            limit={pageLimit}
-            categories={selectedCategories} 
-            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
-            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
-            onRowClick={handleRowClick}
-          />
-        </div>
-        <div className="md:w-1/2 grid-cols-1 gap-6">
-          <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-            Details
-          </h1>
-          <ItemDetails item={item} />
-        </div>
-        {createModal && (
-          <CreateModal
-            onClose={() => setCreateModal(false)}
-          />
-        )}
+    <main className="max-w-screen-lg mx-auto p-4">
+  <h1 className="text-xl py-4">The Dank Bank</h1>
+  <div className="flex flex-col [@media(min-width:1330px)]:flex-row [@media(min-width:1330px)]:space-x-4">
+    {/* <!-- Item Table --> */}
+    <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2 min-w-[350px]">
+      <div className="flex space-x-2 w-full">
+        <input
+          className="flex-grow w-3/4 p-2 border border-gray-300 rounded-md"
+          type="text"
+          placeholder="Search items"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}
+        />
+        <button
+          className="flex items-center justify-center w-1/4 p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
+          onClick={() => setCreateModal(true)}
+        >
+          <PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry
+        </button>
       </div>
-    </main>
+      <div className="flex space-x-2 mt-2">
+        {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
+          const key = option;
+          return (
+            <label
+              key={index}
+              className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${
+                filterCheck[key as keyof FilterChecks]
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              <input
+                type="checkbox"
+                name={key}
+                className="hidden peer"
+                checked={filterCheck[key as keyof FilterChecks]}
+                onChange={handleFilterCheckboxChange}
+              />
+              {option}
+            </label>
+          );
+        })}
+      </div>
+      <ItemTable
+        query={searchQuery}
+        page={currentPage}
+        limit={pageLimit}
+        categories={selectedCategories}
+        onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
+        onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+        onRowClick={handleRowClick}
+      />
+    </div>
+
+    {/* <!-- Item Details --> */}
+    <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2 min-w-[350px] mt-4 [@media(min-width:1330px)]:mt-0">
+      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        Details
+      </h1>
+      <ItemDetails item={item} />
+    </div>
+  </div>
+
+  {createModal && (
+    <CreateModal onClose={() => setCreateModal(false)} />
+  )}
+</main>
+
+
   );
 };
 
