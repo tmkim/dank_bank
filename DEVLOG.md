@@ -518,3 +518,25 @@ Today:
     TODO - Details layout
     TODO - Update Form
     TODO - Overall Page (especially when shrinking window)
+
+1/27
+    Time to continue on the above :)
+    Today's focus -- Create Form, Update Form, Skeleton
+
+    -- quick update to Items page to make display more reactive with custom media breakpoint
+    -- updated Create Form:
+            -- better placement of icons
+            -- rating input turned into a slidebar
+            -- price range turned into $ $ $ $ $
+            -- increase font size
+
+1/28
+    work work
+    Today's focus - update form, skeleton
+
+    -- updated Update modal to match style of Create modal
+    -- ran into small issue with CORS -> didn't realize DRF cares about trailing '/' for api url
+        -- possible to turn off in settings, but I can just remember to include it
+    -- updated json to account for optional values not being included
+    
+    OK let's look at spooky scary skeletons~~

@@ -12,7 +12,6 @@ import { Button } from '@/app/ui/button';
 import React, { useState } from 'react';
 
 type Category = Item['category'];
-type PRange = Item['price_range'];
 type MSource = Item['music_source'];
 
 interface CreateProps {
@@ -78,8 +77,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                console.log('Item created successfully:', data);
                 alert('Item created successfully!');
                 onClose(); // Close the modal
             } else {
@@ -100,52 +97,52 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div className="mb-4">
-                            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
                                 Location:
                             </label>
                             <input
                                 id="location"
                                 name="location"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="address" className="block text-base font-medium text-gray-700 mb-2">
                                 Address:
                             </label>
                             <input
                                 id="address"
                                 name="address"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="gmap_url" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="gmap_url" className="block text-base font-medium text-gray-700 mb-2">
                                 Google Map Link:
                             </label>
                             <input
                                 id="gmap_url"
                                 name="gmap_url"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
                                 Website URL:
                             </label>
                             <input
                                 id="item_url"
                                 name="item_url"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4 relative">
                             <div className="flex items-center space-x-2"> {/* Flex container for label and $ symbols */}
-                                <label htmlFor="price_range" className="text-sm font-medium text-gray-700">
+                                <label htmlFor="price_range" className="text-base font-medium text-gray-700">
                                     Price:
                                 </label>
                                 <div className="flex space-x-1">
@@ -155,7 +152,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                             key={index}
                                             className={`cursor-pointer text-3xl px-2 ${selectedPrice > index || hoveredPrice > index ? "text-green-500" : "text-gray-500"
                                                 } 
-          hover:text-green-500`} // Hover effect for green color
+                                            hover:text-green-500`} // Hover effect for green color
                                             onClick={() => handlePriceClick(index)}
                                             onMouseEnter={() => setHoveredPrice(index)} // Set hoveredPrice on hover
                                             onMouseLeave={() => setHoveredPrice(-1)} // Reset hoveredPrice when hover leaves
@@ -182,14 +179,14 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="cuisine" className="block text-base font-medium text-gray-700 mb-2">
                                 Cuisine:
                             </label>
                             <input
                                 id="cuisine"
                                 name="cuisine"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                     </>
@@ -198,29 +195,29 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div className="mb-4">
-                            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
                                 Location:
                             </label>
                             <input
                                 id="location"
                                 name="location"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="cuisine" className="block text-base font-medium text-gray-700 mb-2">
                                 Cuisine:
                             </label>
                             <input
                                 id="cuisine"
                                 name="cuisine"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4 relative">
-                            <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="cost" className="block text-base font-medium text-gray-700 mb-2">
                                 Cost:
                             </label>
                             <div className="relative">
@@ -230,7 +227,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     type="number"
                                     step="0.01"
                                     placeholder="Enter USD amount"
-                                    className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 />
                                 <CurrencyDollarIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 text-gray-500 transform -translate-y-1/2" />
                             </div>
@@ -241,22 +238,22 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div className="mb-4">
-                            <label htmlFor="artist" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="artist" className="block text-base font-medium text-gray-700 mb-2">
                                 Artist:
                             </label>
                             <input
                                 id="artist"
                                 name="artist"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4 relative">
-                            <label htmlFor="music_source" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="music_source" className="block text-base font-medium text-gray-700 mb-2">
                                 Music Source:
                             </label>
                             <select
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 id="music_source"
                                 name="music_source"
                                 value={selectedSource}
@@ -275,14 +272,14 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                         </div>
 
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
                                 Link to Music:
                             </label>
                             <input
                                 id="item_url"
                                 name="item_url"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                     </>
@@ -291,47 +288,47 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 return (
                     <>
                         <div className="mb-4">
-                            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
                                 Location:
                             </label>
                             <input
                                 id="location"
                                 name="location"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="address" className="block text-base font-medium text-gray-700 mb-2">
                                 Address:
                             </label>
                             <input
                                 id="address"
                                 name="address"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="gmap_url" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="gmap_url" className="block text-base font-medium text-gray-700 mb-2">
                                 Google Map Link:
                             </label>
                             <input
                                 id="gmap_url"
                                 name="gmap_url"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
                                 Website URL:
                             </label>
                             <input
                                 id="item_url"
                                 name="item_url"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
                     </>
@@ -349,11 +346,11 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                     {/* Category Centered at the top */}
                     <div className="mb-6 flex justify-center">
                         <div className="w-full max-w-xs">
-                            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-                                Choose category:
+                            <label htmlFor="category" className="block text-base font-medium text-gray-700 mb-2">
+                                Category:
                             </label>
                             <select
-                                className="block w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 id="category"
                                 name="category"
                                 value={selectedCategory}
@@ -373,21 +370,21 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                         <div className="space-y-4">
                             {/* Name */}
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="name" className="block text-base font-medium text-gray-700 mb-2">
                                     Name:
                                 </label>
                                 <input
                                     id="name"
                                     name="name"
                                     type="text"
-                                    className="block w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 />
                             </div>
 
                             {/* Rating */}
                             <div className="mb-4">
                                 <div className="flex items-center space-x-2 w-full"> {/* Flex container */}
-                                    <label htmlFor="rating" className="text-sm font-medium text-gray-700">
+                                    <label htmlFor="rating" className="text-base font-medium text-gray-700">
                                         Rating (1-100):
                                     </label>
                                     <div className="flex items-center space-x-2 flex-grow"> {/* Allow slider to take remaining space */}
@@ -402,26 +399,26 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                             onChange={(e) => setRating(Number(e.target.value))}
                                             className="w-full h-2 bg-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                                         />
-                                        <span className="text-sm text-gray-700">{rating}</span>
+                                        <span className="text-base text-gray-700">{rating}</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Review */}
-                            <div>
-                                <label htmlFor="review" className="block text-sm font-medium text-gray-700 mb-2">
+                            <div className="pb-2">
+                                <label htmlFor="review" className="block text-base font-medium text-gray-700 mb-2">
                                     Review:
                                 </label>
                                 <textarea
                                     id="review"
                                     name="review"
-                                    className="block w-full h-52 rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="block w-full h-56 rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 />
                             </div>
 
                             {/* Image Upload */}
                             <div>
-                                <label htmlFor="images" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label htmlFor="images" className="block text-base font-medium text-gray-700 mb-2">
                                     Image Upload Here:
                                 </label>
                                 <input
@@ -430,7 +427,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     type="file"
                                     accept="image/*"  // Ensures only image files can be selected
                                     multiple  // Allows multiple files
-                                    className="block w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 />
                             </div>
                         </div>
