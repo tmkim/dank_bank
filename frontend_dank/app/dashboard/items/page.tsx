@@ -1,6 +1,6 @@
 'use client';  // Explicitly mark the file as client-side
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ItemTable from '@/app/ui/item-table';
 import { lusitana } from '@/app/ui/fonts';
@@ -163,15 +163,15 @@ const ItemsPage: React.FC = () => {
           );
         })}
       </div>
-      <ItemTable
-        query={searchQuery}
-        page={currentPage}
-        limit={pageLimit}
-        categories={selectedCategories}
-        onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
-        onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
-        onRowClick={handleRowClick}
-      />
+        <ItemTable
+          query={searchQuery}
+          page={currentPage}
+          limit={pageLimit}
+          categories={selectedCategories}
+          onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
+          onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+          onRowClick={handleRowClick}
+        />      
     </div>
 
     {/* <!-- Item Details --> */}

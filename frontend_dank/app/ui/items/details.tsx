@@ -55,7 +55,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                                 <strong>{item.name}</strong>
                             </li>
                             <li>
-                                <strong>Location:</strong> {item.location} -- TBD will be based on list of restaurants
+                                <strong>Location:</strong> {item.location}
                             </li>
                             <li>
                                 <strong>Cost:</strong> ${item.cost}

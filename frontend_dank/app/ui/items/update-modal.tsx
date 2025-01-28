@@ -9,7 +9,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Category = Item['category'];
 type MSource = Item['music_source'];
@@ -47,6 +47,49 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         setSelectedMSource(event.target.value as MSource);
     }
 
+    // Food Location Select
+    const [locations, setLocations] = useState<string[]>([]);
+    const [selectedLocation, setSelectedLocation] = useState<string>(item.location); // Selected location
+    const [customLocation, setCustomLocation] = useState<string>('');
+
+    useEffect(() => {
+        // Fetch items with category "Dining"
+        const fetchDiningItems = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api_dank/items/?category=Dining&category=Travel');
+                const data = await response.json();
+                console.log(data); // Log the data to inspect its structure
+            
+                // Check if the results key exists and is an array
+                if (Array.isArray(data.results)) {
+                const locations = data.results.map((item: { name: string }) => item.name);
+                setLocations(locations);
+                setLocations([...locations, 'Other']);
+                } else {
+                console.error('Results is not an array:', data.results);
+                }
+            } catch (error) {
+                console.error('Error fetching dining items:', error);
+            }
+            };
+    
+        fetchDiningItems();
+    }, []);
+
+    const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSelectedLocation(value);
+    
+        // If "Other" is selected, clear custom location input
+        if (value !== 'Other') {
+            setCustomLocation('');
+        }
+    };
+
+    const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCustomLocation(e.target.value);
+    };
+
   // ------------------------------- modal
 
   const [name, setName] = useState(item.name);
@@ -80,7 +123,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           review,
           rating,
           ...(address && { address }),
-          ...(location && { location }),
+          ...(location && { location: selectedLocation === 'Other' ? customLocation : selectedLocation }),
           ...(gmap_url && { gmap_url }),
           ...(item_url && { item_url }),
           ...(selectedPrice && { price_range: "$".repeat(selectedPrice) }),
@@ -243,18 +286,41 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         case 'Food':
             return (
                 <>
-                    <div className="mb-4">
+                    <div className="mb-4 relative">
                         <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
-                            Location:
+                            Dining
                         </label>
-                        <input
+                        <select
                             id="location"
                             name="location"
-                            type="text"
-                            value={location} 
-                            onChange={(e) => setLocation(e.target.value)}
-                            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
+                            value={selectedLocation}
+                            onChange={handleLocationChange}
+                            className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        >
+                            <option value="">Select a location</option>
+                            {locations.map((location, index) => (
+                            <option key={index} value={location}>
+                                {location}
+                            </option>
+                            ))}
+                        </select>
+
+                        {/* If "Other" is selected, show an input field for custom location */}
+                        {selectedLocation === 'Other' && (
+                            <div className="mt-4 relative">
+                            <label htmlFor="customLocation" className="block text-base font-medium text-gray-700 mb-2">
+                                Please specify:
+                            </label>
+                            <input
+                                id="customLocation"
+                                type="text"
+                                value={customLocation}
+                                onChange={handleCustomLocationChange}
+                                placeholder="Enter custom location"
+                                className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+                            </div>
+                        )}
                     </div>
                     <div className="mb-4">
                         <label htmlFor="cuisine" className="block text-base font-medium text-gray-700 mb-2">

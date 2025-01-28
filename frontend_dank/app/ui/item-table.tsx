@@ -7,6 +7,8 @@ import { PencilIcon } from '@heroicons/react/20/solid';
 import UpdateModal from '@/app/ui/items/update-modal';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
+import ItemTableSkeleton from '@/app/ui/it_skeleton';
+import PublicItemTableSkeleton from '@/app/ui/pit_skeleton';
 
 type ItemTableProps = {
   query: string;
@@ -21,16 +23,17 @@ type ItemTableProps = {
 const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onPageChange, onLimitChange, onRowClick }) => {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // ------------ populate list with results -------------
 
   const [results, setResults] = useState<Item[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [isLoading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchItems = async () => {
+      setLoading(true)
       try {
         const categoryParams = categories.length > 0 ? '&category=' + categories.join('&category=') : '';
         const response = await fetch(
@@ -44,11 +47,11 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         // console.log(data)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
-        setLoading(false); // Stop loading
       } catch (err) {
         // console.error('Failed to fetch items:', err);
         setError('Failed to load items.');
-        setLoading(false);
+      } finally{
+        setLoading(false)
       }
     };
 
@@ -103,12 +106,13 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     );
   };
 
+  if (loading){
+    return (<ItemTableSkeleton/>)
+  }
 
   return (
     <>
       <div className="mt-2 flow-root">
-        {isLoading && <p>Loading...</p>}
-        {!isLoading && results.length === 0 && <p>No items found.</p>}
         <div className="inline-block min-w-full align-middle">
           <div className="h-[70vh] border-separate overflow-clip rounded-xl border border-solid flex flex-col">
             <table className="min-w-full table-fixed border-collapse text-gray-900">
