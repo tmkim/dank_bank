@@ -1,6 +1,6 @@
 import ListItems from '@/app/ui/dashboard/list-items';
 import { lusitana } from '@/app/ui/fonts';
-import CreateForm from '@/app/ui/items/create-form';
+// import CreateForm from '@/app/ui/items/create-form';
 import ItemDetails from '@/app/ui/items/details';
 
 export default async function Page() {
@@ -14,7 +14,7 @@ export default async function Page() {
         Dank Food
       </h1>
       <div className="flex flex-col md:flex-row space-x-4">
-        <CreateForm/>
+        {/* <CreateForm/> */}
       </div>
     </main>
   );

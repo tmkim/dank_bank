@@ -2,10 +2,46 @@
 import { Item } from "@/app/lib/definitions";
 import Link from "next/link";
 import React from "react";
+import { Star } from "lucide-react";
 
 interface ItemDetailsProps {
     item: Item | null;
 }
+
+const getStarRating = (rating: number) => {
+    const fullStars = Math.floor(rating / 20); // Full stars (20% per star)
+    const partialStars = rating % 20; // The remainder gives the percentage for the next star
+  
+    return (
+      <>
+        {/* Full yellow stars */}
+        {Array.from({ length: fullStars }, (_, i) => (
+          <Star key={`full-${i}`} className="text-yellow-500 w-16 h-16 fill-current" />
+        ))}
+        
+        {/* Partial star */}
+        {partialStars > 0 && (
+          <div className="relative w-16 h-16">
+            {/* Full grey star as the background */}
+            <Star className="text-gray-400 w-16 h-16 fill-current" />
+            
+            {/* Partial yellow star */}
+            <div
+              className="absolute top-0 left-0 w-16 h-16 overflow-hidden"
+              style={{ width: `${(partialStars / 20) * 100}%` }} // Fix: Calculate the fill percentage
+            >
+              <Star className="text-yellow-500 w-16 h-16 fill-current" />
+            </div>
+          </div>
+        )}
+        
+        {/* Empty grey stars */}
+        {Array.from({ length: 5 - fullStars - (partialStars > 0 ? 1 : 0) }, (_, i) => (
+          <Star key={`empty-${i}`} className="text-gray-400 w-16 h-16 fill-current" />
+        ))}
+      </>
+    );
+  };
 
 // const ItemDetails = ({ item }: { item: Item }) => {
 const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
@@ -14,35 +50,24 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
         return <p className="text-gray-500">Select a row to view details.</p>;
     }
 
-    // TEMPORARY !!!!!!!!!!!!!!!!!!!!!! should fix how it is stored in db
-    if (item.item_url == null) {
-        item.item_url = ''
-    }
-    if (item.gmap_url == null) {
-        item.gmap_url = ''
-    }
-
     const renderDetails = () => {
         switch (item.category) {
             case 'Dining':
                 return (
                     <>
                         <ul>
-                            <li>
-                                <strong>{item.name}</strong>
-                            </li>
                             <li> </li>
                             <li>
-                                <strong>Location:</strong> {item.location}
+                                {item.location}
                             </li>
                             <li>
-                                <strong>Address:</strong> <Link href={item.gmap_url} className="button">{item.address}</Link>
+                                <Link href={item.gmap_url} className="button">{item.address}</Link>
                             </li>
                             <li>
-                                <strong>Price Range:</strong> {item.price_range}
+                                {item.price_range}
                             </li>
                             <li>
-                                <strong>Cuisine:</strong> {item.cuisine}
+                                {item.cuisine}
                             </li>
                         </ul>
                     </>
@@ -50,20 +75,17 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
             case 'Food':
                 return (
                     <>
-                        <ul>
-                            <li>
-                                <strong>{item.name}</strong>
-                            </li>
-                            <li>
-                                <strong>Location:</strong> {item.location}
-                            </li>
-                            <li>
-                                <strong>Cost:</strong> ${item.cost}
-                            </li>
-                            <li>
-                                <strong>Cuisine:</strong> {item.cuisine}
-                            </li>
-                        </ul>
+                    <div className="flex items-center justify-between">
+                        <div className="">
+                            {item.location}
+                        </div>
+                        <div className="">
+                            ${item.cost}
+                        </div>
+                    </div>
+                    <div className="">
+                        {item.cuisine} -- update to make a select
+                    </div>
                     </>
                 )
             case 'Music':
@@ -71,16 +93,13 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                     <>
                         <ul>
                             <li>
-                                <strong>{item.name}</strong>
+                                {item.artist}
                             </li>
                             <li>
-                                <strong>Artist:</strong> {item.category}
+                                {item.music_source}
                             </li>
                             <li>
-                                <strong>Source:</strong> {item.music_source}
-                            </li>
-                            <li>
-                                <strong>Additional Info:</strong> {item.music_meta} -- TBD flesh out the metadata (genre, album, etc)
+                                {item.music_meta} -- TBD flesh out the metadata (genre, album, etc)
                             </li>
                         </ul>
                     </>
@@ -90,13 +109,10 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                     <>
                         <ul>
                             <li>
-                                <strong>{item.name}</strong>
+                                {item.location}
                             </li>
                             <li>
-                                <strong>Location:</strong> {item.location}
-                            </li>
-                            <li>
-                                <strong>Address:</strong> <Link href={item.gmap_url} className="button">{item.address}</Link>
+                                <Link href={item.gmap_url} className="button">{item.address}</Link>
                             </li>
                         </ul>
                     </>
@@ -109,21 +125,29 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
         <div className="mt-6 flow-root">
             <div className="inline-block min-w-full align-middle">
                 <div className="h-[80vh] border-separate overflow-clip rounded-xl border border-solid flex flex-col text-xl">
+                    <div className="flex justify-center gap-1 mt-2 mb-2">{getStarRating(item.rating)}</div>
+                    {/* Name + Rating */}
+                    <div className="mt-4 flex items-center justify-between">
+                        <h2 className="text-2xl font-semibold"><Link href={item.item_url} className="button">{item.name}</Link></h2>
+                    </div>
+
+                    {/* Location, Cuisine, Cost */}
+                    {/* <div className="mt-2 text-gray-600 text-sm">
+                        📍 New York • 🍽 Italian • 💲💲
+                    </div> */}
+                    
                     <div>
                         {renderDetails()}
                     </div>
-                    <li>
-                        <strong>Rating:</strong> {item.rating}
-                    </li>
-                    <li>
-                        <strong>Review:</strong> {item.review}
-                    </li>
-                    <li>
-                        <strong>Website: </strong> <Link href={item.item_url} className="button">Link to Item</Link>
-                    </li>
-                    <li>
-                        <strong>Photos:</strong> TBD
-                    </li>
+
+                    {/* Images - Carousel or Grid */}
+                    <div className="px-4 mt-4 w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <span className="text-gray-500">[Image Gallery]</span>
+                    </div>
+                    {/* Review */}
+                    <p className="mt-3 px-4">
+                        "{item.review}"
+                    </p>
                 </div>
             </div>
         </div>
