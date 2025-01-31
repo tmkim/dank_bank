@@ -186,8 +186,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                             id="location"
                             name="location"
                             type="text"
-                            value={location} 
-                            onChange={(e) => setLocation(e.target.value)}
+                            value={selectedLocation} 
+                            onChange={(e) => setSelectedLocation(e.target.value)}
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
@@ -420,8 +420,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                             id="location"
                             name="location"
                             type="text"
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
+                            value={selectedLocation}
+                            onChange={(e) => setSelectedLocation(e.target.value)}
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>

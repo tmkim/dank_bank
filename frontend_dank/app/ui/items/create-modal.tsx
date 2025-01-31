@@ -76,11 +76,11 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         fetchDiningItems();
     }, []);
 
-    const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.value;
         setSelectedLocation(value);
     
-        // If "Other" is selected, clear custom location input
+        // If "Other" is deselected, clear custom location input
         if (value !== 'Other') {
           setCustomLocation('');
         }
@@ -102,14 +102,11 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         const formObject = Object.fromEntries(formData.entries());
         console.log(formObject)
 
-        // Ensure category is included in the payload
+        
         const payload = {
             ...formObject,
-            location: selectedLocation === 'Other' ? customLocation : selectedLocation, 
-            // category: selectedCategory,
+            ...(selectedLocation && { location: selectedLocation === 'Other' ? customLocation : selectedLocation })
         };
-        console.log(payload)
-        console.log(JSON.stringify(payload))
 
         try {
             const response = await fetch('http://localhost:8000/api_dank/items/', {
@@ -148,6 +145,8 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 id="location"
                                 name="location"
                                 type="text"
+                                value={selectedLocation || ''}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleLocationChange(e)}
                                 className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
@@ -364,6 +363,8 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 id="location"
                                 name="location"
                                 type="text"
+                                value={selectedLocation || ''}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleLocationChange(e)}
                                 className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
