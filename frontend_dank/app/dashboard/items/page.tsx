@@ -174,10 +174,7 @@ const ItemsPage: React.FC = () => {
         </div>
 
         {/* <!-- Item Details --> */}
-        <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2 mt-4 [@media(min-width:1330px)]:mt-0">
-          <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-            Details
-          </h1>
+        <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2 [@media(min-width:1330px)]:mt-0">
           <ItemDetails item={item} />
         </div>
       </div>
