@@ -512,12 +512,13 @@ Today:
     So let's look at formatting..
 
     DONE - Item Table Columns
-    DONE / IN PROG - Create Form
+    DONE - Create Form
 
-    TODO - Item Table Skeleton
+    DONE - Update Form
+    DONE - Item Table Skeleton
+
     TODO - Details layout
-    TODO - Update Form
-    TODO - Overall Page (especially when shrinking window)
+    In Prog - Overall Page (especially when shrinking window)
 
 1/27
     Time to continue on the above :)
@@ -540,3 +541,62 @@ Today:
     -- updated json to account for optional values not being included
     
     OK let's look at spooky scary skeletons~~
+    -- made it_skeleton.tsx for item table skeleton
+        -- also made pit_skeleton for public table, to be used later but not important right now
+    I don't think I need skeleton for anything else at the moment~
+
+    ok so let me do a thing real quick with Food Location -- I want it to be based on existing Dining entries
+        -- also include an "other", and prompt the creation of a Dining entry if it does not exist
+        -- make the select searchable
+        
+1/30
+    Took a break to prepare for an interview, back on the webdev flow
+    So let's take a look at what's left to be done..
+        -- details component layout format
+        gg discovered issue with item table being at set width for larger screen sizes
+        gg skeleton doesn't fully align with item table (mainly edges)
+            -- skeleton shows up a bit too frequently, not sure if I want that
+        gg Location not saving for Travel, Dining
+        -- Form validation
+
+    So let's start with Location not saving for Travel, Dining
+        ++ changed condition of location in the payload for Create
+        ++ updated Input elements in Create-Modal to use selectedLocation instead of location
+        ++ updated instances of setLocation to setSelectedLocation to match Food category for Update-Modal
+
+    Sick now let's look at our item table width
+        -- Main div (item table's parent) used max-w-screen-lg --> changed to w-full, worked
+        -- also updted New Entry button to have min width 160px and not break into 2 lines
+
+    Sweet now to fix item table skeleton alignment
+        -- Included parent div configuration of item table
+
+    OK time to do some offline work -- let's draft some ideas for the detail component
+
+    Next to work on tomorrow:
+        -- Details component layout format
+        -- Form validation + better error messages
+            > would like to make input element red until it is fixed
+            -- should start out neutral color, only turn red if user tries to submit
+            -- On resubmit, check again and fix colors while remaining red for outstanding errors
+
+        Error while selecting different categories in Create Modal:
+        A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components
+        -- tried to replicate but couldn't? i'll have to try again later 
+
+1/31
+    What's good chat, today let's work on...
+        -- Details component layout format
+        -- Improved form validation 
+        -- investigate error regarding component being controlled / uncontrolled
+            (potentially caused by changing categories)
+
+    Details Layout
+        -- implemented star rating system based on item.rating value (including partial stars)
+        -- Finished initial draft of Details layouts -- have some stuff I want to change later, but this is good for now
+        
+2/3
+    Ok, so let's take a look at
+        -- improved form validation
+        -- create/update - controlled vs uncontrolled component
+        -- images
