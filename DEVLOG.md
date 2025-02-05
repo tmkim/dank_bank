@@ -595,8 +595,14 @@ Today:
         -- implemented star rating system based on item.rating value (including partial stars)
         -- Finished initial draft of Details layouts -- have some stuff I want to change later, but this is good for now
         
-2/3
+2/4
     Ok, so let's take a look at
         -- improved form validation
         -- create/update - controlled vs uncontrolled component
         -- images
+        -- update sidenav to topnav only (currently depends on screen width)
+            -- will have to adjust some other values for responsiveness of ui
+
+    Sidenote -- added an error.tsx (currently modal) in app/
+        -- keep it simple, single generic error modal for the entire app
+    

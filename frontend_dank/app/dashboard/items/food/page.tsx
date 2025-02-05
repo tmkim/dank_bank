@@ -3,19 +3,6 @@ import { lusitana } from '@/app/ui/fonts';
 // import CreateForm from '@/app/ui/items/create-form';
 import ItemDetails from '@/app/ui/items/details';
 
-export default async function Page() {
-  const items_res = await fetch("http://localhost:8000/api_dank/food");
-  const data = await items_res.json()
-  console.log(data.results) //json array where each object is an item returned from the api
-
-  return (
-    <main>
-      <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-        Dank Food
-      </h1>
-      <div className="flex flex-col md:flex-row space-x-4">
-        {/* <CreateForm/> */}
-      </div>
-    </main>
-  );
+export default function Page() {
+  throw new Error("OH NOES IT BROKE");
 }

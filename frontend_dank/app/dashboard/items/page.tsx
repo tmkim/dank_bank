@@ -174,7 +174,7 @@ const ItemsPage: React.FC = () => {
         </div>
 
         {/* <!-- Item Details --> */}
-        <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2 [@media(min-width:1330px)]:mt-0">
+        <div className="flex-grow flex-shrink-0 mt-4 [@media(min-width:1330px)]:basis-1/2 [@media(min-width:1330px)]:mt-0">
           <ItemDetails item={item} />
         </div>
       </div>
