@@ -246,7 +246,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 name="location"
                                 value={selectedLocation}
                                 onChange={handleLocationChange}
-                                className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             >
                                 <option value="">Select a location</option>
                                 {locations.map((location, index) => (
@@ -268,7 +268,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     value={customLocation}
                                     onChange={handleCustomLocationChange}
                                     placeholder="Enter custom location"
-                                    className="block w-full px-4 py-2 pl-10 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 />
                                 </div>
                             )}
@@ -321,7 +321,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 Music Source:
                             </label>
                             <select
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pl-10 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                 id="music_source"
                                 name="music_source"
                                 value={selectedSource}
@@ -336,7 +336,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     </option>
                                 ))}
                             </select>
-                            <MusicalNoteIcon className="pointer-events-none absolute left-3 top-1/2 mt-1 transform h-5 w-5 text-gray-500" />
                         </div>
 
                         <div className="mb-4">
@@ -425,6 +424,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 name="category"
                                 value={selectedCategory}
                                 onChange={handleCategoryChange}
+                                required
                             >
                                 <option value="" disabled>Select a category</option>
                                 {categories.map((cat) => (
@@ -437,7 +437,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                     {/* Two Columns for the rest of the form */}
                     <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 overflow-auto">
                         {/* Left Column (Name, Rating, Review) */}
-                        <div className="space-y-4">
+                        <div className="space-y-4 ml-1">
                             {/* Name */}
                             <div>
                                 <label htmlFor="name" className="block text-base font-medium text-gray-700 mb-2">
@@ -448,11 +448,12 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     name="name"
                                     type="text"
                                     className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    required
                                 />
                             </div>
 
                             {/* Rating */}
-                            <div className="mb-4">
+                            <div className="">
                                 <div className="flex items-center space-x-2 w-full"> {/* Flex container */}
                                     <label htmlFor="rating" className="text-base font-medium text-gray-700">
                                         Rating (1-100):
@@ -475,7 +476,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                             </div>
 
                             {/* Review */}
-                            <div className="pb-2">
+                            <div className="">
                                 <label htmlFor="review" className="block text-base font-medium text-gray-700 mb-2">
                                     Review:
                                 </label>
@@ -483,11 +484,12 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     id="review"
                                     name="review"
                                     className="block w-full h-56 rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                    required
                                 />
                             </div>
 
                             {/* Image Upload */}
-                            <div>
+                            <div className="">
                                 <label htmlFor="images" className="block text-base font-medium text-gray-700 mb-2">
                                     Image Upload Here:
                                 </label>
@@ -503,7 +505,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                         </div>
 
                         {/* Right Column (Category Specific Inputs) */}
-                        <div className="space-y-4">
+                        <div className="space-y-4 mr-1">
                             {renderCategorySpecificInputs()}
                         </div>
                     </div>
