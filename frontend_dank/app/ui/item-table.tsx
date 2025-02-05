@@ -50,7 +50,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
       } catch (err) {
         // console.error('Failed to fetch items:', err);
         setError('Failed to load items.');
-      } finally{
+      } finally {
         setLoading(false)
       }
     };
@@ -106,46 +106,36 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     );
   };
 
-  if (loading){
-    return (<ItemTableSkeleton/>)
+  if (loading) {
+    return (<ItemTableSkeleton />)
   }
 
   return (
     <>
       <div className="mt-2 flow-root">
         <div className="inline-block min-w-full align-middle">
-          <div className="h-[70vh] border-separate overflow-auto z-0 rounded-xl border border-solid flex flex-col">
+          <div className="h-[70vh] border-2 border-gray-400 border-solid rounded-xl flex flex-col overflow-hidden">
             <table className="min-w-full table-fixed border-collapse text-gray-900">
-              <thead className="sticky top-0 bg-green-300 rounded-lg text-left text-md font-bold h-[5vh]">
+              <thead className="bg-green-300 text-left text-md font-bold h-[5vh] z-10">
                 <tr className="flex items-center justify-between py-4">
-                  <th scope="col" className="px-4 py-2 text-left pl-4 w-3/5">
-                    Name
-                  </th>
-                  <th scope="col" className="px-4 py-2 text-right pr-7 w-1/5">
-                    Rating
-                  </th>
-                  <th scope="col" className="px-4 py-2 text-right pr-7 w-1/5">
-                    Actions
-                  </th>
+                  <th className="px-4 py-2 text-left pl-4 w-3/5">Name</th>
+                  <th className="px-4 py-2 text-right pr-7 w-1/5">Rating</th>
+                  <th className="px-4 py-2 text-right pr-7 w-1/5">Actions</th>
                 </tr>
               </thead>
-              <tbody className="bg-white">
+              <tbody className="bg-white overflow-auto max-h-[65vh] block border-b-2 border-gray-400">
                 {results.map((item, i) => (
                   <tr
                     key={item.id}
                     className={clsx(
                       'flex items-center justify-between py-4 pl-4 pr-4 hover:bg-gray-100 cursor-pointer',
-                      { 'border-t': i !== 0 }
+                      { 'border-t border-gray-500': i !== 0 }
                     )}
                     onClick={() => onRowClick(item)}
                   >
                     <td className="w-3/5">
-                      <p className="truncate text-sm font-semibold md:text-base">
-                        {item.name}
-                      </p>
-                      <p className="hidden text-sm text-gray-500 sm:block">
-                        {item.category}
-                      </p>
+                      <p className="truncate text-sm font-semibold md:text-base">{item.name}</p>
+                      <p className="hidden text-sm text-gray-500 sm:block">{item.category}</p>
                     </td>
                     <td className="w-1/5 text-right">
                       <p className={`${lusitana.className} truncate text-xl font-medium`}>
@@ -170,6 +160,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                 ))}
               </tbody>
             </table>
+
             {selectedItem && (
               <UpdateModal
                 item={selectedItem}
