@@ -145,6 +145,7 @@ const ItemsPage: React.FC = () => {
               return (
                 <label
                   key={index}
+                  tabIndex={0}
                   className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${filterCheck[key as keyof FilterChecks]
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 hover:bg-gray-300"

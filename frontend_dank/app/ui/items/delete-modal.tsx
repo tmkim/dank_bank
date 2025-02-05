@@ -12,7 +12,7 @@ const ConfirmDeleteModal: React.FC<ConfirmDeleteModalProps> = ({ isOpen, itemNam
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-10 flex justify-center items-center">
       <div className="bg-white p-6 rounded-md">
         <p>Are you sure you want to delete "{itemName}"?</p>
         <div className="mt-4">
