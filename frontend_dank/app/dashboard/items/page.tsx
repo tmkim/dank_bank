@@ -8,6 +8,7 @@ import ItemDetails from '@/app/ui/items/details';
 import { Item } from '@/app/lib/definitions';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CreateModal from '@/app/ui/items/create-modal';
+import Pagination from '@/app/ui/pagination';
 // import ItemTable from '../components/ItemTable';
 
 type FilterChecks = {
@@ -27,6 +28,7 @@ const ItemsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>(queryParam);
   const [currentPage, setCurrentPage] = useState<number>(parseInt(pageParam, 10));
   const [pageLimit, setPageLimit] = useState<number>(parseInt(limitParam, 10));
+  const [totalItems, setTotalItems] = useState<number>(0);
 
   const [createModal, setCreateModal] = useState<boolean>(false);
 
@@ -43,6 +45,11 @@ const ItemsPage: React.FC = () => {
       ...prevState,
       [name]: checked,
     }));
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setPageLimit(newLimit);
+    setCurrentPage(1); // Optional: reset to first page when limit changes
   };
 
   const updateQueryParams = (newQuery: string, newPage: number, newLimit: number) => {
@@ -139,38 +146,63 @@ const ItemsPage: React.FC = () => {
               <PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry
             </button>
           </div>
-          <div className="flex space-x-2 mt-2">
-            {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
-              const key = option;
-              return (
-                <label
-                  key={index}
-                  tabIndex={0}
-                  className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${filterCheck[key as keyof FilterChecks]
+          <div className="flex justify-between space-x-2 mt-2">
+            <div className="flex gap-2">
+              {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
+                const key = option;
+                return (
+                  <label
+                    key={index}
+                    tabIndex={0}
+                    className={`cursor-pointer select-none p-2 border rounded-md transition-colors peer-checked:bg-blue-500 peer-checked:text-white ${filterCheck[key as keyof FilterChecks]
                       ? "bg-blue-500 text-white"
                       : "bg-gray-200 hover:bg-gray-300"
                     }`}
-                >
-                  <input
-                    type="checkbox"
-                    name={key}
-                    className="hidden peer"
-                    checked={filterCheck[key as keyof FilterChecks]}
-                    onChange={handleFilterCheckboxChange}
-                  />
-                  {option}
-                </label>
-              );
-            })}
+                  >
+                    <input
+                      type="checkbox"
+                      name={key}
+                      className="hidden peer"
+                      checked={filterCheck[key as keyof FilterChecks]}
+                      onChange={handleFilterCheckboxChange}
+                    />
+                    {option}
+                  </label>
+                );
+              })}
+            </div>
+            <div className="flex items-center">
+              <span className="text-sm text-gray-700">Rows per page:</span>
+              <select
+                className="ml-2 pr-8 py-2 rounded-lg border border-gray-300 appearance-none bg-white text-gray-700 focus:ring-2 focus:ring-blue-500"
+                value={pageLimit}
+                onChange={(e) => handleLimitChange(Number(e.target.value))}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </div>
           </div>
+
           <ItemTable
             query={searchQuery}
             page={currentPage}
             limit={pageLimit}
             categories={selectedCategories}
+            // onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
+            // onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+            onRowClick={handleRowClick}
+            setTotalItems={setTotalItems}
+          />
+          
+          {/* Page navigation buttons */}
+          <Pagination
+            page={currentPage}
+            limit={pageLimit}
+            totalItems={totalItems} // Fetch or pass this from your API
             onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
             onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
-            onRowClick={handleRowClick}
           />
         </div>
 

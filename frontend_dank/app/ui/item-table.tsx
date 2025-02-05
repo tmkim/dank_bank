@@ -9,18 +9,18 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
 import ItemTableSkeleton from '@/app/ui/it_skeleton';
 import PublicItemTableSkeleton from '@/app/ui/pit_skeleton';
+import Pagination from '@/app/ui/pagination';
 
 type ItemTableProps = {
   query: string;
   page: number;
   limit: number;
   categories: string[];
-  onPageChange: (newPage: number) => void;
-  onLimitChange: (newLimit: number) => void;
   onRowClick: (item: Item) => void;
+  setTotalItems: (count: number) => void;
 };
 
-const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onPageChange, onLimitChange, onRowClick }) => {
+const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onRowClick, setTotalItems }) => {
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,6 +47,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         // console.log(data)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
+        setTotalItems(data.count)
       } catch (err) {
         // console.error('Failed to fetch items:', err);
         setError('Failed to load items.');
@@ -116,14 +117,20 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         <div className="inline-block min-w-full align-middle">
           <div className="h-[70vh] border-2 border-gray-400 border-solid rounded-xl flex flex-col overflow-hidden">
             <table className="min-w-full table-fixed border-collapse text-gray-900">
-              <thead className="bg-green-300 text-left text-md font-bold h-[5vh] z-10">
+              <thead className="bg-green-300 text-left text-md font-bold h-[5vh] z-10 border-b-2 border-gray-400">
                 <tr className="flex items-center justify-between py-4">
-                  <th className="px-4 py-2 text-left pl-4 w-3/5">Name</th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/5">Rating</th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/5">Actions</th>
+                  <th className="px-4 py-2 text-left pl-4 w-3/5">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-right pr-7 w-1/5">
+                    Rating
+                  </th>
+                  <th className="px-4 py-2 text-right pr-7 w-1/5">
+                    Actions
+                  </th>
                 </tr>
               </thead>
-              <tbody className="bg-white overflow-auto max-h-[65vh] block border-b-2 border-gray-400">
+              <tbody className="bg-white overflow-auto max-h-[65vh] block border-b-0 border-gray-400">
                 {results.map((item, i) => (
                   <tr
                     key={item.id}
@@ -157,7 +164,11 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                       </button>
                     </td>
                   </tr>
+                  
                 ))}
+                <tr aria-hidden="true">
+                  <td colSpan={3} className="h-4"></td>
+                </tr>
               </tbody>
             </table>
 
@@ -179,29 +190,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
 
       </div>
 
-      <div className="mt-4 flex justify-end">
-        <button className="px-4"
-          onClick={() => onPageChange(Math.max(page - 1, 1))}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span className="px-2"> Page {page} of {totalPages} </span>
-        <button className="px-4"
-          onClick={() => onPageChange(Math.min(page + 1, totalPages))}
-          disabled={page === totalPages}
-        >
-          Next
-        </button>
-        <select className=""
-          value={limit}
-          onChange={(e) => onLimitChange(Number(e.target.value))}
-        >
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-        </select>
-      </div>
+      <div className="mt-4 flex items-center justify-between">
+    </div>
     </>
   );
 };
