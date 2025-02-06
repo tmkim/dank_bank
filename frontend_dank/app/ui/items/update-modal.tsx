@@ -123,7 +123,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           review,
           rating,
           ...(address && { address }),
-          ...(location && { location: selectedLocation === 'Other' ? customLocation : selectedLocation }),
+          ...(location && { location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation }),
           ...(gmap_url && { gmap_url }),
           ...(item_url && { item_url }),
           ...(selectedPrice && { price_range: "$".repeat(selectedPrice) }),

@@ -598,11 +598,50 @@ Today:
 2/4
     Ok, so let's take a look at
         -- improved form validation
+            ++ client-side validation good
+            .. TODO : server-side validation with DRF + front-end error handling
         -- create/update - controlled vs uncontrolled component
+            >> Select option from cat 'Food'
+            >> Switch category to 'Dining' or 'Travel', Location will maintain selected value
+            >> Switch category to 'Music', and Artist will have location value
+            ... if you go directly 'Food' to 'Music', artist will be cleared as expected
+                therefore it must be an issue with Location setup
         -- images
+        -- item table reloads after every action??
+            .. should only do a full reload on page refresh?
+            .. maybe need partial rendering / partial loading
         -- update sidenav to topnav only (currently depends on screen width)
             -- will have to adjust some other values for responsiveness of ui
 
-    Sidenote -- added an error.tsx (currently modal) in app/
-        -- keep it simple, single generic error modal for the entire app
+    Sidenotes
+        ++ added an error.tsx (currently modal) in app/
+            ** keep it simple, single generic error modal for the entire app
+        ++ fixed item table formatting to handle scrolling better
+        ++ updated pagination formatting
+            >> moved pagination logic to its own component
+            >> moved item limit selection to same row as filter buttons 
+        ** TODO : Make select options their own DB table instead of hardcoding
+                -- Category, Location, Music Source, Cuisine
+
+    Accessibility (+ input form validation)
+        ++ tabIndex on interactable elements such as filter buttons
+        ++ client-side validation : added "required" keyword to required inputs
+        ** TODO : server-side validation
     
+    Found bug where table scrollbar overlaps update/delete modals
+        ++ adjusted z-index for each component to ensure proper stacking
+    
+2/5
+    Today's focus:
+    
+    ++ server side input validation (DRF serialization, front end handling)
+    ++ create/update modal : location input changing between controlled/uncontrolled
+    -- images 
+    -- update sidenav to topnav 
+    -- limit item table api calls (partial rendering?)
+    -- new database tables for select options (one table, fields: id, select_type, option_name)
+    
+    ++ updated DRF serialization to validate most fields
+        -- excluding: id, cuisine TBD, music_meta
+    ++ fixed location input and made sure select fields are properly reset on category change
+        

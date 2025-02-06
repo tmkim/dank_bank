@@ -58,6 +58,12 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         <h2 className="text-2xl font-semibold">{item.name}</h2>
                     </div>
                 )
+            case null:
+                return(
+                    <div className="mt-2 flex items-center justify-between">
+                        <h2 className="text-2xl font-semibold">{item.name}</h2>
+                    </div>
+                )
             default:
                 return(
                     <div className="mt-2 flex items-center justify-between">

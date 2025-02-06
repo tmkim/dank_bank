@@ -29,6 +29,9 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value as Category);
+        setSelectedLocation('');
+        setSelectedPrice(0);
+        setSelectedMSource('');
     };
 
     // Price Range Select
@@ -105,7 +108,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         
         const payload = {
             ...formObject,
-            ...(selectedLocation && { location: selectedLocation === 'Other' ? customLocation : selectedLocation })
+            ...(selectedLocation && { location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation })
         };
 
         try {
@@ -145,8 +148,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 id="location"
                                 name="location"
                                 type="text"
-                                value={selectedLocation || ''}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleLocationChange(e)}
                                 className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
@@ -362,8 +363,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 id="location"
                                 name="location"
                                 type="text"
-                                value={selectedLocation || ''}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleLocationChange(e)}
                                 className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>

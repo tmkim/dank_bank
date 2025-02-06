@@ -1,5 +1,6 @@
 from .models import Item, Tag, Tag2Item, Image, Image2Item
-from .serializers import ItemSerializer, DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
+from .serializers import ItemSerializer
+# , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
 from django.db import models
 from django.shortcuts import render
 from rest_framework import viewsets
@@ -69,34 +70,34 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Add any additional custom save logic here
         serializer.save()
     
-class DiningViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Dining')
-    serializer_class = DiningSerializer
+# class DiningViewSet(viewsets.ModelViewSet):
+#     queryset = Item.objects.filter(category='Dining')
+#     serializer_class = DiningSerializer
 
-class FoodViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Food')
-    serializer_class = FoodSerializer
+# class FoodViewSet(viewsets.ModelViewSet):
+#     queryset = Item.objects.filter(category='Food')
+#     serializer_class = FoodSerializer
 
-class MusicViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Music')
-    serializer_class = MusicSerializer
+# class MusicViewSet(viewsets.ModelViewSet):
+#     queryset = Item.objects.filter(category='Music')
+#     serializer_class = MusicSerializer
 
-class TravelViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.filter(category='Travel')
-    serializer_class = TravelSerializer
+# class TravelViewSet(viewsets.ModelViewSet):
+#     queryset = Item.objects.filter(category='Travel')
+#     serializer_class = TravelSerializer
 
-class TagViewSet(viewsets.ModelViewSet):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+# class TagViewSet(viewsets.ModelViewSet):
+#     queryset = Tag.objects.all()
+#     serializer_class = TagSerializer
 
-class Tag2ItemViewSet(viewsets.ModelViewSet):
-    queryset = Tag2Item.objects.all()
-    serializer_class = Tag2ItemSerializer
+# class Tag2ItemViewSet(viewsets.ModelViewSet):
+#     queryset = Tag2Item.objects.all()
+#     serializer_class = Tag2ItemSerializer
 
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
-    serializer_class = ImageSerializer
+# class ImageViewSet(viewsets.ModelViewSet):
+#     queryset = Image.objects.all()
+#     serializer_class = ImageSerializer
 
-class Image2ItemViewSet(viewsets.ModelViewSet):
-    queryset = Image2Item.objects.all()
-    serializer_class = Image2ItemSerializer
+# class Image2ItemViewSet(viewsets.ModelViewSet):
+#     queryset = Image2Item.objects.all()
+#     serializer_class = Image2ItemSerializer
