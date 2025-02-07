@@ -15,10 +15,7 @@ interface NavLink {
 const links: NavLink[] = [
     { name: 'Home', href: '/dashboard' },
     { name: 'Dank Bank', href: '/dashboard/items' },
-    { name: 'T-Planet', href: '/dashboard/items/dining' },
-    { name: 'Test', href: '/dashboard/items/dining' },
-    { name: 'Test2', href: '/dashboard/items/dining' },
-    { name: 'Test3', href: '/dashboard/items/dining' },
+    { name: 'T-Planet', href: '/dashboard/items/dining' }
 ];
 
 const Navbar = () => {
@@ -69,10 +66,10 @@ const Navbar = () => {
       <nav className="mb-2 flex h-20 items-center justify-between rounded-md bg-green-700 p-4 w-full overflow-x-hidden">
         
         {/* Left Side: Logo + Name */}
-        <div className="flex items-center min-w-[150px] md:min-w-[240px] mr-5 md:mr-10">
+        <div className="flex items-center min-w-[240px] mr-5 md:mr-10">
           <GlobeAltIcon className="h-6 md:h-8 w-6 md:w-8 rotate-[15deg] text-white" />
           <Link
-            className={`${lusitana.className} text-xl md:text-3xl text-white pl-2`}
+            className={`${lusitana.className} text-3xl text-white pl-2`}
             href="/dashboard/"
           >
             Tae-Min Kim
@@ -123,7 +120,7 @@ const Navbar = () => {
       {mobileMenuOpen && (
         <div className="md:hidden mt-2 space-y-2">
           {links.map((link) => (
-            <a key={link.name} href={link.href} className="block p-2 text-white bg-gray-800 rounded-md">
+            <a key={link.name} href={link.href} className="block p-2 text-white bg-green-700 rounded-md">
               {link.name}
             </a>
           ))}

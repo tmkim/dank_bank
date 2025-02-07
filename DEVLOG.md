@@ -648,7 +648,7 @@ Today:
 2/6
     Today's focus:
         -- images 
-        -- update sidenav to topnav 
+        ++ update sidenav to topnav 
         -- limit item table api calls (partial rendering?)
         -- new database tables for select options (one table, fields: id, select_type, option_name)
 
@@ -659,3 +659,15 @@ Today:
     BUG / Warning :: 
     /home/tmkim/py_django/venv/venv_tcgbh/lib/python3.10/site-packages/rest_framework/pagination.py:207: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'api_dank.models.Item'> QuerySet.
       paginator = self.django_paginator_class(queryset, page_size)
+
+2/7
+    Today's focus:
+        -- images  
+        -- limit item table api calls (partial rendering?)
+        -- new database tables for select options (one table, fields: id, select_type, option_name)
+
+    ** Had to deal with a quick bug regarding client hydration vs server-side rendering. Server-side was simply out of date after I made some changes to my html. Hard refreshing removed the error.
+
+    OKKK now let's take a look at adding images to our website!
+
+    -- We already added an upload button in our create/upload forms, but now we need to add some functionality!
