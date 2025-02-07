@@ -645,3 +645,17 @@ Today:
         -- excluding: id, cuisine TBD, music_meta
     ++ fixed location input and made sure select fields are properly reset on category change
         
+2/6
+    Today's focus:
+        -- images 
+        -- update sidenav to topnav 
+        -- limit item table api calls (partial rendering?)
+        -- new database tables for select options (one table, fields: id, select_type, option_name)
+
+    ++ update sidenav(conditional) to topnav(always) 
+        >> made navbar more responsive to screen width
+        >> hides links that don't fit, offers a "More" dropdown to show links that were hidden
+
+    BUG / Warning :: 
+    /home/tmkim/py_django/venv/venv_tcgbh/lib/python3.10/site-packages/rest_framework/pagination.py:207: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'api_dank.models.Item'> QuerySet.
+      paginator = self.django_paginator_class(queryset, page_size)

@@ -125,8 +125,7 @@ const ItemsPage: React.FC = () => {
   };
 
   return (
-    <main className="w-full mx-auto p-4">
-      <h1 className="text-xl py-4">The Dank Bank</h1>
+    <main className="w-full mx-auto px-4">
       <div className="flex flex-col [@media(min-width:1330px)]:flex-row [@media(min-width:1330px)]:space-x-4">
         {/* <!-- Item Table --> */}
         <div className="flex-grow flex-shrink-0 [@media(min-width:1330px)]:basis-1/2">
@@ -207,7 +206,7 @@ const ItemsPage: React.FC = () => {
         </div>
 
         {/* <!-- Item Details --> */}
-        <div className="flex-grow flex-shrink-0 mt-4 [@media(min-width:1330px)]:basis-1/2 [@media(min-width:1330px)]:mt-0">
+        <div className="flex-grow flex-shrink-0 mt-4 pr-4 [@media(min-width:1330px)]:basis-1/2 [@media(min-width:1330px)]:mt-0">
           <ItemDetails item={item} />
         </div>
       </div>
