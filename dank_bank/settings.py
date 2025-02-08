@@ -11,25 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
-
-from dotenv import load_dotenv
-load_dotenv()
-
-# import logging 
-# logging.basicConfig(level=logging.DEBUG)
-# logging.getLogger('boto3').setLevel(logging.DEBUG)
-# logging.getLogger('botocore').setLevel(logging.DEBUG)
-
-
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'api_dank',
     'corsheaders',
-    'storages',
 ]
 
 MIDDLEWARE = [
