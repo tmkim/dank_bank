@@ -3,7 +3,12 @@ from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import re
 from .models import Item  # Import your model
+from .models import FileUpload
 
+class FileUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FileUpload
+        fields = ('id', 'file', 'uploaded_at')
 class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:

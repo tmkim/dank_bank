@@ -660,7 +660,7 @@ Today:
     /home/tmkim/py_django/venv/venv_tcgbh/lib/python3.10/site-packages/rest_framework/pagination.py:207: UnorderedObjectListWarning: Pagination may yield inconsistent results with an unordered object_list: <class 'api_dank.models.Item'> QuerySet.
       paginator = self.django_paginator_class(queryset, page_size)
 
-2/7
+2/7 
     Today's focus:
         -- images  
         -- limit item table api calls (partial rendering?)
@@ -671,3 +671,12 @@ Today:
     OKKK now let's take a look at adding images to our website!
 
     -- We already added an upload button in our create/upload forms, but now we need to add some functionality!
+
+2/8
+    Alright so we're working on implementing Amazon AWS S3 today
+    -- set up account, bucket, IAM user, user group (policies/permissions)
+    -- stored access info in backend/.env, backend/settings.py, and frontend/.env.local
+    -- set up views.py, urls.py, and upload.tsx
+
+    -- I feel like I have everything set up properly, but I'm not seeing any files in my bucket.
+    Going to do a refresh and try again.

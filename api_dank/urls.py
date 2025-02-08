@@ -1,5 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from django.urls import path
+from .views import UploadImageView
 from . import views
 
 # Create a router and register our ViewSets with it.
@@ -17,4 +19,5 @@ router.register(r'items', views.ItemViewSet, basename='items')
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('', include(router.urls)),
+    path('upload/', UploadImageView.as_view(), name='upload-image'),
 ]
