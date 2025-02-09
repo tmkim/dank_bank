@@ -4,15 +4,57 @@ from .serializers import ItemSerializer
 from django.db import models
 from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework import status
+# from rest_framework import status
 from rest_framework.decorators import action, api_view
-from rest_framework.response import Response
+# from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
-# Create your views here.
+
+#AWS S3
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.conf import settings  
+
 import logging
 
 logger = logging.getLogger(__name__)
+
+from django.core.exceptions import ValidationError
+
+class FileUploadView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request, *args, **kwargs):
+        try:
+            uploaded_file = request.FILES['file']
+            file_name = uploaded_file.name
+            # logger.debug(f"Received file: {file_name}")
+
+            file_path = default_storage.save(file_name, ContentFile(uploaded_file.read()))
+            # logger.debug(f"File saved to: {file_path}")
+
+            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+            # logger.debug(f"File URL: {file_url}")
+
+            return Response({"file_url": file_url}, status=status.HTTP_201_CREATED)
+
+        except ValidationError as e:
+            # logger.error(f"Validation error: {str(e)}")
+            return Response({"error": "Validation error"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # logger.error(f"Error uploading file: {str(e)}")
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+# Create your views here.
+# import logging
+
+# logger = logging.getLogger(__name__)
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -59,7 +101,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     
         # Override the create method
     def create(self, request, *args, **kwargs):
-        logger.debug("Received data: %s", request.data)
+        # logger.debug("Received data: %s", request.data)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)  # This triggers validation

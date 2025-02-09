@@ -3,6 +3,7 @@ import { Item } from "@/app/lib/definitions";
 import Link from "next/link";
 import React from "react";
 import { Star } from "lucide-react";
+import UploadPage from "../upload";
 
 interface ItemDetailsProps {
     item: Item | null;
@@ -47,7 +48,8 @@ const getStarRating = (rating: number) => {
 const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
     // console.log("Selected Row in DetailsPanel:", item);  
     if (!item) {
-        return <p className="text-gray-500">Select a row to view details.</p>;
+        return <UploadPage/>
+        // return <p className="text-gray-500">Select a row to view details.</p>;
     }
 
     const renderName = () => {
