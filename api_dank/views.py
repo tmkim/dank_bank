@@ -1,14 +1,14 @@
-from .models import Item, Tag, Tag2Item, Image, Image2Item
-from .serializers import ItemSerializer
-# , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
-from django.db import models
-from django.shortcuts import render
+# from django.db import models
+# from django.shortcuts import render
 from rest_framework import viewsets
-# from rest_framework import status
-from rest_framework.decorators import action, api_view
-# from rest_framework.response import Response
+from rest_framework.decorators import api_view #, action
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
+from .models import Item #, Tag, Tag2Item, Image, Image2Item
+from .serializers import ItemSerializer
+# , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
+# from rest_framework import status
+# from rest_framework.response import Response
 
 #AWS S3
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -16,8 +16,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from django.conf import settings  
+# from django.core.files.base import ContentFile
 
 import logging
 
@@ -29,33 +29,19 @@ class FileUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        try:
-            uploaded_file = request.FILES['file']
-            file_name = uploaded_file.name
-            # logger.debug(f"Received file: {file_name}")
+        file = request.FILES.get('file')
+        if not file:
+            return Response({'error': 'No file uploaded'}, status=400)
+        
+        # Save the file to the storage backend (S3 or local)
+        file_path = default_storage.save(f"uploads/{file.name}", file)
 
-            file_path = default_storage.save(file_name, ContentFile(uploaded_file.read()))
-            # logger.debug(f"File saved to: {file_path}")
+        # Construct the file URL
+        file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
 
-            file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
-            # logger.debug(f"File URL: {file_url}")
-
-            return Response({"file_url": file_url}, status=status.HTTP_201_CREATED)
-
-        except ValidationError as e:
-            # logger.error(f"Validation error: {str(e)}")
-            return Response({"error": "Validation error"}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            # logger.error(f"Error uploading file: {str(e)}")
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
+        return Response({'url': file_url})
 
 # Create your views here.
-# import logging
-
-# logger = logging.getLogger(__name__)
-
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({

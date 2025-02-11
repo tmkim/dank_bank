@@ -7,6 +7,10 @@ class Tag(models.Model):
     class Meta:
         ordering = ['name']
 
+class Image(models.Model):
+    image_variable = models.ImageField(null=True, default="{default_filename)", upload_to='uploads/') 
+
+
 class Item(models.Model):
     price_ranges = {
         '': None,
@@ -45,13 +49,13 @@ class Item(models.Model):
     artist = models.CharField(max_length=200, blank=True, null=True)
     music_meta = models.CharField(max_length=200, blank=True, null=True)
 
-class Image(models.Model):
-    name = models.CharField(max_length=200)
-    img_url = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
+# class Image(models.Model):
+#     name = models.CharField(max_length=200)
+#     img_url = models.CharField(max_length=200)
+#     description = models.CharField(max_length=200)
 
-    class Meta:
-        ordering=['name']
+#     class Meta:
+#         ordering=['name']
 
 class Tag2Item(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

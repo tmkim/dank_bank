@@ -1,15 +1,34 @@
+'use client'
 import { useState } from "react";
-import { uploadFile } from "@/lib/upload";
+import axios from "axios";
 
-export default function UploadPage() {
+export default function ImageUploader() {
   const [file, setFile] = useState<File | null>(null);
-  const [url, setUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!file) {
+      alert("Please select a file");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
-      const uploadedUrl = await uploadFile(file);
-      setUrl(uploadedUrl);
+      const response = await axios.post<{ url: string }>(
+        "http://127.0.0.1:8000/api_dank/upload/",  // Updated to match Django
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      setImageUrl(response.data.url);
     } catch (error) {
       console.error("Upload failed:", error);
     }
@@ -17,19 +36,9 @@ export default function UploadPage() {
 
   return (
     <div>
-      <input
-        type="file"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        accept="image/*"
-      />
-      <button onClick={handleUpload} disabled={!file}>
-        Upload
-      </button>
-      {url && (
-        <p>
-          File uploaded: <a href={url} target="_blank">{url}</a>
-        </p>
-      )}
+      <input type="file" onChange={handleFileChange} />
+      <button onClick={handleUpload}>Upload</button>
+      {imageUrl && <img src={imageUrl} alt="Uploaded" style={{ width: "200px" }} />}
     </div>
   );
 }

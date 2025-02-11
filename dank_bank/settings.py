@@ -17,39 +17,31 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Use S3 for storing media files  
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = "dankbankbucket"  # Your bucket name
-AWS_S3_REGION_NAME = "us-east-2"  # Your AWS region
-
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % os.environ['BUCKET_NAME']
+AWS_ACCESS_KEY_ID = os.environ['AWS_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_ACC_KEY']
+AWS_STORAGE_BUCKET_NAME = os.environ['BUCKET_NAME']
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
 
 # Use S3 for media storage  
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# AWS_QUERYSTRING_AUTH = False  # Make URLs public (optional, for direct viewing)
 AWS_S3_FILE_OVERWRITE = False  # Prevent overwriting files with the same name
-AWS_QUERYSTRING_AUTH = False  # Make URLs public (optional, for direct viewing)
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+        },
+    }
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
