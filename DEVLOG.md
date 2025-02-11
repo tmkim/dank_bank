@@ -683,3 +683,6 @@ Today:
 
 2/10
     Today we're going to do some testing in a fresh git repos, fresh drf/next project to experiment with AWS.
+    WOOOOOOOOOOOOOO
+        Got it working on test app. Made it work here.
+        Need to do some more cleanup and stuff, but at least I can successfully upload to my aws bucket.
