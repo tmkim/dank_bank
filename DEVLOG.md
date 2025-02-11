@@ -680,3 +680,6 @@ Today:
 
     -- I feel like I have everything set up properly, but I'm not seeing any files in my bucket.
     Going to do a refresh and try again.
+
+2/10
+    Today we're going to do some testing in a fresh git repos, fresh drf/next project to experiment with AWS.
