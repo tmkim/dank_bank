@@ -1,16 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Tag(models.Model):
-    name = models.CharField(max_length=33)
-    
-    class Meta:
-        ordering = ['name']
-
-class Image(models.Model):
-    image_variable = models.ImageField(null=True, default="{default_filename)", upload_to='uploads/') 
-
-
 class Item(models.Model):
     price_ranges = {
         '': None,
@@ -34,20 +24,20 @@ class Item(models.Model):
         'Travel': 'Travel'
     }
     # tag = models.ManyToManyField(Tag)
-    category = models.CharField(choices=category_choices, default='', blank=False)
+    category = models.CharField(choices=category_choices, blank=False)
     name = models.CharField(max_length=200, blank=False)
     review = models.CharField(max_length=710, blank=False)
-    rating = models.IntegerField(default=0, blank=False)
-    address = models.CharField(max_length=200, blank=True, null=True)
-    location = models.CharField(max_length=200, blank=True, null=True)
-    gmap_url = models.CharField(max_length=200, blank=True, null=True)
-    item_url = models.CharField(max_length=200, blank=True, null=True)
+    rating = models.IntegerField(default=50, blank=False)
+    address = models.CharField(max_length=200, blank=True, default='')
+    location = models.CharField(max_length=200, blank=True, default='')
+    gmap_url = models.CharField(max_length=200, blank=True, default='')
+    item_url = models.CharField(max_length=200, blank=True, default='')
     price_range = models.CharField(choices=price_ranges, default='') # $, $$,
-    cost = models.DecimalField(decimal_places=2, max_digits=14, blank=True, null=True)
-    cuisine = models.CharField(max_length=200, blank=True, null=True)
+    cost = models.DecimalField(decimal_places=2, max_digits=14, blank=True, default=0.00)
+    cuisine = models.CharField(max_length=200, blank=True, default='')
     music_source = models.CharField(choices=music_source, default='') # enumerate : Spotify / Soundcloud / Youtube
-    artist = models.CharField(max_length=200, blank=True, null=True)
-    music_meta = models.CharField(max_length=200, blank=True, null=True)
+    artist = models.CharField(max_length=200, blank=True, default='')
+    music_meta = models.CharField(max_length=200, blank=True, default='')
 
 # class Image(models.Model):
 #     name = models.CharField(max_length=200)
@@ -57,17 +47,30 @@ class Item(models.Model):
 #     class Meta:
 #         ordering=['name']
 
+# class Image(models.Model):
+#     image_variable = models.ImageField(null=True, default="{default_filename)", upload_to='uploads/') 
+class Image(models.Model):
+    name = models.CharField(max_length=200, blank=True)
+    img_url = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=200, blank=True)
+
+class Image2Item(models.Model):
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    
+
+    class Meta:
+        ordering=['image_id']
+
+class Tag(models.Model):
+    name = models.CharField(max_length=33)
+    
+    class Meta:
+        ordering = ['name']
+
 class Tag2Item(models.Model):
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ['tag_id']
-
-class Image2Item(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
-    
-
-    class Meta:
-        ordering=['image_id']

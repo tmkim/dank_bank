@@ -686,3 +686,12 @@ Today:
     WOOOOOOOOOOOOOO
         Got it working on test app. Made it work here.
         Need to do some more cleanup and stuff, but at least I can successfully upload to my aws bucket.
+
+2/11
+    OK let's work on our images today!
+
+    -- Make sure AWS image uploads are clean
+    -- Image table, Item2Image table
+    -- Items display in image carousel on details
+
+    ++ first let's clean up our backend and set up our tables

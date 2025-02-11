@@ -4,8 +4,9 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view #, action
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
-from .models import Item #, Tag, Tag2Item, Image, Image2Item
-from .serializers import ItemSerializer
+from rest_framework import generics
+from .models import Image2Item, Item #, Tag, Tag2Item, Image, Image2Item
+from .serializers import Image2ItemSerializer, ItemSerializer
 # , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
 # from rest_framework import status
 # from rest_framework.response import Response
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
 
-class FileUploadView(APIView):
+class ImageUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
@@ -34,26 +35,34 @@ class FileUploadView(APIView):
             return Response({'error': 'No file uploaded'}, status=400)
         
         # Save the file to the storage backend (S3 or local)
-        file_path = default_storage.save(f"uploads/{file.name}", file)
+        file_path = default_storage.save({file.name}, file)
 
         # Construct the file URL
         file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
 
         return Response({'url': file_url})
+    
+class Image2ItemCreateView(generics.CreateAPIView):
+    queryset = Image2Item.objects.all()
+    serializer_class = Image2ItemSerializer
+
+class Image2ItemDeleteView(generics.DestroyAPIView):
+    queryset = Image2Item.objects.all()
+    serializer_class = Image2ItemSerializer
 
 # Create your views here.
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
         'item': reverse('item-list', request=request, format=format),
-        'dining': reverse('dining-list', request=request, format=format),
-        'foods': reverse('foods-list', request=request, format=format),
-        'music': reverse('music-list', request=request, format=format),
-        'travel': reverse('travel-list', request=request, format=format),
-        'tags': reverse('tag-list', request=request, format=format),
-        'tag2item': reverse('tag2item-list', request=request, format=format),
-        'images': reverse('images-list', request=request, format=format),
-        'image2item': reverse('image2item-list', request=request, format=format),
+        # 'dining': reverse('dining-list', request=request, format=format),
+        # 'foods': reverse('foods-list', request=request, format=format),
+        # 'music': reverse('music-list', request=request, format=format),
+        # 'travel': reverse('travel-list', request=request, format=format),
+        # 'tags': reverse('tag-list', request=request, format=format),
+        # 'tag2item': reverse('tag2item-list', request=request, format=format),
+        # 'images': reverse('images-list', request=request, format=format),
+        # 'image2item': reverse('image2item-list', request=request, format=format),
     })
 
 """

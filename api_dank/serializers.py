@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import re
-from .models import Item  # Import your model
+from .models import Image, Image2Item, Item  # Import your model
 
 class ItemSerializer(serializers.ModelSerializer):
 
@@ -227,15 +227,15 @@ class ItemSerializer(serializers.ModelSerializer):
 #         model = Tag2Item
 #         fields = ['id', 'tag_id', 'item_id'] 
 
-# class ImageSerializer(serializers.ModelSerializer):
+class ImageSerializer(serializers.ModelSerializer):
 
-#     class Meta:
-#         model = Image
-#         fields = ['id', 'name', 'img_url', 'description'] 
+    class Meta:
+        model = Image
+        fields = ['id', 'name', 'img_url', 'description'] 
 
-# class Image2ItemSerializer(serializers.ModelSerializer):
+class Image2ItemSerializer(serializers.ModelSerializer):
 
-#     class Meta:
-#         model = Image2Item
-#         fields = ['id', 'image_id', 'item_id'] 
+    class Meta:
+        model = Image2Item
+        fields = ['id', 'image_id', 'item_id'] 
 

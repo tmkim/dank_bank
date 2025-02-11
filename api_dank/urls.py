@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
-from .views import FileUploadView
+from .views import ImageUploadView, Image2ItemCreateView, Image2ItemDeleteView
 
 
 # router.register(r'dining', views.DiningViewSet, basename='dining')
@@ -18,6 +18,8 @@ router.register(r'items', views.ItemViewSet, basename='items')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('upload/', FileUploadView.as_view(), name='upload'),
+    path('upload/', ImageUploadView.as_view(), name='upload'),
+    path('image2item/', Image2ItemCreateView.as_view(), name='image2item-create'),
+    path('image2item/<int:pk>/', Image2ItemDeleteView.as_view(), name='image2item-delete'),
     path('', include(router.urls)),
 ]
