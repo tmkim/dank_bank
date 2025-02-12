@@ -697,3 +697,8 @@ Today:
     First let's clean up our backend and set up our tables
         ++ Image table set up (name, file, desc -- file is reference to S3 file)
         ++ Mock upload handles multiple images + descriptions
+
+    Next, we add our upload component to our Create Modal
+        ++ Restructured upload to pass file info up to create modal
+        ++ Added logic in CM to handle file selection + descriptions
+        ++ Updated handleSubmit to POST images to s3 only after the rest of the form is validated
