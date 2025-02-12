@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view #, action
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
-from .models import Image2Item, Item #, Tag, Tag2Item, Image, Image2Item
-from .serializers import Image2ItemSerializer, ItemSerializer
+from .models import Image, Image2Item, Item #, Tag, Tag2Item, Image, Image2Item
+from .serializers import Image2ItemSerializer, ImageUploadSerializer, ItemSerializer
 # , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer, Image2ItemSerializer
 # from rest_framework import status
 # from rest_framework.response import Response
@@ -20,9 +20,9 @@ from django.core.files.storage import default_storage
 from django.conf import settings  
 # from django.core.files.base import ContentFile
 
-import logging
+# import logging
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
 
@@ -30,18 +30,25 @@ class ImageUploadView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request, *args, **kwargs):
-        file = request.FILES.get('file')
-        if not file:
-            return Response({'error': 'No file uploaded'}, status=400)
-        
-        # Save the file to the storage backend (S3 or local)
-        file_path = default_storage.save({file.name}, file)
+        files = request.FILES.getlist("files")
+        image_data = []
 
-        # Construct the file URL
-        file_url = f"https://{settings.AWS_S3_CUSTOM_DOMAIN}/{file_path}"
+        for index, file in enumerate(files):
+            name = file.name 
+            description = request.data.get(f"description_{index}", "")
 
-        return Response({'url': file_url})
-    
+            # Create the Image instance
+            image = Image.objects.create(file=file, name=name, description=description)
+            image_data.append({
+                "id": image.id,
+                "url": image.file.url,  # URL of the file stored in S3
+                "name": image.name,  # Automatically set as file name
+                "description": image.description,
+            })
+
+        return Response({"images": image_data}, status=status.HTTP_201_CREATED)
+
+
 class Image2ItemCreateView(generics.CreateAPIView):
     queryset = Image2Item.objects.all()
     serializer_class = Image2ItemSerializer

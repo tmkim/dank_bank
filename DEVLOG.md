@@ -694,4 +694,6 @@ Today:
     -- Image table, Item2Image table
     -- Items display in image carousel on details
 
-    ++ first let's clean up our backend and set up our tables
+    First let's clean up our backend and set up our tables
+        ++ Image table set up (name, file, desc -- file is reference to S3 file)
+        ++ Mock upload handles multiple images + descriptions

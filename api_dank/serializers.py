@@ -188,7 +188,20 @@ class ItemSerializer(serializers.ModelSerializer):
         # if Item.objects.filter(name=data["name"], location=data["location"]).exists():
         #     raise serializers.ValidationError("An item with this name already exists at this location.")
         
+class ImageSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Image
+        fields = ['id', 'name', 'img_url', 'description'] 
+
+class ImageUploadSerializer(serializers.Serializer):
+    files = serializers.ListField(child=serializers.ImageField())
+
+class Image2ItemSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Image2Item
+        fields = ['id', 'image_id', 'item_id'] 
 
 # class DiningSerializer(serializers.HyperlinkedModelSerializer):
 # class DiningSerializer(serializers.ModelSerializer):
@@ -227,15 +240,5 @@ class ItemSerializer(serializers.ModelSerializer):
 #         model = Tag2Item
 #         fields = ['id', 'tag_id', 'item_id'] 
 
-class ImageSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Image
-        fields = ['id', 'name', 'img_url', 'description'] 
-
-class Image2ItemSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Image2Item
-        fields = ['id', 'image_id', 'item_id'] 
 
