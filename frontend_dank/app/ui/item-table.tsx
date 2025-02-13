@@ -8,8 +8,6 @@ import UpdateModal from '@/app/ui/items/update-modal';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
 import ItemTableSkeleton from '@/app/ui/it_skeleton';
-import PublicItemTableSkeleton from '@/app/ui/pit_skeleton';
-import Pagination from '@/app/ui/pagination';
 
 type ItemTableProps = {
   query: string;

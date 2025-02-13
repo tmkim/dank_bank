@@ -53,19 +53,23 @@ class Item(models.Model):
 # class Image(models.Model):
 #     image_variable = models.ImageField(null=True, default="{default_filename)", upload_to='uploads/') 
 class Image(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, blank=True)
     file = models.ImageField(upload_to="images/")  # Uses S3 if configured
     description = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
         return self.name or f"Image {self.id}"
-
-class ItemImages(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
     
     class Meta:
-        ordering=['item']
+        ordering=['id']
+
+# class ItemImages(models.Model):
+#     image = models.ForeignKey(Image, on_delete=models.CASCADE)
+#     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    
+#     class Meta:
+#         ordering=['item']
 
 class Tag(models.Model):
     name = models.CharField(max_length=33)

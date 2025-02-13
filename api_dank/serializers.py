@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import re
-from .models import Image, Item, ItemImages  # Import your model
+from .models import Image, Item  # Import your model
 
 class ItemSerializer(serializers.ModelSerializer):
 
@@ -189,22 +189,20 @@ class ItemSerializer(serializers.ModelSerializer):
         #     raise serializers.ValidationError("An item with this name already exists at this location.")
         
 class ImageSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Image
-        fields = ['id', 'name', 'file', 'description'] 
+        fields = ['id', 'item', 'name', 'file', 'description'] 
 
-class ImageUploadSerializer(serializers.Serializer):
-    files = serializers.ListField(child=serializers.ImageField())
+# class ImageUploadSerializer(serializers.Serializer):
+#     files = serializers.ListField(child=serializers.ImageField())
 
-class ItemImagesSerializer(serializers.ModelSerializer):
+# class ItemImagesSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ItemImages
+#         fields = ['id', 'image', 'item'] 
 
-    class Meta:
-        model = ItemImages
-        fields = ['id', 'image', 'item'] 
-
-class BulkItemImagesSerializer(serializers.ListSerializer):  # Allow list input
-    child = ItemImagesSerializer()
+# class BulkItemImagesSerializer(serializers.ListSerializer):  # Allow list input
+#     child = ItemImagesSerializer()
 
 # class DiningSerializer(serializers.HyperlinkedModelSerializer):
 # class DiningSerializer(serializers.ModelSerializer):

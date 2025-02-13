@@ -180,6 +180,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             if (selectedFiles.length > 0) {
                 const imageFormData = new FormData();
                 selectedFiles.forEach((file, index) => {
+                    imageFormData.append('item', itemId)
                     imageFormData.append('files', file);
                     imageFormData.append(`name_${index}`, fileNames[index] || file.name);
                     imageFormData.append(`description_${index}`, fileDescriptions[index] || '');
@@ -207,26 +208,26 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             }
 
             // Step 3: Add Item to Images association in table ItemImages
-            if (imageIds.length > 0) {
-                const itemImagesPayload = imageIds.map((imageId) => ({
-                    item: itemId,
-                    image: imageId,
-                }));
+            // if (imageIds.length > 0) {
+            //     const itemImagesPayload = imageIds.map((imageId) => ({
+            //         item: itemId,
+            //         image: imageId,
+            //     }));
     
-                const associationResponse = await fetch('http://localhost:8000/api_dank/itemimages/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(itemImagesPayload),
-                });
+            //     const associationResponse = await fetch('http://localhost:8000/api_dank/itemimages/', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(itemImagesPayload),
+            //     });
     
-                if (!associationResponse.ok) {
-                    const errorText = await associationResponse.text(); // Use .text() to catch non-JSON responses
-                    console.error('Error associating images with item:', errorText || '(empty response)');
-                    alert(`Error: ${errorText || 'Failed to associate images with item'}`);
-                    return;
-                }                
+            //     if (!associationResponse.ok) {
+            //         const errorText = await associationResponse.text(); // Use .text() to catch non-JSON responses
+            //         console.error('Error associating images with item:', errorText || '(empty response)');
+            //         alert(`Error: ${errorText || 'Failed to associate images with item'}`);
+            //         return;
+            //     }                
 
                 // if (!associationResponse.ok) {
                 //     const errorData = await associationResponse.json();
@@ -234,7 +235,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 //     alert(`Error: ${errorData.detail || 'Failed to associate images'}`);
                 //     return;
                 // }
-            }
+            // }
     
             alert('Item created successfully!');
             setSelectedFiles([]); // Clear selected files

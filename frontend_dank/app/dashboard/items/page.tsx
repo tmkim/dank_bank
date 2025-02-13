@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ItemTable from '@/app/ui/item-table';
-import { lusitana } from '@/app/ui/fonts';
 import ItemDetails from '@/app/ui/items/details';
 import { Item } from '@/app/lib/definitions';
 import { PlusIcon } from '@heroicons/react/24/outline';

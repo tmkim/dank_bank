@@ -6,8 +6,8 @@ from rest_framework.decorators import api_view #, action
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
-from .models import Image, Item, ItemImages #, Tag, Tag2Item, Image
-from .serializers import ImageUploadSerializer, ItemImagesSerializer, ItemSerializer
+from .models import Image, Item #, Tag, Tag2Item, Image
+from .serializers import ImageSerializer, ItemSerializer
 # , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer
 # from rest_framework import status
 # from rest_framework.response import Response
@@ -26,12 +26,21 @@ from django.conf import settings
 # logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 
-class ImageUploadView(APIView):
-    parser_classes = (MultiPartParser, FormParser)
-    serializer_class = ImageUploadSerializer
+class ImageViewSet(viewsets.ModelViewSet):
+    queryset = Image.objects.all()  # Define your queryset (all images)
+    serializer_class = ImageSerializer  # Use your Image serializer
 
-    def post(self, request, *args, **kwargs):
+    def get_queryset(self):
+        queryset = Image.objects.all()  # Start with all entries
+        item_id = self.request.query_params.get('item', None)
+        if item_id is not None:
+            queryset = queryset.filter(item_id=item_id)  # Filter by item_id
+        return queryset
+
+    def create(self, request, *args, **kwargs):
         files = request.FILES.getlist("files")
         image_data = []
 
@@ -39,6 +48,10 @@ class ImageUploadView(APIView):
             # Bulk creation of images
             images_to_create = []
             for index, file in enumerate(files):
+                item = request.data.get("item")
+                if not item:
+                    raise ValidationError(f"Item ID is required for file {index}.")
+                
                 name = request.data.get(f"name_{index}", "").strip()
                 description = request.data.get(f"description_{index}", "").strip()
                 
@@ -48,13 +61,16 @@ class ImageUploadView(APIView):
 
                 # Rename the file if the name is updated
                 if name != file.name:
-                    # Save the file to a temporary location with the updated name
-                    file_name = name
                     file_content = file.read()  # Read the file content
-                    file = ContentFile(file_content, name=file_name)  # Recreate file with new name
+                    file.seek(0)  # Reset file pointer for re-use
+                    file = ContentFile(file_content, name=name)  # Recreate file with new name
+                
+                # Ensure item is valid (e.g., checking for existence in DB if needed)
+                # Assuming item is an ID, you can use an Item model or foreign key validation if needed
+                item_instance = Item.objects.get(id=item)  # Add validation as needed
                 
                 # Create image object
-                image = Image(file=file, name=name, description=description)
+                image = Image(item=item_instance, file=file, name=name, description=description)
                 images_to_create.append(image)
 
             # Bulk create images
@@ -63,6 +79,7 @@ class ImageUploadView(APIView):
             # Prepare image data to return
             image_data = [{
                 "id": image.id,
+                "item_id": image.item.id,  # Access the actual item ID
                 "url": image.file.url,  # URL of the file
                 "name": image.name,
                 "description": image.description,
@@ -75,21 +92,24 @@ class ImageUploadView(APIView):
         except Exception as e:
             return Response({"error": "An unexpected error occurred: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+# class ItemImagesViewSet(viewsets.ModelViewSet):
+#     queryset = ItemImages.objects.all()
+#     serializer_class = ItemImagesSerializer
 
-class ItemImagesCreateView(generics.CreateAPIView):
-    queryset = ItemImages.objects.all()
-    serializer_class = ItemImagesSerializer
+#     def get_queryset(self):
+#         queryset = ItemImages.objects.all()  # Start with all entries
+#         item_id = self.request.query_params.get('item', None)
+#         if item_id is not None:
+#             queryset = queryset.filter(item_id=item_id)  # Filter by item_id
+#         return queryset
 
-    def create(self, request, *args, **kwargs):
-        is_many = isinstance(request.data, list)  # Check if data is a list
-        serializer = self.get_serializer(data=request.data, many=is_many)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     def create(self, request, *args, **kwargs):
+#         is_many = isinstance(request.data, list)  # Check if data is a list
+#         serializer = self.get_serializer(data=request.data, many=is_many)
+#         serializer.is_valid(raise_exception=True)
+#         self.perform_create(serializer)
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-class ItemImagesDeleteView(generics.DestroyAPIView):
-    queryset = ItemImages.objects.all()
-    serializer_class = ItemImagesSerializer
 
 # Create your views here.
 @api_view(['GET'])

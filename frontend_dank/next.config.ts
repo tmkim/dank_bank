@@ -1,9 +1,7 @@
-import type { NextConfig } from 'next';
-
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-    turbo: false, // Disable Turbopack
+  images: {
+    domains: ['dankbankbucket.s3.amazonaws.com'],
   },
 };
 

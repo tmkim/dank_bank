@@ -711,10 +711,17 @@ Today:
             -> rename to ItemImages
             ++ updated view to accept bulk image upload (list of dicts)
             ++ successfully create item-image associations when creating a new item!
+            ** restructured images to use item_id as foreign key instead of using assoc table
 
     Next we want to make sure our details are grabbing the correct images and displaying them
+        ++ items are currently fetching appropriate images by item_id
+        ~~ working on displaying images properly in carousel
+        ?? not sure why but my frontend isn't loading
+            -- changing port to 4000 made things load but wasn't retrieving anything from my backend? (items list was empty)
 
-    Finally we want to make sure that we can update our images
+    Will look into what's going on with my port and frontend tomorrow.
+
+    LATER: we want to make sure that we can update our images
         -- Update modal should pull the appropriate images and allow for change in name/desc
         -- Want to modify create modal to allow for name but prepop with filename
         
