@@ -39,6 +39,9 @@ class Item(models.Model):
     artist = models.CharField(max_length=200, blank=True, default='')
     music_meta = models.CharField(max_length=200, blank=True, default='')
 
+    class Meta:
+        ordering=['category', 'id']
+
 # class Image(models.Model):
 #     name = models.CharField(max_length=200)
 #     img_url = models.CharField(max_length=200)
@@ -57,12 +60,12 @@ class Image(models.Model):
     def __str__(self):
         return self.name or f"Image {self.id}"
 
-class Image2Item(models.Model):
+class ItemImages(models.Model):
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     
     class Meta:
-        ordering=['image_id']
+        ordering=['item']
 
 class Tag(models.Model):
     name = models.CharField(max_length=33)

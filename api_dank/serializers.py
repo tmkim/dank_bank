@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import re
-from .models import Image, Image2Item, Item  # Import your model
+from .models import Image, Item, ItemImages  # Import your model
 
 class ItemSerializer(serializers.ModelSerializer):
 
@@ -192,16 +192,19 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ['id', 'name', 'img_url', 'description'] 
+        fields = ['id', 'name', 'file', 'description'] 
 
 class ImageUploadSerializer(serializers.Serializer):
     files = serializers.ListField(child=serializers.ImageField())
 
-class Image2ItemSerializer(serializers.ModelSerializer):
+class ItemImagesSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Image2Item
-        fields = ['id', 'image_id', 'item_id'] 
+        model = ItemImages
+        fields = ['id', 'image', 'item'] 
+
+class BulkItemImagesSerializer(serializers.ListSerializer):  # Allow list input
+    child = ItemImagesSerializer()
 
 # class DiningSerializer(serializers.HyperlinkedModelSerializer):
 # class DiningSerializer(serializers.ModelSerializer):

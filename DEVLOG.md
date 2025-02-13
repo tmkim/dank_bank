@@ -702,3 +702,19 @@ Today:
         ++ Restructured upload to pass file info up to create modal
         ++ Added logic in CM to handle file selection + descriptions
         ++ Updated handleSubmit to POST images to s3 only after the rest of the form is validated
+
+2/12
+    Today we will finish implementing item uploads and work on item display!
+
+    Currently we can upload multiple items in our CreateModal
+        -- Need to update our association table Image2Item 
+            -> rename to ItemImages
+            ++ updated view to accept bulk image upload (list of dicts)
+            ++ successfully create item-image associations when creating a new item!
+
+    Next we want to make sure our details are grabbing the correct images and displaying them
+
+    Finally we want to make sure that we can update our images
+        -- Update modal should pull the appropriate images and allow for change in name/desc
+        -- Want to modify create modal to allow for name but prepop with filename
+        

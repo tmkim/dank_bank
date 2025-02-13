@@ -100,6 +100,27 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     // Handle image upload
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [fileDescriptions, setFileDescriptions] = useState<string[]>([]); // State for descriptions
+    const [fileNames, setFileNames] = useState<string[]>([]); // State for descriptions
+
+    // Update file descriptions when users type in the description for each file
+    const handleFileNameChange = (index: number, fileName: string) => {
+        // Get the original file name
+        const originalFileName = selectedFiles[index]?.name || '';
+    
+        // Extract the original file extension by finding the last dot in the filename
+        const extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1).toLowerCase();
+    
+        // Only update the filename part, preserving the original extension
+        if (extension && fileName) {
+            // Ensure the filename has the original extension
+            const updatedFileName = `${fileName.replace(/\.[^/.]+$/, '')}.${extension}`;
+    
+            // Update the file name state with the corrected value
+            const updatedFileNames = [...fileNames];
+            updatedFileNames[index] = updatedFileName;
+            setFileNames(updatedFileNames);
+        }
+    };
 
     // Update file descriptions when users type in the description for each file
     const handleDescriptionChange = (index: number, description: string) => {
@@ -112,6 +133,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     const handleFileSelection = (files: File[]) => {
         setSelectedFiles(files);
         setFileDescriptions(new Array(files.length).fill('')); // Initialize descriptions array with empty strings
+        setFileNames(files.map(file => file.name));
     };
 
     // Handle form submission
@@ -121,22 +143,21 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         const formData = new FormData(e.target as HTMLFormElement);
         const formObject = Object.fromEntries(formData.entries());
     
-        // Prepare the base payload (excluding images for now)
         const payload = {
             ...formObject,
             ...(selectedLocation && {
                 location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation
             }),
-            // Only include descriptions for files with descriptions
             images: selectedFiles.map((file, index) => ({
-                file, // You might not need the 'file' here if you're only using URLs
+                file,
+                name: fileNames[index] || null,
                 description: fileDescriptions[index] || null // Set description to null if empty
             })),
         };
     
         try {
             // Step 1: Send Form Data (Including Image URLs)
-            const response = await fetch('http://localhost:8000/api_dank/items/', {
+            const itemResponse = await fetch('http://localhost:8000/api_dank/items/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -144,75 +165,86 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 body: JSON.stringify(payload),
             });
 
+            if (!itemResponse.ok) {
+                const errorData = await itemResponse.json();
+                console.error('Error creating item:', errorData);
+                alert(`Error: ${errorData.detail || 'Failed to create item'}`);
+                return;
+            }
+            const itemData = await itemResponse.json();
+            const itemId = itemData.id;
+
             // Step 2: Upload Images only if the rest of the form is valid
+            let imageIds: number[] = [];
+
             if (selectedFiles.length > 0) {
                 const imageFormData = new FormData();
-                selectedFiles.forEach((file) => imageFormData.append('files', file));
+                selectedFiles.forEach((file, index) => {
+                    imageFormData.append('files', file);
+                    imageFormData.append(`name_${index}`, fileNames[index] || file.name);
+                    imageFormData.append(`description_${index}`, fileDescriptions[index] || '');
+                });
     
+                console.log(imageFormData); 
                 const uploadResponse = await fetch('http://localhost:8000/api_dank/upload/', {
                     method: 'POST',
                     body: imageFormData,
                 });
     
                 if (!uploadResponse.ok) {
-                    throw new Error('Image upload failed');
+                    const errorData = await uploadResponse.json();
+                    console.error('Error uploading images:', errorData);
+                    alert(`Error: ${errorData.detail || 'Failed to upload images'}`);
+                    return;
+                    // throw new Error('Image upload failed');
                 }
+                
+                const uploadedImages = await uploadResponse.json(); // Expecting { images: [{ id: image_id, url: '...' }] }
+                imageIds = uploadedImages.images.map((img: { id: number }) => img.id);
+
+                // const uploadedImages = await uploadResponse.json(); // Expecting { urls: ['url1', 'url2', ...] }
+                // payload.images = uploadedImages.urls; // Replace with URLs
+            }
+
+            // Step 3: Add Item to Images association in table ItemImages
+            if (imageIds.length > 0) {
+                const itemImagesPayload = imageIds.map((imageId) => ({
+                    item: itemId,
+                    image: imageId,
+                }));
     
-                const uploadedImages = await uploadResponse.json(); // Expecting { urls: ['url1', 'url2', ...] }
-                payload.images = uploadedImages.urls; // Replace with URLs
+                const associationResponse = await fetch('http://localhost:8000/api_dank/itemimages/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(itemImagesPayload),
+                });
+    
+                if (!associationResponse.ok) {
+                    const errorText = await associationResponse.text(); // Use .text() to catch non-JSON responses
+                    console.error('Error associating images with item:', errorText || '(empty response)');
+                    alert(`Error: ${errorText || 'Failed to associate images with item'}`);
+                    return;
+                }                
+
+                // if (!associationResponse.ok) {
+                //     const errorData = await associationResponse.json();
+                //     console.error('Error associating images:', errorData);
+                //     alert(`Error: ${errorData.detail || 'Failed to associate images'}`);
+                //     return;
+                // }
             }
     
-            if (response.ok) {
-                alert('Item created successfully!');
-                setSelectedFiles([]); // Clear selected files
-                onClose(); // Close the modal
-            } else {
-                const errorData = await response.json();
-                console.error('Error creating item:', errorData);
-                alert(`Error: ${errorData.detail || 'Failed to create item'}`);
-            }
+            alert('Item created successfully!');
+            setSelectedFiles([]); // Clear selected files
+            onClose(); // Close the modal
+
         } catch (error) {
             console.error('Network error:', error);
             alert('Network error. Please try again later.');
         }
     };
-
-
-    // const handleSubmit = async (e: React.FormEvent) => {
-    //     e.preventDefault();
-
-    //     const formData = new FormData(e.target as HTMLFormElement);
-    //     const formObject = Object.fromEntries(formData.entries());
-    //     console.log(formObject)
-
-        
-    //     const payload = {
-    //         ...formObject,
-    //         ...(selectedLocation && { location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation })
-    //     };
-
-    //     try {
-    //         const response = await fetch('http://localhost:8000/api_dank/items/', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(payload),
-    //         });
-
-    //         if (response.ok) {
-    //             alert('Item created successfully!');
-    //             onClose(); // Close the modal
-    //         } else {
-    //             const errorData = await response.json();
-    //             console.error('Error creating item:', errorData);
-    //             alert(`Error: ${errorData.detail || 'Failed to create item'}`);
-    //         }
-    //     } catch (error) {
-    //         console.error('Network error:', error);
-    //         alert('Network error. Please try again later.');
-    //     }
-    // };
 
     // Render specific inputs based on chosen category
     const renderCategorySpecificInputs = () => {
@@ -575,7 +607,11 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     <div>
                                         {selectedFiles.map((file, index) => (
                                         <div key={index} className="my-2">
-                                            <p className="ml-1">{file.name}</p>
+                                            <input 
+                                            required
+                                            value={fileNames[index] || file.name}
+                                            onChange={(e) => handleFileNameChange(index, e.target.value)}
+                                            className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
                                             <textarea
                                             placeholder="Description"
                                             value={fileDescriptions[index] || ''}
