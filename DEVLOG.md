@@ -738,3 +738,6 @@ Today:
     ++ Done!!
     
     ++ made custom manage.py command to clear image table for cleanup
+    ++ set up multi-delete for items for easy cleanup of test items
+
+    TOMORROW : set up image editing in update-modal

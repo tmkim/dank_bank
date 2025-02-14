@@ -8,6 +8,7 @@ import { Item } from '@/app/lib/definitions';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import CreateModal from '@/app/ui/items/create-modal';
 import Pagination from '@/app/ui/pagination';
+import DeleteItemsButton from '@/app/ui/items/multi-delete';
 // import ItemTable from '../components/ItemTable';
 
 type FilterChecks = {
@@ -143,6 +144,7 @@ const ItemsPage: React.FC = () => {
             >
               <PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry
             </button>
+            <DeleteItemsButton/>
           </div>
           <div className="flex justify-between space-x-2 mt-2">
             <div className="flex gap-2">

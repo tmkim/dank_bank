@@ -3,7 +3,7 @@
 from django.core.files.base import ContentFile
 from django.http import JsonResponse
 from rest_framework import viewsets
-from rest_framework.decorators import api_view #, action
+from rest_framework.decorators import action, api_view #, action
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
@@ -27,7 +27,7 @@ from django.conf import settings
 
 # logger = logging.getLogger(__name__)
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
 
@@ -128,6 +128,24 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     pagination_class = ItemPagination
 
+    @action(detail=False, methods=['delete'])
+    def delete_multiple(self, request):
+        item_ids = request.data.get('item_ids', [])
+        
+        if not item_ids:
+            return Response({'error': 'No items selected for deletion'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Delete items and their associated images
+        items = Item.objects.filter(id__in=item_ids)
+        for item in items:
+            images = Image.objects.filter(item=item)
+            for image in images:
+                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
+                image.delete()  # Delete image record from database
+            item.delete()  # Delete item record from database
+
+        return Response({'message': 'Items and associated images deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
     def get_queryset(self):
         """Override the default queryset to include filtering by query."""
         queryset = self.queryset
@@ -154,23 +172,40 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Add any additional custom save logic here
         serializer.save()
 
-    def delete_item(request, item_id):
+    def delete_items(request):
         try:
-            item = Item.objects.get(id=item_id)
+            # Retrieve the list of IDs from the request
+            item_ids = request.json().get('ids', [])
+
+            if not item_ids:
+                return JsonResponse({'error': 'No item IDs provided.'}, status=400)
+
+            # Get all the items and their associated images
+            items = Item.objects.filter(id__in=item_ids)
             
-            # Delete images from S3
-            images = Image.objects.filter(item=item)
-            for image in images:
-                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
-                image.delete()  # Delete image record from database
+            if not items.exists():
+                return JsonResponse({'error': 'Items not found.'}, status=404)
 
-            # Delete the item
-            item.delete()
+            for item in items:
+                # Delete associated images from S3
+                images = Image.objects.filter(item=item)
+                for image in images:
+                    s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
+                    image.delete()  # Delete image record from the database
+                
+                # Delete the item
+                item.delete()
 
-            return JsonResponse({'message': 'Item and associated images deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+            return JsonResponse({'message': 'Items and associated images deleted successfully.'}, status=204)
 
-        except Item.DoesNotExist:
-            return JsonResponse({'error': 'Item not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except ObjectDoesNotExist:
+            return JsonResponse({'error': 'One or more items not found.'}, status=404)
+
+        except Exception as e:
+            # Handle unexpected errors
+            return JsonResponse({'error': str(e)}, status=500)
+        
+    
     
 # class DiningViewSet(viewsets.ModelViewSet):
 #     queryset = Item.objects.filter(category='Dining')
