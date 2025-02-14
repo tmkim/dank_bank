@@ -32,18 +32,31 @@ const ImageCarousel = ({ itemId }: { itemId: number }) => {
     }
 
     return (
-        <div className="carousel-container">
-            <button onClick={goToPrevious} className="carousel-nav prev">Prev</button>
-            <div className="carousel-image">
-                {/* <Image 
+        <div className="relative w-full max-w-lg mx-auto">
+            {/* Image Display */}
+            <div className="relative w-full" style={{ paddingBottom: '100%' }}>
+                <Image
                     src={images[currentIndex].file}
-                    alt="Image Alt"
-                    layout="fill"
+                    alt="Carousel Image"
+                    fill
                     objectFit="cover"
-                /> */}
-                {/* <img src={images[currentIndex].file} alt={`Item image ${images[currentIndex].file}`} /> */}
+                    className="rounded-lg"
+                />
             </div>
-            <button onClick={goToNext} className="carousel-nav next">Next</button>
+
+            {/* Navigation Buttons */}
+            <button 
+                onClick={goToPrevious} 
+                className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+            >
+                ◀
+            </button>
+            <button 
+                onClick={goToNext} 
+                className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+            >
+                ▶
+            </button>
         </div>
     );
 };

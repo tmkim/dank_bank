@@ -725,3 +725,14 @@ Today:
         -- Update modal should pull the appropriate images and allow for change in name/desc
         -- Want to modify create modal to allow for name but prepop with filename
         
+2/13
+    Alright BOYS so no longer having issues with localhost:3000
+    Not sure what happened but we ok for now, so let's see work on image carousel 
+
+    Alright so i'm trying to use <Image> but it's being a bit weird.
+    Essentially it's not showing the image. But I see my alt text.
+    But the alt text is kind of being treated as a giant image that covers the whole page.
+
+    ok sick got it working!
+    Just had a thought -- if an item is deleted, corresponding images should be deleted too 
+    

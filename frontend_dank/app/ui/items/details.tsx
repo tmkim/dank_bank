@@ -164,10 +164,10 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
 
                         {/* Images - Carousel or Grid
                             Maybe - if no images, turn into upload button */}
-                        <div className="px-4 mt-4 w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <span className="text-gray-500">No Images Available</span>
-                        </div>
-                        {/* <ImageCarousel itemId={Number(item.id)} /> */}
+                        {/* <div className="px-4 mt-4 w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center"> */}
+                        <ImageCarousel itemId={Number(item.id)} />
+                        {/* <span className="text-gray-500">No Images Available</span> */}
+                        {/* </div> */}
                         {/* Review */}
                         <p className="mt-3">
                             "{item.review}"
