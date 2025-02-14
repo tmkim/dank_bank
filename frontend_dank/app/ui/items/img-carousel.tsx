@@ -28,7 +28,11 @@ const ImageCarousel = ({ itemId }: { itemId: number }) => {
     };
 
     if (images.length === 0) {
-        return <div>Loading...</div>; // Loading state
+        return(
+            <div className="px-4 mt-4 w-full bg-gray-200 h-[420px] rounded-lg flex items-center justify-center">
+                <span className="text-gray-500">No Images Available</span>
+            </div>
+        )
     }
 
     return (

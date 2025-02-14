@@ -1,6 +1,7 @@
 # from django.db import models
 # from django.shortcuts import render
 from django.core.files.base import ContentFile
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.decorators import api_view #, action
 from rest_framework.reverse import reverse
@@ -8,6 +9,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 from .models import Image, Item #, Tag, Tag2Item, Image
 from .serializers import ImageSerializer, ItemSerializer
+import boto3
 # , DiningSerializer, FoodSerializer, MusicSerializer, TravelSerializer, TagSerializer, Tag2ItemSerializer, ImageSerializer
 # from rest_framework import status
 # from rest_framework.response import Response
@@ -28,6 +30,10 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+
+s3 = boto3.client('s3', aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                region_name=settings.AWS_REGION)
 
 class ImageViewSet(viewsets.ModelViewSet):
     queryset = Image.objects.all()  # Define your queryset (all images)
@@ -92,25 +98,6 @@ class ImageViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": "An unexpected error occurred: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# class ItemImagesViewSet(viewsets.ModelViewSet):
-#     queryset = ItemImages.objects.all()
-#     serializer_class = ItemImagesSerializer
-
-#     def get_queryset(self):
-#         queryset = ItemImages.objects.all()  # Start with all entries
-#         item_id = self.request.query_params.get('item', None)
-#         if item_id is not None:
-#             queryset = queryset.filter(item_id=item_id)  # Filter by item_id
-#         return queryset
-
-#     def create(self, request, *args, **kwargs):
-#         is_many = isinstance(request.data, list)  # Check if data is a list
-#         serializer = self.get_serializer(data=request.data, many=is_many)
-#         serializer.is_valid(raise_exception=True)
-#         self.perform_create(serializer)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 # Create your views here.
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -166,6 +153,24 @@ class ItemViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         # Add any additional custom save logic here
         serializer.save()
+
+    def delete_item(request, item_id):
+        try:
+            item = Item.objects.get(id=item_id)
+            
+            # Delete images from S3
+            images = Image.objects.filter(item=item)
+            for image in images:
+                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
+                image.delete()  # Delete image record from database
+
+            # Delete the item
+            item.delete()
+
+            return JsonResponse({'message': 'Item and associated images deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+
+        except Item.DoesNotExist:
+            return JsonResponse({'error': 'Item not found.'}, status=status.HTTP_404_NOT_FOUND)
     
 # class DiningViewSet(viewsets.ModelViewSet):
 #     queryset = Item.objects.filter(category='Dining')

@@ -735,4 +735,6 @@ Today:
 
     ok sick got it working!
     Just had a thought -- if an item is deleted, corresponding images should be deleted too 
+    ++ Done!!
     
+    ++ made custom manage.py command to clear image table for cleanup

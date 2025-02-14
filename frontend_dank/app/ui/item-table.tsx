@@ -77,19 +77,20 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
             'Content-Type': 'application/json',
           },
         });
-
+  
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
-
+  
         setResults((prevResults) => prevResults.filter((item) => item.id !== itemToDelete.id));
         setIsDeleteModalOpen(false); // Close the modal after deleting
-
+  
       } catch (error) {
         console.error('Failed to delete item:', error);
       }
     }
   };
+  
 
   const handleCancelDelete = () => {
     setIsDeleteModalOpen(false);

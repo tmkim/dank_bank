@@ -2,11 +2,7 @@
 import { Item } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
-    CheckIcon,
-    ClockIcon,
     CurrencyDollarIcon,
-    MusicalNoteIcon,
-    UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import React, { useEffect, useState } from 'react';
@@ -187,7 +183,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 });
     
                 console.log(imageFormData); 
-                const uploadResponse = await fetch('http://localhost:8000/api_dank/upload/', {
+                const uploadResponse = await fetch('http://localhost:8000/api_dank/image/', {
                     method: 'POST',
                     body: imageFormData,
                 });
@@ -202,40 +198,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 
                 const uploadedImages = await uploadResponse.json(); // Expecting { images: [{ id: image_id, url: '...' }] }
                 imageIds = uploadedImages.images.map((img: { id: number }) => img.id);
-
-                // const uploadedImages = await uploadResponse.json(); // Expecting { urls: ['url1', 'url2', ...] }
-                // payload.images = uploadedImages.urls; // Replace with URLs
             }
-
-            // Step 3: Add Item to Images association in table ItemImages
-            // if (imageIds.length > 0) {
-            //     const itemImagesPayload = imageIds.map((imageId) => ({
-            //         item: itemId,
-            //         image: imageId,
-            //     }));
-    
-            //     const associationResponse = await fetch('http://localhost:8000/api_dank/itemimages/', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify(itemImagesPayload),
-            //     });
-    
-            //     if (!associationResponse.ok) {
-            //         const errorText = await associationResponse.text(); // Use .text() to catch non-JSON responses
-            //         console.error('Error associating images with item:', errorText || '(empty response)');
-            //         alert(`Error: ${errorText || 'Failed to associate images with item'}`);
-            //         return;
-            //     }                
-
-                // if (!associationResponse.ok) {
-                //     const errorData = await associationResponse.json();
-                //     console.error('Error associating images:', errorData);
-                //     alert(`Error: ${errorData.detail || 'Failed to associate images'}`);
-                //     return;
-                // }
-            // }
     
             alert('Item created successfully!');
             setSelectedFiles([]); // Clear selected files

@@ -23,6 +23,7 @@ AWS_SECRET_ACCESS_KEY = os.environ['AWS_ACC_KEY']
 AWS_STORAGE_BUCKET_NAME = os.environ['BUCKET_NAME']
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
+AWS_REGION='us-east-2'
 
 # Use S3 for media storage  
 # AWS_QUERYSTRING_AUTH = False  # Make URLs public (optional, for direct viewing)
