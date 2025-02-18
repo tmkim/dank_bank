@@ -39,15 +39,21 @@ const ImageCarousel = ({ itemId }: { itemId: number }) => {
     return (
         <div className="relative w-full max-w-lg mx-auto">
             {/* Image Display */}
-            <div className="relative w-full" style={{ paddingBottom: '100%' }}>
-                <Image
+            <div className="w-full max-w-sm mx-auto">
+                <div className="relative w-full" style={{ paddingBottom: '125%' }}>
+                    <Image
                     src={images[currentIndex].file}
                     alt="Carousel Image"
                     fill
-                    objectFit="cover"
                     className="rounded-lg"
-                />
+                    loading="eager"
+                    />
+                </div>
+                <link rel="preload" as="image" href={images[(currentIndex + 1) % images.length].file} />
+                <link rel="preload" as="image" href={images[(currentIndex - 1 + images.length) % images.length].file} />
+                <p className="text-md italic w-full">{images[currentIndex].description}</p>
             </div>
+
 
             {/* Navigation Buttons */}
             <button 

@@ -784,3 +784,8 @@ Today:
         ** Add is working!
         ** Delete is working!
         ** Tested that it can do batch operations!
+
+    2. Display image captions 
+        -- added <p> and fixed alignment with image
+        ** also fixed images to load faster using "eager" and preloading next/prev images.
+    
