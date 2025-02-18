@@ -27,6 +27,13 @@ export type Item = {
   music_meta: string;
 }
 
+export type Image = {
+  id: string;
+  file: File;
+  name: string;
+  description: string;
+}
+
 export type ItemTable = {
   id: string;
   category: 'Dining' | 'Food' | 'Music' | 'Travel'; //enum?

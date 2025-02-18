@@ -1,5 +1,5 @@
 'use client'
-import { Item } from '@/app/lib/definitions';
+import { Item, Image } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
   CheckIcon,
@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import { useEffect, useState } from 'react';
+import ImageUploader from '../upload';
 
 type Category = Item['category'];
 type MSource = Item['music_source'];
@@ -52,6 +53,9 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     const [selectedLocation, setSelectedLocation] = useState<string>(item.location); // Selected location
     const [customLocation, setCustomLocation] = useState<string>('');
 
+    // Images associated with item
+    const [selectedImages, setSelectedImages] = useState<Image[]>([]);
+
     useEffect(() => {
         // Fetch items with category "Dining"
         const fetchDiningItems = async () => {
@@ -72,7 +76,16 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                 console.error('Error fetching dining items:', error);
             }
             };
-    
+
+        const fetchImages = async () => {
+            const response = await fetch(`http://localhost:8000/api_dank/image/?item=${item.id}`);
+            const data = await response.json();
+            console.log(data)
+            setSelectedImages(data.results); // Assuming your response contains the image data in "results"
+            
+        };
+
+        fetchImages();
         fetchDiningItems();
     }, []);
 
@@ -89,6 +102,49 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomLocation(e.target.value);
     };
+
+    //------------------------
+    // Handle image updates
+
+
+    // Update file descriptions when users type in the description for each file
+    const handleFileNameChange = (index: number, fileName: string) => {
+        const updatedFiles = [...selectedImages];
+        const originalFileName = updatedFiles[index]?.name || '';
+        const extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1).toLowerCase();
+      
+        // Only update the filename if an extension exists
+        if (extension && fileName) {
+          const updatedFileName = `${fileName.replace(/\.[^/.]+$/, '')}.${extension}`;
+          updatedFiles[index].name = updatedFileName;  // Update the name of the selected image
+          setSelectedImages(updatedFiles);
+        }
+      };
+
+    // Update file descriptions when users type in the description for each file
+    const handleDescriptionChange = (index: number, description: string) => {
+        const updatedFiles = [...selectedImages];
+        updatedFiles[index].description = description;  // Update the description of the selected image
+        setSelectedImages(updatedFiles);
+      };
+
+    // Handle file selection passed from ImageUploader
+    const handleFileSelection = (files: Image[]) => {
+        // Create new image objects with the file, empty description, and name from the file
+        const newImages = files.map((file) => ({
+          id: '', // Temporary ID (could be updated after upload)
+          file: file.file,
+          name: file.name,
+          description: '',
+        }));
+      
+        // Append the new images to the existing images
+        // setSelectedImages((prevFiles) => [...prevFiles, ...newImages]);
+        setSelectedImages((prevFiles) => {
+            console.log("Previous files:", prevFiles);
+            return [...prevFiles, ...newImages];  // Make sure we're appending, not duplicating
+          });
+      };
 
   // ------------------------------- modal
 
@@ -557,7 +613,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                         </div>
 
                         {/* Image Upload */}
-                        <div>
+                        {/* <div>
                             <label htmlFor="images" className="block text-base font-medium text-gray-700 mb-2">
                                 Image Upload Here:
                             </label>
@@ -569,6 +625,30 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                                 multiple  // Allows multiple files
                                 className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
+                        </div> */}
+                        <div>
+                            <ImageUploader onImagesSelected={handleFileSelection} itemImages={selectedImages} />
+                            <div className="mt-4 pl-2 pr-4 h-40 block border rounded-md border-gray-400 overflow-y-auto">
+                                {selectedImages.length > 0 && (
+                                <div>
+                                    {selectedImages.map((file, index) => (
+                                    <div key={index} className="my-2">
+                                        <input 
+                                        required
+                                        value={file.name}
+                                        onChange={(e) => handleFileNameChange(index, e.target.value)}
+                                        className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                                        <textarea
+                                        placeholder="Description"
+                                        value={file.description}
+                                        onChange={(e) => handleDescriptionChange(index, e.target.value)}
+                                        className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        />
+                                    </div>
+                                    ))}
+                                </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 

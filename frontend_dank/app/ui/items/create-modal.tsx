@@ -1,5 +1,5 @@
 'use client'
-import { Item } from '@/app/lib/definitions';
+import { Item, Image } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
     CurrencyDollarIcon,
@@ -94,43 +94,48 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     const [rating, setRating] = useState(50); // Default value can be 50 or whatever you'd like
 
     // Handle image upload
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-    const [fileDescriptions, setFileDescriptions] = useState<string[]>([]); // State for descriptions
-    const [fileNames, setFileNames] = useState<string[]>([]); // State for descriptions
+    const [selectedImages, setSelectedImages] = useState<Image[]>([]);
+    
 
     // Update file descriptions when users type in the description for each file
+    // Update file descriptions when users type in the description for each file
     const handleFileNameChange = (index: number, fileName: string) => {
-        // Get the original file name
-        const originalFileName = selectedFiles[index]?.name || '';
-    
-        // Extract the original file extension by finding the last dot in the filename
+        const updatedFiles = [...selectedImages];
+        const originalFileName = updatedFiles[index]?.name || '';
         const extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1).toLowerCase();
-    
-        // Only update the filename part, preserving the original extension
+      
+        // Only update the filename if an extension exists
         if (extension && fileName) {
-            // Ensure the filename has the original extension
-            const updatedFileName = `${fileName.replace(/\.[^/.]+$/, '')}.${extension}`;
-    
-            // Update the file name state with the corrected value
-            const updatedFileNames = [...fileNames];
-            updatedFileNames[index] = updatedFileName;
-            setFileNames(updatedFileNames);
+          const updatedFileName = `${fileName.replace(/\.[^/.]+$/, '')}.${extension}`;
+          updatedFiles[index].name = updatedFileName;  // Update the name of the selected image
+          setSelectedImages(updatedFiles);
         }
-    };
+      };
 
     // Update file descriptions when users type in the description for each file
     const handleDescriptionChange = (index: number, description: string) => {
-        const updatedDescriptions = [...fileDescriptions];
-        updatedDescriptions[index] = description;
-        setFileDescriptions(updatedDescriptions);
-    };
+        const updatedFiles = [...selectedImages];
+        updatedFiles[index].description = description;  // Update the description of the selected image
+        setSelectedImages(updatedFiles);
+      };
 
     // Handle file selection passed from ImageUploader
-    const handleFileSelection = (files: File[]) => {
-        setSelectedFiles(files);
-        setFileDescriptions(new Array(files.length).fill('')); // Initialize descriptions array with empty strings
-        setFileNames(files.map(file => file.name));
-    };
+    const handleFileSelection = (files: Image[]) => {
+        // Create new image objects with the file, empty description, and name from the file
+        const newImages = files.map((file) => ({
+          id: '', // Temporary ID (could be updated after upload)
+          file: file.file,
+          name: file.name,
+          description: '',
+        }));
+      
+        // Append the new images to the existing images
+        // setSelectedImages((prevFiles) => [...prevFiles, ...newImages]);
+        setSelectedImages((prevFiles) => {
+            console.log("Previous files:", prevFiles);
+            return [...prevFiles, ...newImages];  // Make sure we're appending, not duplicating
+          });
+      };
 
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
@@ -144,10 +149,10 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             ...(selectedLocation && {
                 location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation
             }),
-            images: selectedFiles.map((file, index) => ({
-                file,
-                name: fileNames[index] || null,
-                description: fileDescriptions[index] || null // Set description to null if empty
+            images: selectedImages.map((file, index) => ({
+                file: file.file,
+                name: file.name,
+                description: file.description // Set description to null if empty
             })),
         };
     
@@ -173,13 +178,13 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             // Step 2: Upload Images only if the rest of the form is valid
             let imageIds: number[] = [];
 
-            if (selectedFiles.length > 0) {
+            if (selectedImages.length > 0) {
                 const imageFormData = new FormData();
-                selectedFiles.forEach((file, index) => {
+                selectedImages.forEach((file, index) => {
                     imageFormData.append('item', itemId)
-                    imageFormData.append('files', file);
-                    imageFormData.append(`name_${index}`, fileNames[index] || file.name);
-                    imageFormData.append(`description_${index}`, fileDescriptions[index] || '');
+                    imageFormData.append('files', file.file);
+                    imageFormData.append(`name_${index}`, file.name);
+                    imageFormData.append(`description_${index}`, file.description);
                 });
     
                 console.log(imageFormData); 
@@ -201,7 +206,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             }
     
             alert('Item created successfully!');
-            setSelectedFiles([]); // Clear selected files
+            setSelectedImages([]); // Clear selected files
             onClose(); // Close the modal
 
         } catch (error) {
@@ -565,20 +570,20 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
                             {/* Image Upload */}
                             <div>
-                                <ImageUploader onFilesSelected={handleFileSelection} />
+                                <ImageUploader onImagesSelected={handleFileSelection} />
                                 <div className="mt-4 pl-2 pr-4 h-40 block border rounded-md border-gray-400 overflow-y-auto">
-                                    {selectedFiles.length > 0 && (
+                                    {selectedImages.length > 0 && (
                                     <div>
-                                        {selectedFiles.map((file, index) => (
+                                        {selectedImages.map((file, index) => (
                                         <div key={index} className="my-2">
                                             <input 
                                             required
-                                            value={fileNames[index] || file.name}
+                                            value={file.name}
                                             onChange={(e) => handleFileNameChange(index, e.target.value)}
                                             className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
                                             <textarea
                                             placeholder="Description"
-                                            value={fileDescriptions[index] || ''}
+                                            value={file.description || ''}
                                             onChange={(e) => handleDescriptionChange(index, e.target.value)}
                                             className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                             />

@@ -741,3 +741,34 @@ Today:
     ++ set up multi-delete for items for easy cleanup of test items
 
     TOMORROW : set up image editing in update-modal
+
+2/17
+    What's good fam, took a small break over the weekend but we're back in action 
+
+    Let's see what we have left to do this week.
+    1. Update images on Item Edit Form 
+    2. Display image captions 
+    3? database for select options?
+    4? refactor backend to make it easier to add categories 
+        -- right now need to add more fields to item table.. not the worst but not very clean
+    5. Separate "public" vs "private" views 
+        -- visitors shouldn't be able to add/edit/delete 
+        -- but I don't want to make people log in to view, should be public access 
+    6. Work on details formatting (mostly images)
+
+    1. Update-modal images behavior:
+        When modal is loaded, "selectedFiles" should include all images that are currently associated with the item
+        User can either add new, edit existing, remove existing
+        Add - append to current selectedFiles
+        Edit - existing files appear as inputs, change as necessary
+            .. have to keep track of image ID to edit proper row in db
+        Delete - small X button with confirmation, remove from list
+
+        onSubmit - compare new list of images with old list -- add new, edit changed, delete missing (+ delete from s3)
+
+        ++ clicking Edit button will correctly populate image list
+        -- Selecting new files clears list
+
+        ** updated image upload to use a list of Image type instead of File type
+        ** updated create-modal, tested that it works
+        

@@ -1,26 +1,44 @@
 // upload.tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Image } from '../lib/definitions';
 
 interface UploadProps {
-  onFilesSelected: (files: File[]) => void;
+  onImagesSelected: (files: Image[]) => void;
+  itemImages?: Image[];
 }
 
-export default function ImageUploader({ onFilesSelected }: UploadProps) {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+export default function ImageUploader({ onImagesSelected, itemImages = [] }: UploadProps) {
+  const [selectedImages, setSelectedimages] = useState<Image[]>(itemImages);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setSelectedFiles(filesArray);
-      onFilesSelected(filesArray); // Pass files up to the parent component
+
+      // Map the files to Image objects
+      const newImages = filesArray.map((file) => ({
+        id: '',  // Empty initially; you can set this after upload if needed
+        file,
+        name: file.name,
+        description: '',
+      }));
+
+      // Update the state by appending new images
+      setSelectedimages(newImages);
     }
   };
+  
+  // Runs whenever `selectedFiles` changes, ensuring updates happen after state has been set
+  useEffect(() => {
+    if (selectedImages.length > 0) {
+      onImagesSelected(selectedImages);
+    }
+  }, [selectedImages]); 
 
   return (
     <div>
       <label htmlFor="images" className="block text-base font-medium text-gray-700 mb-2">
-          Image Upload Here:
+          Add Images:
       </label>
       <div>
         <input type="file" multiple onChange={handleFileChange} 

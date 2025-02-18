@@ -150,7 +150,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
     return (
         <div className="flow-root">
             <div className="inline-block min-w-full align-middle">
-                <div className="h-[80vh] border-separate overflow-clip rounded-xl border-2 border-gray-400 border-4 border-solid flex flex-col text-xl">
+                <div className="h-[80vh] border-separate overflow-y-auto rounded-xl border-2 border-gray-400 border-4 border-solid flex flex-col text-xl">
                     <div className="px-4">
                         <div className="flex justify-center gap-1 mt-2 mb-2">{getStarRating(item.rating)}</div>
                         {/* Name */}
