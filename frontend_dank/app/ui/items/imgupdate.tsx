@@ -24,21 +24,6 @@ interface UpdateProps {
 
 {/* export default function Form() {   */ }
 const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
-    // Item data states
-    const [name, setName] = useState(item.name);
-    const [category, setCategory] = useState(item.category);
-    const [review, setReview] = useState(item.review);
-    const [rating, setRating] = useState(item.rating);
-    const [address, setAddress] = useState(item.address);
-    const [location, setLocation] = useState(item.location);
-    const [gmap_url, setGmap_url] = useState(item.gmap_url);
-    const [item_url, setItem_url] = useState(item.item_url);
-    // const [price_range, setPrice_range] = useState(item.price_range);
-    const [cost, setCost] = useState(item.cost);
-    const [cuisine, setCuisine] = useState(item.cuisine);
-    // const [music_source, setMusic_source] = useState(item.music_source);
-    const [artist, setArtist] = useState(item.artist);
-    const [music_meta, setMusic_meta] = useState(item.music_meta);
 
     // Category Select -- might not let them change this though
     const categories: Category[] = ['Dining', 'Food', 'Music', 'Travel'];
@@ -98,8 +83,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
             const response = await fetch(`http://localhost:8000/api_dank/image/?item=${item.id}`);
             const data = await response.json();
             // console.log(data)
-            setSelectedImages(JSON.parse(JSON.stringify(data.results)));
-            setOriginalImages(JSON.parse(JSON.stringify(data.results)));
+            setSelectedImages(data.results);
+            setOriginalImages(data.results);
         };
 
         fetchImages();
@@ -174,93 +159,75 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     };
 
     // Define the type for each request array
-    const updateRequests: Promise<Response>[] = [];
-    const deleteRequests: Promise<Response>[] = [];
-    const addRequest: Promise<Response>[] = [];
-    const newImagesList: Image[] = [];
-    
-    // Function to compare images and handle API requests
-    const handleImageChanges = (
-      originalImages: Image[], 
-      newImages: Image[]
-    ) => {
+const updateRequests: Promise<AxiosResponse>[] = [];
+const deleteRequests: Promise<AxiosResponse>[] = [];
+const addRequests: Promise<AxiosResponse>[] = [];
 
-      newImages.forEach((newImage) => {
-        const originalImage = originalImages.find((image) => image.id === newImage.id);
-    
-        // Case 1: If the image is unchanged, skip
-        if (originalImage && originalImage.name === newImage.name && originalImage.description === newImage.description) {
-            console.log(`No change detected - ${originalImage.name}:${originalImage.description}`)
-            return; // No change, skip
-        }
-    
-        // Case 2: If the image has changed (name or description)
-        if (originalImage) {
-            const formData = new FormData();
-            formData.append('name', newImage.name);
-            formData.append('description', newImage.description);
-          // Update the existing image
-          console.log(`Update detected - ${newImage}`)
-          updateRequests.push(
-            fetch(`http://localhost:8000/api_dank/image/${newImage.id}/`, {
-              method: 'PATCH',
-              body: formData,
-            })
-          );
-        } else {
-          // Case 3: If the image is new (no id)
-          newImagesList.push(newImage)
-        //   console.log(`New image detected - ${newImage}`)
-        //   const imageFormData = new FormData();
-        //     imageFormData.append('item', item.id)
-        //     imageFormData.append('files', newImage.file);
-        //     imageFormData.append(`name_0`, newImage.name);
-        //     imageFormData.append(`description_0`, newImage.description);
-        //   addRequests.push(
-        //     fetch('http://localhost:8000/api_dank/image/', {
-        //       method: 'POST',
-        //       body: imageFormData
-        //     })
-        //   );
-        }
-      });
-    
-      // Case 4: Handle deleted images
-      originalImages.forEach((originalImage) => {
-        const newImage = newImages.find((image) => image.id === originalImage.id);
-    
-        if (!newImage) {
-          // If the image no longer exists, delete it
-          console.log(`Deletion detected`)
-          deleteRequests.push(
-            fetch(`http://localhost:8000/api_dank/image/${originalImage.id}/`, {
-              method: 'DELETE',
-            })
-          );
-        }
-      });
+// Function to compare images and handle API requests
+const handleImageChanges = (
+  originalImages: Image[], 
+  newImages: Image[]
+) => {
+  newImages.forEach((newImage) => {
+    const originalImage = originalImages.find((image) => image.id === newImage.id);
 
-      if (newImagesList.length > 0) {
-        const imageFormData = new FormData();
-        newImagesList.forEach((file, index) => {
-            imageFormData.append('item', item.id)
-            imageFormData.append('files', file.file);
-            imageFormData.append(`name_${index}`, file.name);
-            imageFormData.append(`description_${index}`, file.description);
-        });
-
-        console.log(imageFormData); 
-        addRequest.push(fetch('http://localhost:8000/api_dank/image/', {
-            method: 'POST',
-            body: imageFormData,
-            })
-        );
+    // Case 1: If the image is unchanged, skip
+    if (originalImage && originalImage.name === newImage.name && originalImage.description === newImage.description) {
+      return; // No change, skip
     }
+
+    // Case 2: If the image has changed (name or description)
+    if (originalImage) {
+      // Update the existing image
+      updateRequests.push(
+        axios.put(`http://localhost:8000/api_dank/image/${newImage.id}/`, {
+          name: newImage.name,
+          description: newImage.description,
+        })
+      );
+    } else {
+      // Case 3: If the image is new (no id)
+      addRequests.push(
+        axios.post('http://localhost:8000/api_dank/image/', {
+          name: newImage.name,
+          description: newImage.description,
+          file: newImage.file, // Assuming you're sending the file to the API
+        })
+      );
+      console.log(`Image added ${newImage.name}`)
+    }
+  });
+
+  // Case 4: Handle deleted images
+  originalImages.forEach((originalImage) => {
+    const newImage = newImages.find((image) => image.id === originalImage.id);
+
+    if (!newImage) {
+      // If the image no longer exists, delete it
+      deleteRequests.push(
+        axios.delete(`http://localhost:8000/api_dank/image/${originalImage.id}/`)
+      );
+    }
+  });
 };
-    
 
 
   // ------------------------------- modal
+
+  const [name, setName] = useState(item.name);
+  const [category, setCategory] = useState(item.category);
+  const [review, setReview] = useState(item.review);
+  const [rating, setRating] = useState(item.rating);
+  const [address, setAddress] = useState(item.address);
+  const [location, setLocation] = useState(item.location);
+  const [gmap_url, setGmap_url] = useState(item.gmap_url);
+  const [item_url, setItem_url] = useState(item.item_url);
+  const [price_range, setPrice_range] = useState(item.price_range);
+  const [cost, setCost] = useState(item.cost);
+  const [cuisine, setCuisine] = useState(item.cuisine);
+  const [music_source, setMusic_source] = useState(item.music_source);
+  const [artist, setArtist] = useState(item.artist);
+  const [music_meta, setMusic_meta] = useState(item.music_meta);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -316,23 +283,13 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         const allRequests = [
           ...updateRequests,
           ...deleteRequests,
-          ...addRequest,
+          ...addRequests,
         ];
     
-        const responses = await Promise.allSettled(allRequests);
-
+        const responses = await Promise.all(allRequests);
+    
         // Handle the responses (successful updates/deletes/adds)
-        responses.forEach((response) => {
-            if (response.status === 'fulfilled') {
-                if (response.value.ok) {
-                    console.log('Request succeeded:', response.value);
-                } else {
-                    console.error('Request failed with status:', response.value.status, response.value);
-                }
-            } else {
-                console.error('Request failed:', response.reason);
-            }
-        });
+        console.log('All requests succeeded:', responses);
       } catch (error) {
         // Handle errors
         console.error('Error occurred while handling images:', error);
@@ -744,6 +701,19 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                         </div>
 
                         {/* Image Upload */}
+                        {/* <div>
+                            <label htmlFor="images" className="block text-base font-medium text-gray-700 mb-2">
+                                Image Upload Here:
+                            </label>
+                            <input
+                                id="images"
+                                name="images"
+                                type="file"
+                                accept="image/*"  // Ensures only image files can be selected
+                                multiple  // Allows multiple files
+                                className="block w-full rounded-md border border-gray-300 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+                        </div> */}
                         <div>
                             <ImageUploader onImagesSelected={handleFileSelection} itemImages={selectedImages} />
                             <div className="mt-4 pl-2 pr-4 h-40 block border rounded-md border-gray-400 overflow-y-auto">

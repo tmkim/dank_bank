@@ -98,6 +98,29 @@ class ImageViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": "An unexpected error occurred: " + str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def destroy(self, request, *args, **kwargs):
+        image = self.get_object()
+        file_url = image.file.url
+
+        try:
+            # Extract the file name from the URL (e.g., images/filename.jpg)
+            file_name = file_url.split('/')[-1]
+            
+            # Delete the file from the S3 bucket
+            s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'images/{file_name}')
+            print(f"Deleted {file_name} from S3")
+
+            # Now delete the image record from the database
+            image.delete()
+
+            # Return a success response
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Exception as e:
+            # If something goes wrong (e.g., file doesn't exist in S3), handle the error
+            print(f"Error deleting from S3: {e}")
+            return Response({"detail": "Failed to delete the image from S3"}, status=status.HTTP_400_BAD_REQUEST)
+
 # Create your views here.
 @api_view(['GET'])
 def api_root(request, format=None):

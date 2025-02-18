@@ -772,3 +772,15 @@ Today:
         ** updated image upload to use a list of Image type instead of File type
         ** updated create-modal, tested that it works
         
+2/18 continuing with image updates 
+    
+    ~ Working on API requests when update is submitted
+        -- Delete removes from database but not s3
+        -- Update not saving new info
+        -- Add is not adding to either db or s3
+
+        ** Update is working! Had to swap from PUT to PATCH
+        ** Skip unchanged image is working!
+        ** Add is working!
+        ** Delete is working!
+        ** Tested that it can do batch operations!
