@@ -11,6 +11,7 @@ import {
 import { Button } from '@/app/ui/button';
 import { useEffect, useState } from 'react';
 import ImageUploader from '../upload';
+import axios, { AxiosResponse } from 'axios';
 
 type Category = Item['category'];
 type MSource = Item['music_source'];
@@ -55,6 +56,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
     // Images associated with item
     const [selectedImages, setSelectedImages] = useState<Image[]>([]);
+    const [originalImages, setOriginalImages] = useState<Image[]>([]);
 
     useEffect(() => {
         // Fetch items with category "Dining"
@@ -80,9 +82,9 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         const fetchImages = async () => {
             const response = await fetch(`http://localhost:8000/api_dank/image/?item=${item.id}`);
             const data = await response.json();
-            console.log(data)
-            setSelectedImages(data.results); // Assuming your response contains the image data in "results"
-            
+            // console.log(data)
+            setSelectedImages(data.results);
+            setOriginalImages(data.results);
         };
 
         fetchImages();
@@ -146,6 +148,70 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           });
       };
 
+      const handleImageDelete = (index: number) => {
+        // Show confirmation dialog
+        const confirmDelete = window.confirm("Are you sure you want to delete this image?");
+        
+        if (confirmDelete) {
+            // If confirmed, remove the image at the specified index
+            setSelectedImages((prevFiles) => prevFiles.filter((_, i) => i !== index));
+        }
+    };
+
+    // Define the type for each request array
+const updateRequests: Promise<AxiosResponse>[] = [];
+const deleteRequests: Promise<AxiosResponse>[] = [];
+const addRequests: Promise<AxiosResponse>[] = [];
+
+// Function to compare images and handle API requests
+const handleImageChanges = (
+  originalImages: Image[], 
+  newImages: Image[]
+) => {
+  newImages.forEach((newImage) => {
+    const originalImage = originalImages.find((image) => image.id === newImage.id);
+
+    // Case 1: If the image is unchanged, skip
+    if (originalImage && originalImage.name === newImage.name && originalImage.description === newImage.description) {
+      return; // No change, skip
+    }
+
+    // Case 2: If the image has changed (name or description)
+    if (originalImage) {
+      // Update the existing image
+      updateRequests.push(
+        axios.put(`http://localhost:8000/api_dank/image/${newImage.id}/`, {
+          name: newImage.name,
+          description: newImage.description,
+        })
+      );
+    } else {
+      // Case 3: If the image is new (no id)
+      addRequests.push(
+        axios.post('http://localhost:8000/api_dank/image/', {
+          name: newImage.name,
+          description: newImage.description,
+          file: newImage.file, // Assuming you're sending the file to the API
+        })
+      );
+      console.log(`Image added ${newImage.name}`)
+    }
+  });
+
+  // Case 4: Handle deleted images
+  originalImages.forEach((originalImage) => {
+    const newImage = newImages.find((image) => image.id === originalImage.id);
+
+    if (!newImage) {
+      // If the image no longer exists, delete it
+      deleteRequests.push(
+        axios.delete(`http://localhost:8000/api_dank/image/${originalImage.id}/`)
+      );
+    }
+  });
+};
+
+
   // ------------------------------- modal
 
   const [name, setName] = useState(item.name);
@@ -165,7 +231,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // onUpdate({ ...item, name, review, rating });
+
+    // Update item
     try {
       console.log(`http://localhost:8000/api_dank/items/${item.id}/`)
       const response = await fetch(`http://localhost:8000/api_dank/items/${item.id}/`, {
@@ -206,6 +273,27 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     } catch (error) {
       console.error('Failed to update item:', error);
     }
+
+    // Handle Image Updates
+    try {
+        // Compare and create requests for updates, deletions, and additions
+        handleImageChanges(originalImages, selectedImages);
+    
+        // Run all the API requests concurrently using Promise.all
+        const allRequests = [
+          ...updateRequests,
+          ...deleteRequests,
+          ...addRequests,
+        ];
+    
+        const responses = await Promise.all(allRequests);
+    
+        // Handle the responses (successful updates/deletes/adds)
+        console.log('All requests succeeded:', responses);
+      } catch (error) {
+        // Handle errors
+        console.error('Error occurred while handling images:', error);
+      }
   };
 
   const renderCategoryUpdate = () => {
@@ -633,22 +721,39 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                                 <div>
                                     {selectedImages.map((file, index) => (
                                     <div key={index} className="my-2">
-                                        <input 
-                                        required
-                                        value={file.name}
-                                        onChange={(e) => handleFileNameChange(index, e.target.value)}
-                                        className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"/>
+                                        {/* Container for the X button and name input */}
+                                        <div className="flex items-center mb-2">
+                                            {/* X Button to delete */}
+                                            <button
+                                                onClick={() => handleImageDelete(index)}
+                                                className="mr-2 text-red-500 hover:text-red-700 focus:outline-none"
+                                                aria-label="Delete"
+                                            >
+                                                ❌
+                                            </button>
+
+                                            {/* Input field for file name */}
+                                            <input 
+                                                required
+                                                value={file.name}
+                                                onChange={(e) => handleFileNameChange(index, e.target.value)}
+                                                className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            />
+                                        </div>
+
+                                        {/* Textarea for file description */}
                                         <textarea
-                                        placeholder="Description"
-                                        value={file.description}
-                                        onChange={(e) => handleDescriptionChange(index, e.target.value)}
-                                        className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                            placeholder="Description"
+                                            value={file.description}
+                                            onChange={(e) => handleDescriptionChange(index, e.target.value)}
+                                            className="block w-full h-10 rounded-md border border-gray-400 px-4 py-2 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                                         />
                                     </div>
                                     ))}
                                 </div>
                                 )}
                             </div>
+
                         </div>
                     </div>
 
