@@ -23,7 +23,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
   // ------------ populate list with results -------------
 
@@ -33,7 +33,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
 
   useEffect(() => {
     const fetchItems = async () => {
-      setLoading(true)
+      // setLoading(true)
       try {
         const categoryParams = categories.length > 0 ? '&category=' + categories.join('&category=') : '';
         const response = await fetch(
@@ -52,7 +52,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         // console.error('Failed to fetch items:', err);
         setError('Failed to load items.');
       } finally {
-        setLoading(false)
+        // setLoading(false)
       }
     };
 
@@ -108,9 +108,9 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     );
   };
 
-  if (loading) {
-    return (<ItemTableSkeleton />)
-  }
+  // if (loading) {
+  //   return (<ItemTableSkeleton />)
+  // }
 
   return (
     <>
@@ -131,13 +131,13 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white overflow-auto max-h-[65vh] block border-b-0 border-gray-400">
+              <tbody className="bg-white overflow-y-auto max-h-[65vh] block border-b-0 border-gray-400">
                 {results.map((item, i) => (
                   <tr
                     key={item.id}
                     className={clsx(
                       'flex items-center justify-between py-4 pl-4 pr-4 hover:bg-gray-100 cursor-pointer',
-                      { 'border-t border-gray-500': i !== 0 }
+                      { 'border-t border-gray-500': i !== 0, 'mb-4': i === results.length - 1}
                     )}
                     onClick={() => onRowClick(item)}
                   >
@@ -188,11 +188,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
             />
           </div>
         </div>
-
       </div>
-
-      <div className="mt-4 flex items-center justify-between">
-    </div>
     </>
   );
 };

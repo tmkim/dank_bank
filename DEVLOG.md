@@ -810,4 +810,5 @@ Today:
         so it's specifically something on my items page.
     Ooohh ok. so there was an issue with how I was hiding components. It just didn't show as an issue during initial testing.
     Fixed the way that my pages/components check for JWT and how they hide links/components!
-    
+
+    Did some work updating UI. Also removed table skeleton because not really necessary.

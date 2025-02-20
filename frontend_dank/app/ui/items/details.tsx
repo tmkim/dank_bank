@@ -85,7 +85,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         <div className="">
                             {item.location}
                         </div>
-                        <div className="">
+                        <div className="text-3xl">
                             {item.price_range}
                         </div>
                     </div>
@@ -106,7 +106,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         <div className="">
                             {item.location}
                         </div>
-                        <div className="">
+                        <div className="text-3xl">
                             ${item.cost}
                         </div>
                     </div>
@@ -150,7 +150,8 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
     return (
         <div className="flow-root">
             <div className="inline-block min-w-full align-middle">
-                <div className="h-[80vh] border-separate overflow-y-auto rounded-xl border-2 border-gray-400 border-4 border-solid flex flex-col text-xl">
+                <div className="border-separate overflow-y-auto rounded-xl border-2 border-gray-400 border-4 border-solid flex flex-col text-xl"
+                     style={{height: 'calc(102px + 70vh)'}}>
                     <div className="px-4">
                         <div className="flex justify-center gap-1 mt-2 mb-2">{getStarRating(item.rating)}</div>
                         {/* Name */}
@@ -161,14 +162,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         <div>
                             {renderDetails()}
                         </div>
-
-                        {/* Images - Carousel or Grid
-                            Maybe - if no images, turn into upload button */}
-                        {/* <div className="px-4 mt-4 w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center"> */}
                         <ImageCarousel itemId={Number(item.id)} />
-                        {/* <span className="text-gray-500">No Images Available</span> */}
-                        {/* </div> */}
-                        {/* Review */}
                         <p className="mt-3">
                             "{item.review}"
                         </p>
