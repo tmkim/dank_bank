@@ -126,7 +126,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                   <th className="px-4 py-2 text-right pr-7 w-1/5">
                     Rating
                   </th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/8" style={{ visibility: !token ? 'visible' : 'hidden' }}>
+                  <th className="px-4 py-2 text-right pr-7 w-1/8" style={{ visibility: token ? 'visible' : 'hidden' }}>
                     Actions
                   </th>
                 </tr>
@@ -150,7 +150,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                         {item.rating} / 100
                       </p>
                     </td>
-                    <td className="w-1/8 text-right" style={{ visibility: !token ? 'visible' : 'hidden' }}>
+                    <td className="w-1/8 text-right" style={{ visibility: token ? 'visible' : 'hidden' }}>
                       <button
                         onClick={() => setSelectedItem(item)}
                         className="border border-gray-300 p-1 mr-1 rounded-md hover:border-gray-500 focus:outline focus:outline-3 focus:outline-blue-500"

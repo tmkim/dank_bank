@@ -17,7 +17,8 @@ interface NavLink {
 const links: NavLink[] = [
     { name: 'Home', href: '/dashboard' },
     { name: 'Dank Bank', href: '/dashboard/items' },
-    { name: 'T-Planet', href: '/dashboard/items/dining' }
+    { name: 'T-Planet', href: '/dashboard/items/dining' },
+    { name: 'Logout' }
 ];
 
 const Navbar = () => {
@@ -25,14 +26,14 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visibleLinks, setVisibleLinks] = useState(links);
   const [hiddenLinks, setHiddenLinks] = useState<NavLink[]>([]);
-  // const router = useRouter();
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
       updateLinks();
     });
-    // setIsLoggedIn(!!localStorage.getItem("token"));
+    setIsLoggedIn(!!localStorage.getItem("token"));
 
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current);
@@ -45,16 +46,19 @@ const Navbar = () => {
     };
   }, []);
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token"); // Remove token
-  //   setIsLoggedIn(false); // Update state
-  //   alert("Logged out successfully!");
-  //   router.push("/login"); // Redirect to login
-  // };
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove token
+    setIsLoggedIn(false); // Update state
+    alert("Logged out successfully!");
+    router.push("/login"); // Redirect to login
+  };
 
-  // if (isLoggedIn) {
-  //   links.push({ name: "Logout", onClick: handleLogout });
-  // }
+  if (isLoggedIn) {
+    const logoutIndex = links.findIndex(link => link.name === "Logout");
+    if (logoutIndex !== -1) {
+      links[logoutIndex].onClick = handleLogout;
+    }
+  }
 
   const updateLinks = () => {
     if (containerRef.current) {
@@ -96,11 +100,19 @@ const Navbar = () => {
         <div className="flex items-center w-full overflow-x-hidden" ref={containerRef}>
           {/* Desktop NavLinks (visible on medium screens and above) */}
           <div className="hidden md:flex items-center text-white text-2xl w-full" ref={containerRef}>
-            {visibleLinks.map((link) => (
-              <a key={link.name} href={link.href} className="hover:text-blue-300 min-w-[150px] text-center">
-                {link.name}
-              </a>
-            ))}
+            {visibleLinks.map((link, index) => 
+              link.href ? (
+                <a key={index} href={link.href} className="hover:underline hover:text-blue-300 min-w-[150px] text-center">
+                  {link.name}
+                </a>
+              ) : ( 
+                isLoggedIn ? (
+                <button key={index} onClick={link.onClick} className="hover:underline hover:text-blue-300 min-w-[150px] text-center">
+                  {link.name}
+                </button>
+                ) : null
+              )
+            )}
 
             {/* "More+" Button only appears if there are at least 2 hidden links */}
             {hiddenLinks.length >= 2 && (

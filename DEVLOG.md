@@ -801,3 +801,13 @@ Today:
         ** successfully hiding buttons based on login
     -- working on logout functionality, but running into hydration issues even after undoing my code...
     will have to look into this more later
+
+2/20
+    Alright so let's get started by looking into this hydration issue.
+    It looks like the main issue is server HTML != client HTML
+    So what's the issue here??
+        -- confirmed there's no error on /dashboard or /login
+        so it's specifically something on my items page.
+    Ooohh ok. so there was an issue with how I was hiding components. It just didn't show as an issue during initial testing.
+    Fixed the way that my pages/components check for JWT and how they hide links/components!
+    

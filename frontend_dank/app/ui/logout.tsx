@@ -8,7 +8,7 @@ const LogoutButton = () => {
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear the token
     alert("Logged out successfully!");
-    router.push("/login"); // Redirect to login page
+    router.push("/dashboard/items"); // Redirect to login page
   };
 
   return (
