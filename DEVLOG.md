@@ -789,3 +789,15 @@ Today:
         -- added <p> and fixed alignment with image
         ** also fixed images to load faster using "eager" and preloading next/prev images.
     
+2/19 
+    Today we work on adding auth to separate Public vs Private 
+    -- 99% of app will be public, and login is unnecessary 
+    Login required for:
+        Action buttons (add/edit/delete items)
+        Multi-delete
+    ^^ Mostly Done~~
+        ** added authentication using rest_framework_simplejwt
+        ** set up login page /login
+        ** successfully hiding buttons based on login
+    -- working on logout functionality, but running into hydration issues even after undoing my code...
+    will have to look into this more later

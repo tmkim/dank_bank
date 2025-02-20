@@ -21,6 +21,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.core.files.storage import default_storage
 from django.conf import settings  
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.models import User
 # from django.core.files.base import ContentFile
 
 # import logging
@@ -228,7 +231,15 @@ class ItemViewSet(viewsets.ModelViewSet):
             # Handle unexpected errors
             return JsonResponse({'error': str(e)}, status=500)
         
-    
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username  # Add extra info if needed
+        return token
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
     
 # class DiningViewSet(viewsets.ModelViewSet):
 #     queryset = Item.objects.filter(category='Dining')

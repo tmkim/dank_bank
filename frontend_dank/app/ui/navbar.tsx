@@ -6,10 +6,12 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import Link from 'next/link';
 import { GlobeAltIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
+import { useRouter } from "next/navigation";
 
 interface NavLink {
     name: string;
-    href: string;
+    href?: string;
+    onClick?: () => void;
 }
 
 const links: NavLink[] = [
@@ -23,11 +25,14 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [visibleLinks, setVisibleLinks] = useState(links);
   const [hiddenLinks, setHiddenLinks] = useState<NavLink[]>([]);
-
+  // const router = useRouter();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
   useEffect(() => {
     const resizeObserver = new ResizeObserver(() => {
       updateLinks();
     });
+    // setIsLoggedIn(!!localStorage.getItem("token"));
 
     if (containerRef.current) {
       resizeObserver.observe(containerRef.current);
@@ -39,6 +44,17 @@ const Navbar = () => {
       }
     };
   }, []);
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token"); // Remove token
+  //   setIsLoggedIn(false); // Update state
+  //   alert("Logged out successfully!");
+  //   router.push("/login"); // Redirect to login
+  // };
+
+  // if (isLoggedIn) {
+  //   links.push({ name: "Logout", onClick: handleLogout });
+  // }
 
   const updateLinks = () => {
     if (containerRef.current) {
@@ -62,8 +78,8 @@ const Navbar = () => {
   };
   
   return (
-    <div className="flex h-full flex-col px-3 py-4">
-      <nav className="mb-2 flex h-20 items-center justify-between rounded-md bg-green-700 p-4 w-full overflow-x-hidden">
+    <div className="flex h-full flex-col">
+      <nav className="mb-2 flex h-20 items-center justify-between  bg-green-700 p-4 w-full overflow-x-hidden">
         
         {/* Left Side: Logo + Name */}
         <div className="flex items-center min-w-[240px] mr-5 md:mr-10">

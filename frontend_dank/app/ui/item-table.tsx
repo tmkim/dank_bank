@@ -20,6 +20,8 @@ type ItemTableProps = {
 
 const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onRowClick, setTotalItems }) => {
 
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -118,13 +120,13 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
             <table className="min-w-full table-fixed border-collapse text-gray-900">
               <thead className="bg-green-300 text-left text-md font-bold h-[5vh] z-10 border-b-2 border-gray-400">
                 <tr className="flex items-center justify-between py-4">
-                  <th className="px-4 py-2 text-left pl-4 w-3/5">
+                  <th className="px-4 py-2 text-left pl-9 w-3/5">
                     Name
                   </th>
                   <th className="px-4 py-2 text-right pr-7 w-1/5">
                     Rating
                   </th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/5">
+                  <th className="px-4 py-2 text-right pr-7 w-1/8" style={{ visibility: !token ? 'visible' : 'hidden' }}>
                     Actions
                   </th>
                 </tr>
@@ -139,16 +141,16 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                     )}
                     onClick={() => onRowClick(item)}
                   >
-                    <td className="w-3/5">
+                    <td className="w-3/5 pl-5">
                       <p className="truncate text-sm font-semibold md:text-base">{item.name}</p>
                       <p className="hidden text-sm text-gray-500 sm:block">{item.category}</p>
                     </td>
-                    <td className="w-1/5 text-right">
+                    <td className="w-1/5 text-right pr-5">
                       <p className={`${lusitana.className} truncate text-xl font-medium`}>
                         {item.rating} / 100
                       </p>
                     </td>
-                    <td className="w-1/5 text-right">
+                    <td className="w-1/8 text-right" style={{ visibility: !token ? 'visible' : 'hidden' }}>
                       <button
                         onClick={() => setSelectedItem(item)}
                         className="border border-gray-300 p-1 mr-1 rounded-md hover:border-gray-500 focus:outline focus:outline-3 focus:outline-blue-500"

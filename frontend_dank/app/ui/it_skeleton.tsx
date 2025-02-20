@@ -15,7 +15,7 @@ const ItemTableSkeleton: React.FC = () => (
                     <div className="bg-gray-300 h-4 w-full rounded-md"></div>
                 </th>
                 <th scope="col" className="px-4 py-2 text-right pr-7 w-1/5">
-                    <div className="bg-gray-300 h-4 w-full rounded-md"></div>
+                    {/* <div className="bg-gray-300 h-4 w-full rounded-md"></div> */}
                 </th>
                 </tr>
             </thead>
@@ -30,8 +30,8 @@ const ItemTableSkeleton: React.FC = () => (
                     <div className="bg-gray-300 h-6 w-full rounded-md"></div>
                     </td>
                     <td className="w-1/5 text-right flex space-x-2 justify-end">
-                    <div className="bg-gray-300 h-6 w-6 rounded-md"></div>
-                    <div className="bg-gray-300 h-6 w-6 rounded-md"></div>
+                    {/* <div className="bg-gray-300 h-6 w-6 rounded-md"></div>
+                    <div className="bg-gray-300 h-6 w-6 rounded-md"></div> */}
                     </td>
                 </tr>
                 ))}

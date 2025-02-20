@@ -19,6 +19,7 @@ type FilterChecks = {
 }
 
 const ItemsPage: React.FC = () => {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const searchParams = useSearchParams();
 
   const queryParam = searchParams.get('query') || '';
@@ -144,7 +145,7 @@ const ItemsPage: React.FC = () => {
             >
               <PlusIcon className="w-5 mr-3 [stroke-width:3]" /> New Entry
             </button>
-            <DeleteItemsButton/>
+            {!token && <DeleteItemsButton/>}
           </div>
           <div className="flex justify-between space-x-2 mt-2">
             <div className="flex gap-2">
