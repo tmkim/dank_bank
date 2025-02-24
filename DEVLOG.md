@@ -812,3 +812,21 @@ Today:
     Fixed the way that my pages/components check for JWT and how they hide links/components!
 
     Did some work updating UI. Also removed table skeleton because not really necessary.
+
+    Discovered an interesting bug with pagination --
+        Results are not always consistent with pagination. Going prev/next sometimes shows incorrect page of results.
+        Clicking on one of the "incorrect" results updates results to show correct page.
+
+2/23
+    Alright today i'm going to update my database structure a bit and work on transitioning
+        -- main thing is to split Item table into 1 Item table + Category detail tables (one table per category)
+        goal is to make it easier to add new categories 
+        .. this is kind of an "extra" feature but I think it will be worth doing 
+
+    First let's make new models and views
+    .. so I set up new models and started setting up new views/serializers
+        but I took a bit of time to research.
+        Apparently, it will be better to handle everything from a single API endpoint to keep things simple (less API overhead and front-end logic), and make sure that either both Item and CategoryTables are updated, or neither are.
+        So we're going to update our Item ViewSet and Serializer to check the data's "category" field and handle each category appropriately.
+
+    Random thought -- want to make my Item Table sortable !
