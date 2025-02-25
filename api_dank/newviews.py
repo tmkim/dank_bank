@@ -113,10 +113,11 @@ class ImageViewSet(viewsets.ModelViewSet):
 def api_root(request, format=None):
     return Response({
         'item': reverse('item-list', request=request, format=format),
-        'dining': reverse('dining-list', request=request, format=format),
-        'food': reverse('food-list', request=request, format=format),
-        'media': reverse('media-list', request=request, format=format),
-        'travel': reverse('travel-list', request=request, format=format),
+        # 'dining': reverse('dining-list', request=request, format=format),
+        # 'food': reverse('food-list', request=request, format=format),
+        # 'media': reverse('media-list', request=request, format=format),
+        # 'travel': reverse('travel-list', request=request, format=format),
+        
         # 'tags': reverse('tag-list', request=request, format=format),
         # 'tag2item': reverse('tag2item-list', request=request, format=format),
         # 'images': reverse('images-list', request=request, format=format),
@@ -138,82 +139,78 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     pagination_class = ItemPagination
 
-    @action(detail=False, methods=['delete'])
-    def delete_multiple(self, request):
-        item_ids = request.data.get('item_ids', [])
-        
-        if not item_ids:
-            return Response({'error': 'No items selected for deletion'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Delete items and their associated images
-        items = Item.objects.filter(id__in=item_ids)
-        for item in items:
-            images = Image.objects.filter(item=item)
-            for image in images:
-                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
-                image.delete()  # Delete image record from database
-            item.delete()  # Delete item record from database
-
-        return Response({'message': 'Items and associated images deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
-
     def get_queryset(self):
-        """Override the default queryset to include filtering by query."""
+        """
+        Override the default queryset to include filtering by query.
+        Filter by Category first, then Query
+        """
         queryset = self.queryset
+
+        categories = self.request.query_params.getlist('category', None)  
+        if categories:
+            queryset = queryset.filter(category__in=categories)  
+
         query = self.request.query_params.get('query', '')
         if query:
             queryset = queryset.filter(name__icontains=query)
-        
-        categories = self.request.query_params.getlist('category', None)  
-        if categories:
-            queryset = queryset.filter(category__in=categories)            
 
         return queryset
     
-        # Override the create method
-    def create(self, request, *args, **kwargs):
-        # logger.debug("Received data: %s", request.data)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        
+        # Find and delete the corresponding category entry
+        category_model = {
+            "Dining": Dining,
+            "Food": Food,
+            "Media": Media,
+            "Travel": Travel,
+        }.get(instance.category)
+        
+        if category_model:
+            category_model.objects.filter(item=instance).delete()
 
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)  # This triggers validation
-        self.perform_create(serializer)  # Save the object
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # Now delete the Item itself
+        return super().destroy(request, *args, **kwargs)
 
-    def perform_create(self, serializer):
-        # Add any additional custom save logic here
-        serializer.save()
+class ItemViewSet(viewsets.ModelViewSet):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
 
-    def delete_items(request):
-        try:
-            # Retrieve the list of IDs from the request
-            item_ids = request.json().get('ids', [])
+    @action(detail=False, methods=['delete'])
+    def delete_multiple(self, request):
+        category_models = {
+            "Dining": Dining,
+            "Food": Food,
+            "Media": Media,
+            "Travel": Travel,
+        }
+        
+        # Retrieve all items to be deleted
+        item_ids = request.data.get('item_ids', [])
+        if not item_ids:
+            return Response({'error': 'No items selected for deletion'}, status=status.HTTP_400_BAD_REQUEST)
+        items = Item.objects.filter(id__in=item_ids)
 
-            if not item_ids:
-                return JsonResponse({'error': 'No item IDs provided.'}, status=400)
+        # Delete image data
+        images = Image.objects.filter(item__in=items)
+        for image in images:
+            try:
+                s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
+            except Exception as e:
+                return Response({'error': f"Failed to delete image {image.name}: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        images.delete()
 
-            # Get all the items and their associated images
-            items = Item.objects.filter(id__in=item_ids)
-            
-            if not items.exists():
-                return JsonResponse({'error': 'Items not found.'}, status=404)
+        # Delete all associated category data
+        for item in items:
+            cat_model = category_models.get(item.category)
+            if cat_model:
+                cat_model.objects.filter(item=item).delete()
 
-            for item in items:
-                # Delete associated images from S3
-                images = Image.objects.filter(item=item)
-                for image in images:
-                    s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=image.file.name)
-                    image.delete()  # Delete image record from the database
-                
-                # Delete the item
-                item.delete()
+        # Delete item data
+        items.delete()
 
-            return JsonResponse({'message': 'Items and associated images deleted successfully.'}, status=204)
-
-        except ObjectDoesNotExist:
-            return JsonResponse({'error': 'One or more items not found.'}, status=404)
-
-        except Exception as e:
-            # Handle unexpected errors
-            return JsonResponse({'error': str(e)}, status=500)
+        return Response({'message': 'Items and associated images deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
         
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

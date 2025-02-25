@@ -829,4 +829,23 @@ Today:
         Apparently, it will be better to handle everything from a single API endpoint to keep things simple (less API overhead and front-end logic), and make sure that either both Item and CategoryTables are updated, or neither are.
         So we're going to update our Item ViewSet and Serializer to check the data's "category" field and handle each category appropriately.
 
-    Random thought -- want to make my Item Table sortable !
+    Random thought -- TODO: want to make my Item Table sortable !
+
+2/24
+    Ok let's continue our database refactor.
+
+    ++ frontend/definitions_new.ts 
+    ++ api_dank/newviews.py 
+    ++ api_dank/newserializers.py 
+    ++ api_dank/newmodels.py
+
+    1 - Make sure backend is set up correctly
+        > customize Item view to update multiple tables 
+        >>> jk it looks like this is better handled in the Serializer
+        ++ fixing up serializer validation to be more clean with helper class
+        ++ custom Create, Read, and Update in serializer
+        ++ custom Destroy in viewset
+        ++ update delete_multiple in viewset
+
+    2 - Set up frontend to handle new backend 
+    3 - Flip the switch ~

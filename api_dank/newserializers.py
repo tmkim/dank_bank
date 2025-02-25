@@ -4,31 +4,128 @@ from django.core.exceptions import ValidationError
 import re
 from .newmodels import Image, Item, Dining, Food, Media, Travel
 
+
+class ValidationHelper:
+    """Helper class for common validation logic"""
+
+    @staticmethod
+    def validate_positive_number(value, field_name):
+        if value is not None and value < 0:
+            raise serializers.ValidationError(f"{field_name} must be a positive number.")
+        return value
+    
+    @staticmethod
+    def validate_nonempty_string(value, field_name):
+        if value is not None and len(value.strip()) < 1:
+            raise serializers.ValidationError(f"{field_name} can not be empty.")
+        return value.strip()
+    
+    @staticmethod
+    def validate_url(value, field_name):
+        if value is None or value.strip() == "":
+            return ""
+
+        if not value.strip().startswith(('http://', 'https://')):
+            value = 'https://' + value  # Prepend https:// if no scheme is present
+    
+        url_validator = URLValidator()
+    
+        try:
+            url_validator(value)
+        except ValidationError:
+            raise serializers.ValidationError(f"Invalid URL for {field_name}: {value}")
+
+        return value
+
+        # Optionally check if the URL is a Google Maps URL
+        # if "google.com/maps" not in value:
+        #     raise serializers.ValidationError(f"Invalid Google Maps URL: {value}")
+
 class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Item
         fields = '__all__'
 
+    def create(self, validated_data):
+        category_data = validated_data.pop('category_data', None)
+        item = Item.objects.create(**validated_data)
+        # image_data = validated_data.pop('images', None)
+
+        if category_data:
+            if validated_data['category'] == 'Dining':
+                Dining.objects.create(item=item, **category_data)
+            elif validated_data['category'] == 'Food':
+                Food.objects.create(item=item, **category_data)
+            elif validated_data['category'] == 'Media':
+                Media.objects.create(item=item, **category_data)
+            elif validated_data['category'] == 'Travel':
+                Travel.objects.create(item=item, **category_data)
+
+        # if image_data:
+        #     Image.objects.create(item=item, **image_data)
+        
+        return item
+    
+    def update(self, instance, validated_data):
+        category_data = validated_data.pop('category_data', None)
+        instance = super().update(instance, validated_data)  # Update Item fields first
+
+        # Ensure category_data exists before proceeding
+        if category_data:
+            category_model = {
+                "Dining": Dining,
+                "Food": Food,
+                "Media": Media,
+                "Travel": Travel,
+            }.get(instance.category)
+
+            if category_model:
+                category_instance, _ = category_model.objects.get_or_create(item=instance)
+                for attr, value in category_data.items():
+                    setattr(category_instance, attr, value)
+                category_instance.save()
+
+        return instance
+    
+    def to_representation(self, instance):
+        """Customize read operations to include category-specific data."""
+        data = super().to_representation(instance)
+
+        # Add category-specific data
+        if instance.category == "Dining":
+            category_data = getattr(instance, 'dining', None)
+        elif instance.category == "Food":
+            category_data = getattr(instance, 'food', None)
+        elif instance.category == "Media":
+            category_data = getattr(instance, 'media', None)
+        elif instance.category == "Travel":
+            category_data = getattr(instance, 'travel', None)
+        else:
+            category_data = None  # No extra data if category isn't recognized
+
+        # Serialize category-specific data if it exists
+        if category_data:
+            data["category_data"] = {
+                field.name: getattr(category_data, field.name)
+                for field in category_data._meta.fields
+                if field.name != "id" and field.name != "item"
+            }
+
+        return data
+    
     # Validate Category: Ensure it's from allowed values
     def validate_category(self, value):
-        allowed_categories = ["Dining", "Food", "Music", "Travel"]
+        allowed_categories = ["Dining", "Food", "Media", "Travel"]
         if value not in allowed_categories:
             raise serializers.ValidationError(f"Category \'{value}\' is not one of {allowed_categories}.")
         return value
     
     # Validate Name: Ensure it's not empty, has a valid length, and no special characters
     def validate_name(self, value):
-        value = value.strip()  # Remove extra spaces
-        if len(value) < 1:
-            raise serializers.ValidationError(f"Name \'{value}\' must be at least 1 characters long.")
-        if len(value) > 100:
-            raise serializers.ValidationError(f"Name \'{value}\' cannot exceed 100 characters.")
-        # if not re.match(r'^[A-Za-z0-9\s\-]+$', value):  # Allow letters, numbers, spaces, and dashes
-        #     raise serializers.ValidationError("Name contains invalid characters.")
-        return value
+        return ValidationHelper.validate_nonempty_string(value, "Name")
 
-    # Validate Rating: Ensure it's a number between 0-5
+    # Validate Rating: Ensure it's a number between 0-100
     def validate_rating(self, value):
         if not isinstance(value, (int, float)):
             raise serializers.ValidationError(f"Rating \'{value}\' must be a number.")
@@ -38,194 +135,80 @@ class ItemSerializer(serializers.ModelSerializer):
 
     # Validate Review: Ensure minimum length
     def validate_review(self, value):
-        if len(value.strip()) < 1:
-            raise serializers.ValidationError(f"Review \'{value}\' must be at least 1 character long.")
-        return value.strip()
+        return ValidationHelper.validate_nonempty_string(value, "Review")
 
-    # Validate URL Fields: Ensure URLs are valid
-    def validate_item_url(self, value):
-        if value is None or value == "":
-            return ""
+class DiningSerializer(serializers.ModelSerializer):
 
-        if not value.startswith(('http://', 'https://')):
-            value = 'https://' + value  # Prepend https:// if no scheme is present
+    def validate_location(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Location")
+
+    def validate_address(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Address")
     
-        # Validate URL format
-        url_validator = URLValidator()
-        try:
-            url_validator(value)
-        except ValidationError:
-            raise serializers.ValidationError(f"Invalid Item URL: {value}")
-
-        return value
-
     def validate_gmap_url(self, value):
-        if value is None or value == "":
-            return ""
-        
-        if not value.startswith(('http://', 'https://')):
-            value = 'https://' + value  # Prepend https:// if no scheme is present
+        return ValidationHelper.validate_url(value, "Google Maps")
     
-        # Validate URL format
-        url_validator = URLValidator()
-        try:
-            url_validator(value)
-        except ValidationError:
-            raise serializers.ValidationError(f"Invalid Google Maps URL: {value}")
+    def validate_website(self, value):
+        return ValidationHelper.validate_url(value, "Website")
 
-        # Optionally check if the URL is a Google Maps URL
-        # if "google.com/maps" not in value:
-        #     raise serializers.ValidationError(f"Invalid Google Maps URL: {value}")
-
-        return value
-
-    # Validate Price Range: Ensure it's from allowed values
     def validate_price_range(self, value):
-        if value is None or value == "":
-            return ""
-        
-        allowed_values = ["$", "$$", "$$$", "$$$$", "$$$$$"]
+        allowed_values = ["", "$", "$$", "$$$", "$$$$", "$$$$$"]
         if value and value not in allowed_values:
             raise serializers.ValidationError(f"Price range \'{value}\' is not one of {allowed_values}.")
         return value
     
-    # Validate Music Source: Ensure it's from allowed values
-    def validate_music_source(self, value):
-        if value is None or value == "":
-            return ""
-        
-        allowed_values = ["Spotify", "SoundCloud", "YouTube"]
-        if value and value not in allowed_values:
-            raise serializers.ValidationError(f"Music source \'{value}\' must be one of {allowed_values}.")
-        return value
+    def validate_cuisine(self, value):
+        return ValidationHelper.validate_nonempty_string("Cuisine")
 
-    # Validate Cost: Ensure it's a positive number
+class FoodSerializer(serializers.ModelSerializer):
+    def validate_location(self, value):
+        if value.startswith("Other"):
+            custom_location = value[len("Other:"):]
+            if not custom_location.strip():
+                raise serializers.ValidationError(f"Custom location \'{value}\' cannot be empty.")
+            value = custom_location
+
+        else:
+            valid_locations = Item.objects.filter(category__in=["Dining", "Travel"]).values_list("name", flat=True)
+            if value not in valid_locations:
+                raise serializers.ValidationError(f"Invalid location selected: {value}")
+            
+        return value
+            
+    def validate_cuisine(self, value):
+        return ValidationHelper.validate_nonempty_string("Cuisine")
+    
     def validate_cost(self, value):
-        if value is None or value == 0:
-            return 0
-        
-        if value is not None and value < 0:
-            raise serializers.ValidationError(f"Cost \'{value}\' must be a positive number.")
-        return value
+        return ValidationHelper.validate_positive_number("Cost")
     
-    # Validate Location: Ensure it is a valid Select option, or includes "Other" for custom location
-    # def validate_location(self, value):
-    #     if value.startswith("Other"):
-    #         custom_location = value[len("Other:"):]
-    #         if not custom_location.strip():
-    #             raise serializers.ValidationError(f"Custom location cannot be empty.")
-    #         return custom_location  
-    
-    #     from .models import Item  # Import here to avoid circular imports
-    #     valid_locations = Item.objects.filter(category__in=["Dining", "Travel"]).values_list("name", flat=True)
-        
-    #     if value not in valid_locations:
-    #         raise serializers.ValidationError("Invalid location selected.")
-        
-    #     return value
-        
-    # Validate Review: Ensure minimum length
-    def validate_address(self, value):
-        if value is None or value == "":
-            return ""
-        
-        if len(value.strip()) < 1:
-            raise serializers.ValidationError(f"Address \'{value}\' must be at least 1 character long.")
-        return value.strip()
-    
-    # Validate Artist: Ensure it's not empty and has a valid length
+class MediaSerializer(serializers.ModelSerializer):
+
     def validate_artist(self, value):
-        if value == "":
-            return value
-        
-        value = value.strip()  # Remove extra spaces
-        if len(value) < 1:
-            raise serializers.ValidationError(f"Artist name \'{value}\' must be at least 1 characters long.")
-        if len(value) > 100:
-            raise serializers.ValidationError(f"Artist name \'{value}\' cannot exceed 100 characters.")
-        return value
+        return ValidationHelper.validate_nonempty_string(value, "Artist")
     
-    # def validate_cuisine(self, value):
-    #     valid_cuisines = Select.objects.filter(select_type__in=["Cuisine"]).values_list("name", flat=True)
-    #     if value not in valid_cuisines:
-    #         raise serializers.ValidationError("Invalid cuisine selected.")
+    def validate_source(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Source")
 
+    def validate_genre(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Genre")
+    
+    def validate_website(self, value):
+        return ValidationHelper.validate_url(value, "Website")  
+    
+class TravelSerializer(serializers.ModelSerializer):
+    def validate_location(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Location")
 
-    # Cross-Field Validation
-    def validate(self, data):
-        cat = data.get("category")
-        loc = data.get("location")
-        
-        if loc is not None and len(loc) > 0:
-            if cat in ['Dining', 'Travel']:
-                if len(loc.strip()) < 1:
-                    raise serializers.ValidationError(f"Location \'{loc}\' must be at least 1 character long.")
-                data["location"] = loc.strip()
-                
-            elif cat in ['Food']:
-                if loc.startswith("Other"):
-                    custom_location = loc[len("Other:"):]
-                    if not custom_location.strip():
-                        raise serializers.ValidationError(f"Custom location \'{loc}\' cannot be empty.")
-                    data["location"] = custom_location.strip()  
-
-                else:
-                    from .models import Item  # Import here to avoid circular imports
-                    valid_locations = Item.objects.filter(category__in=["Dining", "Travel"]).values_list("name", flat=True)
-                    
-                    if loc not in valid_locations:
-                        raise serializers.ValidationError(f"Invalid location selected: {loc}")
-
-        return data
-        # # Ensure category-based requirements
-        # if data.get("category") == "restaurant" and not data.get("price_range"):
-        #     raise serializers.ValidationError("Restaurants must have a price range.")
-        
-        # if data.get("category") == "bar" and not data.get("music_source"):
-        #     raise serializers.ValidationError("Bars must have a music source.")
-
-        # # Prevent duplicate items with the same name & location
-        # if Item.objects.filter(name=data["name"], location=data["location"]).exists():
-        #     raise serializers.ValidationError("An item with this name already exists at this location.")
-        
+    def validate_address(self, value):
+        return ValidationHelper.validate_nonempty_string(value, "Address")
+    
+    def validate_gmap_url(self, value):
+        return ValidationHelper.validate_url(value, "Google Maps")
+    
+    def validate_website(self, value):
+        return ValidationHelper.validate_url(value, "Website")
+    
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ['id', 'item', 'name', 'file', 'description'] 
-
-# class ImageUploadSerializer(serializers.Serializer):
-#     files = serializers.ListField(child=serializers.ImageField())
-
-# class ItemImagesSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ItemImages
-#         fields = ['id', 'image', 'item'] 
-
-# class BulkItemImagesSerializer(serializers.ListSerializer):  # Allow list input
-#     child = ItemImagesSerializer()
-
-# class DiningSerializer(serializers.HyperlinkedModelSerializer):
-# class DiningSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Dining
-#         fields = ['id', 'item', 'address', 'location', 'gmap_url', 'item_url', 'price_range', 'cuisine'] 
-
-# class FoodSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Food
-#         fields = ['id', 'item', 'location', 'cost', 'cuisine'] 
-
-# class MediaSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Media
-#         fields = ['id', 'item', 'source', 'artist', 'genre', 'website'] 
-
-# class TravelSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Travel
-#         fields = ['id', 'item', 'location', 'address', 'gmap_url', 'website'] 
-
