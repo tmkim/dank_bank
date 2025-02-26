@@ -902,3 +902,7 @@ Today:
         - Item table query/filter not working
 
         So the core issue here right now is retrieving category_data
+
+2/26
+    Today we shall make sure that our new data retrieval is good
+    

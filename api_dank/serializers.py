@@ -94,6 +94,7 @@ class ItemSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         """Customize read operations to include category-specific data."""
         data = super().to_representation(instance)
+        print(f"GET data for {instance}")
 
         # Add category-specific data
         if instance.category == "Dining":
