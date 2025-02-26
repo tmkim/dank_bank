@@ -9,12 +9,17 @@ export type User = {
   password: string;
 };
 
+export type CategoryData = {
+  [key: string]: string | number;
+}
+
 export type Item = {
   id: string;
   category: string;
   name: string;
   review: string;
   rating: number;
+  category_data: CategoryData;
 }
 
 export type Dining = {

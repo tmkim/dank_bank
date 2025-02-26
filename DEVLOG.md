@@ -848,4 +848,33 @@ Today:
         ++ update delete_multiple in viewset
 
     2 - Set up frontend to handle new backend 
+        ~ create-modal
+        ~ update-modal
+        ~ item-table
+        ~ detail
+        ~ multi-delete (?)
+
     3 - Flip the switch ~
+        .. make sure to create separate branch first!
+
+2/25
+    Today we work on our front end! We will see how far we can go without flipping the switch, then do further debugging after
+    Trying to debug in the middle will be kinda inefficient because obviously things won't work until they're fixed.
+
+    Let's start simple with our GET ops (detail, item-table)
+        + newtable.tsx
+            .. actually we aren't using any category details at this point, so this can stay the same
+        + newdetails.tsx
+            - added category_data definition to item
+            - replaced item.attr with item.category_data.attr
+                (only for category attributes)
+        + newcreate.tsx
+            - added category_data to handleSubmit payload
+            - moved location from payload to category_data
+            - updated music source (select) -> source (text)
+            ***** removed ~potentially redundant~ "images" from payload
+            ^^^ might want to move image upload into item serializer
+        + newupdate.tsx
+            - similar to newcreate changes
+
+

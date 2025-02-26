@@ -207,7 +207,7 @@ const ItemsPage: React.FC = () => {
           <Pagination
             page={currentPage}
             limit={pageLimit}
-            totalItems={totalItems} // Fetch or pass this from your API
+            totalItems={totalItems}
             onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
             onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
           />
