@@ -1,6 +1,5 @@
 'use client'
 import { Item, Image } from '@/app/lib/definitions';
-import Link from 'next/link';
 import {
   CheckIcon,
   ClockIcon,
@@ -10,7 +9,6 @@ import {
 import { Button } from '@/app/ui/button';
 import { useEffect, useState } from 'react';
 import ImageUploader from '../upload';
-import axios, { AxiosResponse } from 'axios';
 
 type Category = Item['category'];
 
@@ -63,8 +61,13 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
-    const [selectedLocation, setSelectedLocation] = useState<string>(item.category_data.location as string); // Selected location
-    const [customLocation, setCustomLocation] = useState<string>('');
+    const [selectedLocation, setSelectedLocation] = useState<string>(
+        String(item.category_data.location).startsWith("Other:") ? "Other" : String(item.category_data.location)
+    ); // Selected location
+    const [customLocation, setCustomLocation] = useState<string>(
+        String(item.category_data.location).startsWith("Other:") ? String(item.category_data.location).substring(6) : ''
+
+    );
 
     // Images associated with item
     const [selectedImages, setSelectedImages] = useState<Image[]>([]);
@@ -207,18 +210,6 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         } else {
           // Case 3: If the image is new (no id)
           newImagesList.push(newImage)
-        //   console.log(`New image detected - ${newImage}`)
-        //   const imageFormData = new FormData();
-        //     imageFormData.append('item', item.id)
-        //     imageFormData.append('files', newImage.file);
-        //     imageFormData.append(`name_0`, newImage.name);
-        //     imageFormData.append(`description_0`, newImage.description);
-        //   addRequests.push(
-        //     fetch('http://localhost:8000/api_dank/image/', {
-        //       method: 'POST',
-        //       body: imageFormData
-        //     })
-        //   );
         }
       });
     

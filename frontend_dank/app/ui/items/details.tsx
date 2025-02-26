@@ -75,6 +75,12 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
         }
     }
 
+    const getFoodLocation = (location: string) => {
+        return location.includes("Other") 
+            ? location.substring(6) 
+            : location;
+    }
+
     const renderDetails = () => {
         switch (item.category) {
             case 'Dining':
@@ -103,7 +109,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                     <>
                     <div className="flex items-center justify-between">
                         <div className="">
-                            {item.category_data.location}
+                            {getFoodLocation(String(item.category_data.location))}
                         </div>
                         <div className="text-3xl">
                             ${item.category_data.cost}

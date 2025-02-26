@@ -152,7 +152,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             case "Dining":
                 category_data = {
                     address: formObject.address as string,
-                    location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
+                    location: formObject.location as string,
                     gmap_url: formObject.gmap_url as string,
                     website: formObject.website as string,
                     price_range: formObject.price_range as string,
@@ -177,7 +177,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 break;
             case "Travel":
                 category_data = {
-                    location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
+                    location: formObject.location as string,
                     address: formObject.address as string,
                     gmap_url: formObject.gmap_url as string,
                     website: formObject.website as string,

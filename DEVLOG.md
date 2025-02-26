@@ -910,21 +910,19 @@ Today:
         > fixed Details, Update, Delete
 
     Issues : 
-        Dining edit - missing Location, 
+            ** FIXED    Dining edit - missing Location, 
             ** FIXED        Website
             ** FIXED    > also missing in DB -> issue with create
 
             ** FIXED    Food - "Dining" option lists all items as options
-        "Other" location saves properly, not retrieved properly
+            ** FIXED    "Other" location saves properly, not retrieved properly
 
             ** FIXED Media edit - missing Genre, Website 
             ** FIXED    > also missing in DB -> issue with create
 
-        Travel edit - missing Location
+            ** FIXED    Travel edit - missing Location
             ** FIXED         Website
             ** FIXED    > also missing in DB -> issue with create
 
             ** FIXED - Details - media not showing artist but update shows in db
         
-    TODO:
-        Locations - Dining, Travel --> not saving in database
