@@ -44,7 +44,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
-        // console.log(data)
+        console.log(data.results)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
         setTotalItems(data.count)
