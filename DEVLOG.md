@@ -906,3 +906,25 @@ Today:
 2/26
     Today we shall make sure that our new data retrieval is good
     
+    + updated models to use OneToOneField instead of ForeignKey
+        > fixed Details, Update, Delete
+
+    Issues : 
+        Dining edit - missing Location, 
+            ** FIXED        Website
+            ** FIXED    > also missing in DB -> issue with create
+
+            ** FIXED    Food - "Dining" option lists all items as options
+        "Other" location saves properly, not retrieved properly
+
+            ** FIXED Media edit - missing Genre, Website 
+            ** FIXED    > also missing in DB -> issue with create
+
+        Travel edit - missing Location
+            ** FIXED         Website
+            ** FIXED    > also missing in DB -> issue with create
+
+            ** FIXED - Details - media not showing artist but update shows in db
+        
+    TODO:
+        Locations - Dining, Travel --> not saving in database

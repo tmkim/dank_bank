@@ -69,7 +69,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'api_dank',
     'corsheaders',
-    'storages'
+    'storages',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

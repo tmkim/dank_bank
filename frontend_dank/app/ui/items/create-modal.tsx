@@ -305,12 +305,12 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
+                            <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
                                 Website URL:
                             </label>
                             <input
-                                id="item_url"
-                                name="item_url"
+                                id="website"
+                                name="website"
                                 type="text"
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
@@ -448,6 +448,17 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
+                        <div className="mb-4">
+                            <label htmlFor="genre" className="block text-base font-medium text-gray-700 mb-2">
+                                Genre:
+                            </label>
+                            <input
+                                id="genre"
+                                name="genre"
+                                type="text"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+                        </div>  
                         {/* <div className="mb-4 relative">
                             <label htmlFor="music_source" className="block text-base font-medium text-gray-700 mb-2">
                                 Music Source:
@@ -477,17 +488,17 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 id="source"
                                 name="source"
                                 type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>  
 
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
+                            <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
                                 Link to Media:
                             </label>
                             <input
-                                id="item_url"
-                                name="item_url"
+                                id="website"
+                                name="website"
                                 type="text"
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
@@ -531,12 +542,12 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
+                            <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
                                 Website URL:
                             </label>
                             <input
-                                id="item_url"
-                                name="item_url"
+                                id="website"
+                                name="website"
                                 type="text"
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />

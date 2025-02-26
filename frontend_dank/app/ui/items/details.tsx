@@ -110,11 +110,11 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         </div>
                     </div>
                     <div className="">
-                        {item.category_data.cuisine} -- update to make a select
+                        {item.category_data.cuisine}
                     </div>
                     </>
                 )
-            case 'Music':
+            case 'Media':
                 return (
                     <>
                     <div className="text-sm">

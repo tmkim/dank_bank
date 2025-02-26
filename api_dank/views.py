@@ -172,10 +172,6 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Now delete the Item itself
         return super().destroy(request, *args, **kwargs)
 
-class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-
     @action(detail=False, methods=['delete'])
     def delete_multiple(self, request):
         category_models = {

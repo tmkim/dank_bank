@@ -126,7 +126,8 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                   <th className="px-4 py-2 text-right pr-7 w-1/5">
                     Rating
                   </th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/8" style={{ visibility: token ? 'visible' : 'hidden' }}>
+                  <th className="px-4 py-2 text-right pr-7 w-1/8">
+                   {/* style={{ visibility: token ? 'visible' : 'hidden' }}> */}
                     Actions
                   </th>
                 </tr>

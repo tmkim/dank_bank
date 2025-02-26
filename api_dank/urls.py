@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views
-from .views import CustomTokenObtainPairView
+from .views import CustomTokenObtainPairView, ItemViewSet, ImageViewSet
 
 
 # router.register(r'dining', views.DiningViewSet, basename='dining')
@@ -14,8 +14,8 @@ from .views import CustomTokenObtainPairView
 # router.register(r'images', views.TagViewSet, basename='images')
 # Create a router and register our ViewSets with it.
 router = DefaultRouter()
-router.register(r'items', views.ItemViewSet, basename='items')
-router.register(r'image', views.ImageViewSet, basename='image')
+router.register(r'items', ItemViewSet, basename='items')
+router.register(r'image', ImageViewSet, basename='image')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
