@@ -877,4 +877,28 @@ Today:
         + newupdate.tsx
             - similar to newcreate changes
 
+    Ok so now we make a new branch and try changing things over 
+    -- make backup files of old version 
+    -- rename new files to replace old 
+    -- migrate database changes
 
+    TEST : 
+        - View item details
+        - Create new item (one of each category)
+        - Edit existing item (one of each category)
+        - Delete existing item (one of each category)
+
+
+    ISSUES : 
+        - Created dining entry, item table updated, category table is not
+            ^ same with food, media, travel
+            - confirmed category_data is in payload
+            - confirmed category_data empty in serializer
+            *** Data is now properly stored in category tables!
+
+        - Issue retrieving category_data in Details component
+        - Issue retrieving category_data in Item Update 
+        - Issue retrieving category_data in Item Delete 
+        - Item table query/filter not working
+
+        So the core issue here right now is retrieving category_data

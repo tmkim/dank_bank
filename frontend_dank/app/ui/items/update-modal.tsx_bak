@@ -1,10 +1,11 @@
 'use client'
-import { Item, Image } from '@/app/lib/definitions_new';
+import { Item, Image } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
   CheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
+  MusicalNoteIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
@@ -13,6 +14,7 @@ import ImageUploader from '../upload';
 import axios, { AxiosResponse } from 'axios';
 
 type Category = Item['category'];
+type MSource = Item['music_source'];
 
 interface UpdateProps {
   item: Item;
@@ -27,19 +29,19 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     const [category, setCategory] = useState(item.category);
     const [review, setReview] = useState(item.review);
     const [rating, setRating] = useState(item.rating);
-    const [address, setAddress] = useState(item.category_data.address);
-    const [location, setLocation] = useState(item.category_data.location);
-    const [gmap_url, setGmap_url] = useState(item.category_data.gmap_url);
-    const [website, setWebsite] = useState(item.category_data.website);
+    const [address, setAddress] = useState(item.address);
+    const [location, setLocation] = useState(item.location);
+    const [gmap_url, setGmap_url] = useState(item.gmap_url);
+    const [item_url, setItem_url] = useState(item.item_url);
     // const [price_range, setPrice_range] = useState(item.price_range);
-    const [cost, setCost] = useState(item.category_data.cost);
-    const [cuisine, setCuisine] = useState(item.category_data.cuisine);
-    const [source, setSource] = useState(item.category_data.source);
-    const [artist, setArtist] = useState(item.category_data.artist);
-    const [genre, setGenre] = useState(item.category_data.genre);
+    const [cost, setCost] = useState(item.cost);
+    const [cuisine, setCuisine] = useState(item.cuisine);
+    // const [music_source, setMusic_source] = useState(item.music_source);
+    const [artist, setArtist] = useState(item.artist);
+    const [music_meta, setMusic_meta] = useState(item.music_meta);
 
     // Category Select -- might not let them change this though
-    const categories: Category[] = ['Dining', 'Food', 'Media', 'Travel'];
+    const categories: Category[] = ['Dining', 'Food', 'Music', 'Travel'];
     const [selectedCategory, setSelectedCategory] = useState<Category>(item.category);
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,23 +49,24 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     };
 
     // Price Range Select
-    const [selectedPrice, setSelectedPrice] = useState<number>(String(item.category_data.price_range).length);
+    const [selectedPrice, setSelectedPrice] = useState<number>(item.price_range.length);
     const [hoveredPrice, setHoveredPrice] = useState<number>(-1);
 
     const handlePriceClick = (index: number) => {
         setSelectedPrice(index + 1); // Adjust to start from 1 instead of 0
     };
 
-    // Source Select
-    // const [selectedSource, setSource] = useState<string>(item.category_data.source as string);
+    // Music Source Select
+    const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
+    const [selectedSource, setSelectedMSource] = useState<MSource>(item.music_source);
 
-    // const handleSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSelectedSource(event.target.value);
-    // }
+    const handleMusicSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedMSource(event.target.value as MSource);
+    }
 
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
-    const [selectedLocation, setSelectedLocation] = useState<string>(item.category_data.location as string); // Selected location
+    const [selectedLocation, setSelectedLocation] = useState<string>(item.location); // Selected location
     const [customLocation, setCustomLocation] = useState<string>('');
 
     // Images associated with item
@@ -275,42 +278,16 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           category,
           review,
           rating,
-          category_data: {
-            ...(category === "Dining" && {
-                address,
-                location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                gmap_url,
-                website,
-                price_range: "$".repeat(selectedPrice),
-                cuisine
-            }),
-            ...category === "Food" && {
-                location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                cost,
-                cuisine
-            },
-            ...category === "Media" && {
-                source,
-                artist,
-                genre,
-                website
-            },
-            ...category === "Travel" && {
-                location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                address,
-                gmap_url,
-                website
-            }
-          },
-        //   ...(address && { address }),
-        //   ...(location && { location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation }),
-        //   ...(gmap_url && { gmap_url }),
-        //   ...(website && { website }),
-        //   ...(selectedPrice && { price_range: "$".repeat(selectedPrice) }),
-        //   ...(cost && { cost }),
-        //   ...(cuisine && { cuisine }),
-        //   ...(selectedSource && { selectedSource }),
-        //   ...(artist && { artist }),
+          ...(address && { address }),
+          ...(location && { location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation }),
+          ...(gmap_url && { gmap_url }),
+          ...(item_url && { item_url }),
+          ...(selectedPrice && { price_range: "$".repeat(selectedPrice) }),
+          ...(cost && { cost }),
+          ...(cuisine && { cuisine }),
+          ...(selectedSource && { selectedSource }),
+          ...(artist && { artist }),
+          ...(music_meta && { music_meta })
         }),
       });
 
@@ -372,9 +349,9 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         return (
           <Button type="submit">Update Food</Button>
         );
-      case 'Media':
+      case 'Music':
         return (
-          <Button type="submit">Update Media</Button>
+          <Button type="submit">Update Music</Button>
         );
       case 'Travel':
         return (
@@ -428,15 +405,15 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
+                        <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
                             Website URL:
                         </label>
                         <input
-                            id="website"
-                            name="website"
+                            id="item_url"
+                            name="item_url"
                             type="text"
-                            value={website} 
-                            onChange={(e) => setWebsite(e.target.value)}
+                            value={item_url} 
+                            onChange={(e) => setItem_url(e.target.value)}
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
@@ -565,7 +542,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                     </div>
                 </>
             );
-        case 'Media':
+        case 'Music':
             return (
                 <>
                     <div className="mb-4">
@@ -581,69 +558,42 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="genre" className="block text-base font-medium text-gray-700 mb-2">
-                            Genre:
-                        </label>
-                        <input
-                            id="genre"
-                            name="genre"
-                            type="text"
-                            value={genre} 
-                            onChange={(e) => setGenre(e.target.value)}
-                            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
-                            Source:
-                        </label>
-                        <input
-                            id="source"
-                            name="source"
-                            type="text"
-                            value={source} 
-                            onChange={(e) => setSource(e.target.value)}
-                            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>  
-
-                    <div className="mb-4">
-                        <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
-                            Link to Media:
-                        </label>
-                        <input
-                            id="website"
-                            name="website"
-                            type="text"
-                            value={website} 
-                            onChange={(e) => setWebsite(e.target.value)}
-                            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-
-                    {/* <div className="mb-4 relative">
-                        <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
+                    <div className="mb-4 relative">
+                        <label htmlFor="music_source" className="block text-base font-medium text-gray-700 mb-2">
                             Music Source:
                         </label>
                         <select
                             className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                            id="source"
-                            name="source"
+                            id="music_source"
+                            name="music_source"
                             value={selectedSource}
-                            onChange={handleSourceChange}
+                            onChange={handleMusicSourceChange}
                         >
                             <option value="" disabled>
                                 Select A Music Source
                             </option>
-                            {sources.map((s) => (
-                                <option key={s} value={s}>
-                                    {s}
+                            {msources.map((ms) => (
+                                <option key={ms} value={ms}>
+                                    {ms}
                                 </option>
                             ))}
                         </select>
                         <MusicalNoteIcon className="pointer-events-none absolute left-3 top-1/2 mt-1 transform h-5 w-5 text-gray-500" />
-                    </div> */}
+                    </div>
+
+                    <div className="mb-4">
+                        <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
+                            Link to Music:
+                        </label>
+                        <input
+                            id="item_url"
+                            name="item_url"
+                            type="text"
+                            value={item_url} 
+                            onChange={(e) => setMusic_meta(e.target.value)}
+                            className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
                 </>
             );
         case 'Travel':
@@ -689,15 +639,15 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
+                        <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
                             Website URL:
                         </label>
                         <input
-                            id="website"
-                            name="website"
+                            id="item_url"
+                            name="item_url"
                             type="text"
-                            value={website} 
-                            onChange={(e) => setWebsite(e.target.value)}
+                            value={item_url} 
+                            onChange={(e) => setItem_url(e.target.value)}
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>

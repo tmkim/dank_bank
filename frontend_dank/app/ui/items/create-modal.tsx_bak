@@ -1,5 +1,5 @@
 'use client'
-// import {  } from '@/app/lib/definitions';
+import { Item, Image } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
     CurrencyDollarIcon,
@@ -7,10 +7,9 @@ import {
 import { Button } from '@/app/ui/button';
 import React, { useEffect, useState } from 'react';
 import ImageUploader from '../upload';
-import { CategoryData, Item, Image } from '@/app/lib/definitions_new';
 
-// type Category = Item['category'];
-// type MSource = Item['music_source'];
+type Category = Item['category'];
+type MSource = Item['music_source'];
 
 interface CreateProps {
     // item: Item;
@@ -22,14 +21,14 @@ interface CreateProps {
 const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     // Category Select
-    const categories: string[] = ['Dining', 'Food', 'Media', 'Travel'];
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const categories: Category[] = ['Dining', 'Food', 'Music', 'Travel'];
+    const [selectedCategory, setSelectedCategory] = useState<Category>('');
 
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategory(event.target.value as string);
+        setSelectedCategory(event.target.value as Category);
         setSelectedLocation('');
         setSelectedPrice(0);
-        // setSelectedSource('');
+        setSelectedMSource('');
     };
 
     // Price Range Select
@@ -41,12 +40,12 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     };
 
     // Music Source Select
-    // const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
-    // const [selectedSource, setSource] = useState<string>('');
+    const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
+    const [selectedSource, setSelectedMSource] = useState<MSource>('');
 
-    // const handleSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSource(event.target.value);
-    // }
+    const handleMusicSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedMSource(event.target.value as MSource);
+    }
 
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
@@ -99,6 +98,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     
 
     // Update file descriptions when users type in the description for each file
+    // Update file descriptions when users type in the description for each file
     const handleFileNameChange = (index: number, fileName: string) => {
         const updatedFiles = [...selectedImages];
         const originalFileName = updatedFiles[index]?.name || '';
@@ -143,63 +143,18 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     
         const formData = new FormData(e.target as HTMLFormElement);
         const formObject = Object.fromEntries(formData.entries());
-        
-        const category = formObject.category as string;
-        let category_data: CategoryData = {};
-
-        switch (category){
-            case "Dining":
-                category_data = {
-                    address: formObject.address as string,
-                    location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                    gmap_url: formObject.gmap_url as string,
-                    website: formObject.website as string,
-                    price_range: formObject.price_range as string,
-                    cuisine: formObject.cuisine as string,
-                    
-                };
-                break;
-            case "Food":
-                category_data = {
-                    location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                    cost: Number(formObject.cost) || 0,
-                    cuisine: formObject.cuisine as string,
-                };
-                break;
-            case "Media":
-                category_data = {
-                    source: formObject.source as string,
-                    artist: formObject.artist as string,
-                    genre: formObject.genre as string,
-                    website: formObject.website as string,
-                };
-                break;
-            case "Travel":
-                category_data = {
-                    location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation,
-                    address: formObject.address as string,
-                    gmap_url: formObject.gmap_url as string,
-                    website: formObject.website as string,
-                };
-                break;
-            default:
-                category_data = {};
-        }
-        
+    
         const payload = {
             ...formObject,
-            category_data,
-            // ...(selectedLocation && {
-            //     location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation
-            // }),
-            // images: selectedImages.map((file, index) => ({
-            //     file: file.file,
-            //     name: file.name,
-            //     description: file.description
-            // })),
+            ...(selectedLocation && {
+                location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation
+            }),
+            images: selectedImages.map((file, index) => ({
+                file: file.file,
+                name: file.name,
+                description: file.description // Set description to null if empty
+            })),
         };
-
-        console.log("Final Payload:", payload);
     
         try {
             // Step 1: Send Form Data (Including Image URLs)
@@ -429,7 +384,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                         </div>
                     </>
                 );
-            case 'Media':
+            case 'Music':
                 return (
                     <>
                         <div className="mb-4">
@@ -443,7 +398,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>
-                        {/* <div className="mb-4 relative">
+                        <div className="mb-4 relative">
                             <label htmlFor="music_source" className="block text-base font-medium text-gray-700 mb-2">
                                 Music Source:
                             </label>
@@ -463,22 +418,11 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                     </option>
                                 ))}
                             </select>
-                        </div> */}
-                        <div className="mb-4">
-                            <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
-                                Source:
-                            </label>
-                            <input
-                                id="source"
-                                name="source"
-                                type="text"
-                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                            />
-                        </div>  
+                        </div>
 
                         <div className="mb-4">
                             <label htmlFor="item_url" className="block text-base font-medium text-gray-700 mb-2">
-                                Link to Media:
+                                Link to Music:
                             </label>
                             <input
                                 id="item_url"

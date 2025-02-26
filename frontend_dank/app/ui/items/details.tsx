@@ -4,7 +4,6 @@ import { Item } from "@/app/lib/definitions";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Star } from "lucide-react";
-import UploadPage from "../upload";
 import ImageCarousel from "./img-carousel";
 
 interface ItemDetailsProps {
@@ -54,7 +53,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
     }
 
     const renderName = () => {
-        switch (item.item_url){
+        switch (item.category_data.item_url){
             case '':
                 return(
                     <div className="mt-2 flex items-center justify-between">
@@ -70,7 +69,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
             default:
                 return(
                     <div className="mt-2 flex items-center justify-between">
-                        <h2 className="text-2xl font-semibold"><Link href={item.item_url} className="button">{item.name}</Link></h2>
+                        <h2 className="text-2xl font-semibold"><Link href={String(item.category_data.item_url)} className="button">{item.name}</Link></h2>
                     </div>
                 )
         }
@@ -83,18 +82,18 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                     <>
                     <div className="flex items-center justify-between">
                         <div className="">
-                            {item.location}
+                            {item.category_data.location}
                         </div>
                         <div className="text-3xl">
-                            {item.price_range}
+                            {item.category_data.price_range}
                         </div>
                     </div>
                     <div className="text-sm">
-                        <Link href={item.gmap_url} className="button">{item.address}</Link>
+                        <Link href={String(item.category_data.gmap_url)} className="button">{item.category_data.address}</Link>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="">
-                            {item.cuisine}
+                            {item.category_data.cuisine}
                         </div>
                     </div>
                     </>
@@ -104,14 +103,14 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                     <>
                     <div className="flex items-center justify-between">
                         <div className="">
-                            {item.location}
+                            {item.category_data.location}
                         </div>
                         <div className="text-3xl">
-                            ${item.cost}
+                            ${item.category_data.cost}
                         </div>
                     </div>
                     <div className="">
-                        {item.cuisine} -- update to make a select
+                        {item.category_data.cuisine} -- update to make a select
                     </div>
                     </>
                 )
@@ -119,10 +118,10 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                 return (
                     <>
                     <div className="text-sm">
-                        {item.artist}
+                        {item.category_data.artist}
                     </div>
                     <div className="">
-                        <Link href={item.item_url}>{item.music_source} link</Link>
+                        <Link href={String(item.category_data.item_url)}>{item.category_data.music_source} link</Link>
                         {/* Eventually would like to include an embed from appropriate source
                             Also maybe add album art or something for the image carousel
                         */}
@@ -133,13 +132,13 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                 return (
                     <>
                     <div className="">
-                        {item.location}
+                        {item.category_data.location}
                     </div>
                     <div className="text-sm">
-                        <Link href={item.gmap_url} className="button">{item.address}</Link>
+                        <Link href={String(item.category_data.gmap_url)} className="button">{item.category_data.address}</Link>
                     </div>
                     <div>
-                        <Link href={item.item_url} className="button">Link to Website</Link>
+                        <Link href={String(item.category_data.item_url)} className="button">Link to Website</Link>
                     </div>
                     </>
                 )

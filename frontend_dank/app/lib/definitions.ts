@@ -9,22 +9,54 @@ export type User = {
   password: string;
 };
 
+export type CategoryData = {
+  [key: string]: string | number;
+}
+
 export type Item = {
   id: string;
-  category: '' | 'Dining' | 'Food' | 'Music' | 'Travel'; //enum?
+  category: string;
   name: string;
   review: string;
   rating: number;
+  category_data: CategoryData;
+}
+
+export type Dining = {
+  id: string;
+  item: string;
   address: string;
   location: string;
   gmap_url: string;
-  item_url: string;
-  price_range: '' | '$' | '$$' | '$$$' | '$$$$' | '$$$$$';
+  website: string;
+  price_range: string;
+  cuisine: string;
+}
+
+export type Food = {
+  id: string;
+  item: string;
+  location: string;
   cost: number;
   cuisine: string;
-  music_source: '' | 'SoundCloud' | 'Spotify' | 'YouTube';
+}
+
+export type Media = {
+  id: string;
+  item: string;
+  source: string;
   artist: string;
-  music_meta: string;
+  genre: string;
+  website: string;
+}
+
+export type Travel = {
+  id: string;
+  item: string;
+  location: string;
+  address: string;
+  gmap_url: string;
+  website: string;
 }
 
 export type Image = {
@@ -36,7 +68,7 @@ export type Image = {
 
 export type ItemTable = {
   id: string;
-  category: 'Dining' | 'Food' | 'Music' | 'Travel'; //enum?
+  category: string;
   name: string;
   review: string;
   rating: number;
@@ -44,7 +76,7 @@ export type ItemTable = {
 
 export type FormattedItemTable = {
   id: string;
-  category: 'Dining' | 'Food' | 'Music' | 'Travel'; //enum?
+  category: string;
   name: string;
   review: string;
   rating: number;
@@ -53,7 +85,7 @@ export type FormattedItemTable = {
 
 export type ItemForm = {
   id: string;
-  category: 'Dining' | 'Food' | 'Music' | 'Travel'; //enum?
+  category: string;
   name: string;
   review: string;
   rating: number;
