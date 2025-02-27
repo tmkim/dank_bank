@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 from . import views
-from .views import CustomTokenObtainPairView, ItemViewSet, ImageViewSet
+from .views import CustomTokenObtainPairView, ItemViewSet, ImageViewSet, SelectOptionViewSet
 
 
 # router.register(r'dining', views.DiningViewSet, basename='dining')
@@ -16,6 +16,7 @@ from .views import CustomTokenObtainPairView, ItemViewSet, ImageViewSet
 router = DefaultRouter()
 router.register(r'items', ItemViewSet, basename='items')
 router.register(r'image', ImageViewSet, basename='image')
+router.register(r'selectoption', SelectOptionViewSet, basename='selectoption')
 
 # The API URLs are now determined automatically by the router.
 urlpatterns = [

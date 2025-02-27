@@ -929,3 +929,16 @@ Today:
     + Confirmed images are still working as expected
 
     I believe refactor has been completed!
+
+2/27
+    Today we're going to improve our Select options
+    + new SelectOption model - ID, Category, Name
+    + Creating Dining/Travel adds new Location
+    + Creating Food with "Other" adds new Location
+    + Creating Media with "Other" adds new Source
+    + Updating Food/Media with "Other" adds new location/source
+    + Updating Dining/Travel name updates select option
+        + Also updates food location
+    + Location Select populated via SelectOption fetch
+    + Source Select populated via SelectOption fetch
+    + Unused Select Options are deleted

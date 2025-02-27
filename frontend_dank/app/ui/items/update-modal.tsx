@@ -26,13 +26,13 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     const [review, setReview] = useState(item.review);
     const [rating, setRating] = useState(item.rating);
     const [address, setAddress] = useState(item.category_data.address);
-    const [location, setLocation] = useState(item.category_data.location);
+    // const [location, setLocation] = useState(item.category_data.location);
     const [gmap_url, setGmap_url] = useState(item.category_data.gmap_url);
     const [website, setWebsite] = useState(item.category_data.website);
     // const [price_range, setPrice_range] = useState(item.price_range);
     const [cost, setCost] = useState(item.category_data.cost);
     const [cuisine, setCuisine] = useState(item.category_data.cuisine);
-    const [source, setSource] = useState(item.category_data.source);
+    // const [source, setSource] = useState(item.category_data.source);
     const [artist, setArtist] = useState(item.category_data.artist);
     const [genre, setGenre] = useState(item.category_data.genre);
 
@@ -62,12 +62,16 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<string>(
-        String(item.category_data.location).startsWith("Other:") ? "Other" : String(item.category_data.location)
+        String(item.category_data.location).startsWith("Other:") ? String(item.category_data.location).substring(6) : String(item.category_data.location)
     ); // Selected location
-    const [customLocation, setCustomLocation] = useState<string>(
-        String(item.category_data.location).startsWith("Other:") ? String(item.category_data.location).substring(6) : ''
+    const [customLocation, setCustomLocation] = useState<string>('');
 
-    );
+    // Media Source Select
+    const [sources, setSources] = useState<string[]>([]);
+    const [selectedSource, setSelectedSource] = useState<string>(
+        String(item.category_data.source).startsWith("Other:") ? String(item.category_data.source).substring(6) : String(item.category_data.source)
+    ); // Selected location
+    const [customSource, setCustomSource] = useState<string>('');
 
     // Images associated with item
     const [selectedImages, setSelectedImages] = useState<Image[]>([]);
@@ -75,24 +79,41 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
     useEffect(() => {
         // Fetch items with category "Dining"
-        const fetchDiningItems = async () => {
+        const fetchSelectOptions = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api_dank/items/?category=Dining&category=Travel');
+              const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Location');
+              const data = await response.json();
+              console.log(data); // Log the data to inspect its structure
+          
+              // Check if the results key exists and is an array
+              if (Array.isArray(data.results)) {
+                const locations = data.results.map((item: { name: string }) => item.name);
+                // setLocations(locations);
+                setLocations([...locations, 'Other']);
+            } else {
+            console.error('Results is not an array:', data.results);
+            }
+            } catch (error) {
+            console.error('Error fetching locations:', error);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Source');
                 const data = await response.json();
                 console.log(data); // Log the data to inspect its structure
             
                 // Check if the results key exists and is an array
                 if (Array.isArray(data.results)) {
-                const locations = data.results.map((item: { name: string }) => item.name);
-                setLocations(locations);
-                setLocations([...locations, 'Other']);
-                } else {
+                  const sources = data.results.map((item: { name: string }) => item.name);
+                //   setLocations(sources);
+                  setSources([...sources, 'Other']);
+            } else {
                 console.error('Results is not an array:', data.results);
-                }
-            } catch (error) {
-                console.error('Error fetching dining items:', error);
             }
-            };
+            } catch (error) {
+            console.error('Error fetching locations:', error);
+            }
+        };
 
         const fetchImages = async () => {
             const response = await fetch(`http://localhost:8000/api_dank/image/?item=${item.id}`);
@@ -103,7 +124,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         };
 
         fetchImages();
-        fetchDiningItems();
+        fetchSelectOptions();
     }, []);
 
     const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -118,6 +139,20 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
     const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomLocation(e.target.value);
+    };
+
+    const handleSourceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSelectedSource(value);
+    
+        // If "Other" is selected, clear custom Source input
+        if (value !== 'Other') {
+            setCustomSource('');
+        }
+    };
+
+    const handleCustomSourceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCustomSource(e.target.value);
     };
 
     //------------------------
@@ -281,7 +316,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                 cuisine
             },
             ...category === "Media" && {
-                source,
+                source: selectedSource === 'Other' ? "Other:" + customSource : selectedSource,
                 artist,
                 genre,
                 website
@@ -480,7 +515,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                 <>
                     <div className="mb-4 relative">
                         <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
-                            Dining
+                            Location
                         </label>
                         <select
                             id="location"
@@ -576,20 +611,42 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 relative">
                         <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
-                            Source:
+                            Source
                         </label>
-                        <input
+                        <select
                             id="source"
                             name="source"
-                            type="text"
-                            value={source} 
-                            onChange={(e) => setSource(e.target.value)}
+                            value={selectedSource}
+                            onChange={handleSourceChange}
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>  
+                        >
+                            <option value="">Select a source</option>
+                            {sources.map((source, index) => (
+                            <option key={index} value={source}>
+                                {source}
+                            </option>
+                            ))}
+                        </select>
 
+                        {/* If "Other" is selected, show an input field for custom Source */}
+                        {selectedSource === 'Other' && (
+                            <div className="mt-4 relative">
+                            <label htmlFor="customSource" className="block text-base font-medium text-gray-700 mb-2">
+                                Please specify:
+                            </label>
+                            <input
+                                id="customSource"
+                                type="text"
+                                value={customSource}
+                                onChange={handleCustomSourceChange}
+                                placeholder="Enter custom source"
+                                className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            />
+                            </div>
+                        )}
+                    </div> 
                     <div className="mb-4">
                         <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
                             Link to Media:

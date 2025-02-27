@@ -48,6 +48,10 @@ class Image(models.Model):
     def __str__(self):
         return self.name or f"Image: {self.id}"
     
+class SelectOption(models.Model):
+    category = models.CharField(max_length=200, blank=True, default='')
+    name = models.CharField(max_length=200, blank=True, default='', unique=True)
+    
 # class SelectOptions(models.Model):
 #     category = models.CharField(max_length=200, blank=True, default='')
 #     option = models.CharField(max_length=200, blank=True, default='')

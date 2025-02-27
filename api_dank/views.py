@@ -3,8 +3,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
-from .models import Image, Item, Dining, Food, Media, Travel
-from .serializers import ImageSerializer, ItemSerializer
+from .models import Image, Item, Dining, Food, Media, SelectOption, Travel
+from .serializers import ImageSerializer, ItemSerializer, SelectOptionSerializer
 import boto3
 
 #AWS S3
@@ -169,6 +169,17 @@ class ItemViewSet(viewsets.ModelViewSet):
         if category_model:
             category_model.objects.filter(item=instance).delete()
 
+        if instance.category in ['Dining', 'Travel']:
+            # Find the corresponding SelectOption entry
+            select_option = SelectOption.objects.filter(category="Location", name=instance.name).first()
+
+            if select_option:
+                # Check if any Food items are using this SelectOption as their location
+                if not Food.objects.filter(location=select_option.name).exists():
+                    # If no Food items are using this location, delete the SelectOption entry
+                    select_option.delete()
+
+
         # Now delete the Item itself
         return super().destroy(request, *args, **kwargs)
 
@@ -202,6 +213,16 @@ class ItemViewSet(viewsets.ModelViewSet):
             if cat_model:
                 cat_model.objects.filter(item=item).delete()
 
+            if item.category in ['Dining', 'Travel']:
+                # Find the corresponding SelectOption entry
+                select_option = SelectOption.objects.filter(category="Location", name=item.name).first()
+
+                if select_option:
+                    # Check if any Food items are using this SelectOption as their location
+                    if not Food.objects.filter(location=select_option.name).exists():
+                        # If no Food items are using this location, delete the SelectOption entry
+                        select_option.delete()
+
         # Delete item data
         items.delete()
 
@@ -216,6 +237,19 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+class SelectOptionViewSet(viewsets.ModelViewSet):
+    queryset = SelectOption.objects.all()
+    serializer_class = SelectOptionSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        categories = self.request.query_params.getlist('category', None)  
+        if categories:
+            queryset = queryset.filter(category__in=categories)  
+
+        return queryset
     
 # class DiningViewSet(viewsets.ModelViewSet):
 #     queryset = Dining.objects

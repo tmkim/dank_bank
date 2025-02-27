@@ -25,6 +25,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value as string);
         setSelectedLocation('');
+        setSelectedSource('');
         setSelectedPrice(0);
         // setSelectedSource('');
     };
@@ -39,31 +40,51 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
+    const [sources, setSources] = useState<string[]>([]);
     const [selectedLocation, setSelectedLocation] = useState<string>(''); // Selected location
+    const [selectedSource, setSelectedSource] = useState<string>(''); // Selected location
     const [customLocation, setCustomLocation] = useState<string>('');
+    const [customSource, setCustomSource] = useState<string>('');
 
     useEffect(() => {
         // Fetch items with category "Dining"
-        const fetchDiningItems = async () => {
+        const fetchSelectOptions = async () => {
             try {
-              const response = await fetch('http://localhost:8000/api_dank/items/?category=Dining&category=Travel');
+              const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Location');
               const data = await response.json();
               console.log(data); // Log the data to inspect its structure
           
               // Check if the results key exists and is an array
               if (Array.isArray(data.results)) {
                 const locations = data.results.map((item: { name: string }) => item.name);
-                setLocations(locations);
+                // setLocations(locations);
                 setLocations([...locations, 'Other']);
-              } else {
-                console.error('Results is not an array:', data.results);
-              }
-            } catch (error) {
-              console.error('Error fetching dining items:', error);
+            } else {
+            console.error('Results is not an array:', data.results);
             }
-          };
+            } catch (error) {
+            console.error('Error fetching locations:', error);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Source');
+                const data = await response.json();
+                console.log(data); // Log the data to inspect its structure
+            
+                // Check if the results key exists and is an array
+                if (Array.isArray(data.results)) {
+                  const sources = data.results.map((item: { name: string }) => item.name);
+                //   setLocations(sources);
+                  setSources([...sources, 'Other']);
+            } else {
+                console.error('Results is not an array:', data.results);
+            }
+            } catch (error) {
+            console.error('Error fetching locations:', error);
+            }
+        };
     
-        fetchDiningItems();
+        fetchSelectOptions();
     }, []);
 
     const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -78,6 +99,20 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
 
     const handleCustomLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCustomLocation(e.target.value);
+    };
+
+    const handleSourceChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.value;
+        setSelectedSource(value);
+    
+        // If "Other" is deselected, clear custom Source input
+        if (value !== 'Other') {
+          setCustomSource('');
+        }
+    };
+
+    const handleCustomSourceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCustomSource(e.target.value);
     };
 
     // Rating Slidebar
@@ -158,7 +193,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                 break;
             case "Media":
                 category_data = {
-                    source: formObject.source as string,
+                    source: selectedSource === 'Other' ? "Other:" + customSource : selectedSource,
                     artist: formObject.artist as string,
                     genre: formObject.genre as string,
                     website: formObject.website as string,
@@ -360,7 +395,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                     <>
                         <div className="mb-4 relative">
                             <label htmlFor="location" className="block text-base font-medium text-gray-700 mb-2">
-                                Dining
+                                Location
                             </label>
                             <select
                                 id="location"
@@ -448,17 +483,42 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>  
-                        <div className="mb-4">
+                        <div className="mb-4 relative">
                             <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
-                                Source:
+                                Source
                             </label>
-                            <input
+                            <select
                                 id="source"
                                 name="source"
-                                type="text"
+                                value={selectedSource}
+                                onChange={handleSourceChange}
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                            />
-                        </div>  
+                            >
+                                <option value="">Select a location</option>
+                                {sources.map((source, index) => (
+                                <option key={index} value={source}>
+                                    {source}
+                                </option>
+                                ))}
+                            </select>
+
+                            {/* If "Other" is selected, show an input field for custom location */}
+                            {selectedSource === 'Other' && (
+                                <div className="mt-4 relative">
+                                <label htmlFor="customSource" className="block text-base font-medium text-gray-700 mb-2">
+                                    Please specify:
+                                </label>
+                                <input
+                                    id="customSource"
+                                    type="text"
+                                    value={customSource}
+                                    onChange={handleCustomSourceChange}
+                                    placeholder="Enter custom source"
+                                    className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                                />
+                                </div>
+                            )}
+                        </div>
 
                         <div className="mb-4">
                             <label htmlFor="website" className="block text-base font-medium text-gray-700 mb-2">
