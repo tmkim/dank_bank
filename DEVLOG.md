@@ -926,3 +926,6 @@ Today:
 
             ** FIXED - Details - media not showing artist but update shows in db
         
+    + Confirmed images are still working as expected
+
+    I believe refactor has been completed!
