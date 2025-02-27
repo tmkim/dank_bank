@@ -14,7 +14,7 @@ import DeleteItemsButton from '@/app/ui/items/multi-delete';
 type FilterChecks = {
   Dining: boolean;
   Food: boolean;
-  Music: boolean;
+  Media: boolean;
   Travel: boolean;
 }
 
@@ -42,7 +42,7 @@ const ItemsPage: React.FC = () => {
   const [filterCheck, setFilterCheck] = useState<FilterChecks>({
     Dining: false,
     Food: false,
-    Music: false,
+    Media: false,
     Travel: false,
   });
 
@@ -155,7 +155,7 @@ const ItemsPage: React.FC = () => {
           </div>
           <div className="flex justify-between space-x-2 mt-2">
             <div className="flex gap-2">
-              {['Dining', 'Food', 'Music', 'Travel'].map((option, index) => {
+              {['Dining', 'Food', 'Media', 'Travel'].map((option, index) => {
                 const key = option;
                 return (
                   <label

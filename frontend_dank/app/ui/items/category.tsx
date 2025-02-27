@@ -9,7 +9,7 @@ export default function ItemCategory({ status }: { status: string }) {
         {
           'bg-purple-100 text-white': status === 'Dining',
           'bg-red-500 text-white': status === 'Food',
-          'bg-blue-500 text-white': status === 'Music',
+          'bg-blue-500 text-white': status === 'Media',
           'bg-green-500 text-white': status === 'Travel',
         },
       )}
@@ -26,9 +26,9 @@ export default function ItemCategory({ status }: { status: string }) {
           <CheckIcon className="ml-1 w-4 text-white" />
         </>
       ) : null}
-        {status === 'Music' ? (
+        {status === 'Media' ? (
         <>
-          Music
+          Media
           <ClockIcon className="ml-1 w-4 text-white" />
         </>
       ) : null}

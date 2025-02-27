@@ -603,29 +603,6 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
                             className="block w-full px-4 py-2 rounded-md border border-gray-300 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                         />
                     </div>
-
-                    {/* <div className="mb-4 relative">
-                        <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
-                            Music Source:
-                        </label>
-                        <select
-                            className="peer block w-full cursor-pointer rounded-md border border-gray-300 py-2 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                            id="source"
-                            name="source"
-                            value={selectedSource}
-                            onChange={handleSourceChange}
-                        >
-                            <option value="" disabled>
-                                Select A Music Source
-                            </option>
-                            {sources.map((s) => (
-                                <option key={s} value={s}>
-                                    {s}
-                                </option>
-                            ))}
-                        </select>
-                        <MusicalNoteIcon className="pointer-events-none absolute left-3 top-1/2 mt-1 transform h-5 w-5 text-gray-500" />
-                    </div> */}
                 </>
             );
         case 'Travel':

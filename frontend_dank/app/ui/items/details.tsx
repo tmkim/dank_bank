@@ -127,7 +127,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         {item.category_data.artist}
                     </div>
                     <div className="">
-                        <Link href={String(item.category_data.item_url)}>{item.category_data.music_source} link</Link>
+                        <Link href={String(item.category_data.item_url)}>{item.category_data.source} link</Link>
                         {/* Eventually would like to include an embed from appropriate source
                             Also maybe add album art or something for the image carousel
                         */}

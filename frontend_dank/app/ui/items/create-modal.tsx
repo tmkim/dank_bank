@@ -9,9 +9,6 @@ import React, { useEffect, useState } from 'react';
 import ImageUploader from '../upload';
 import { CategoryData, Item, Image } from '@/app/lib/definitions';
 
-// type Category = Item['category'];
-// type MSource = Item['music_source'];
-
 interface CreateProps {
     // item: Item;
     onClose: () => void;
@@ -39,14 +36,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
     const handlePriceClick = (index: number) => {
         setSelectedPrice(index + 1); // Adjust to start from 1 instead of 0
     };
-
-    // Music Source Select
-    // const msources: MSource[] = ['SoundCloud', 'Spotify', 'YouTube'];
-    // const [selectedSource, setSource] = useState<string>('');
-
-    // const handleSourceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    //     setSource(event.target.value);
-    // }
 
     // Food Location Select
     const [locations, setLocations] = useState<string[]>([]);
@@ -459,27 +448,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
                                 className="block w-full px-4 py-2 rounded-md border border-gray-400 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
                             />
                         </div>  
-                        {/* <div className="mb-4 relative">
-                            <label htmlFor="music_source" className="block text-base font-medium text-gray-700 mb-2">
-                                Music Source:
-                            </label>
-                            <select
-                                className="peer block w-full cursor-pointer rounded-md border border-gray-400 py-2 pr-4 text-base text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                                id="music_source"
-                                name="music_source"
-                                value={selectedSource}
-                                onChange={handleMusicSourceChange}
-                            >
-                                <option value="" disabled>
-                                    Select A Music Source
-                                </option>
-                                {msources.map((ms) => (
-                                    <option key={ms} value={ms}>
-                                        {ms}
-                                    </option>
-                                ))}
-                            </select>
-                        </div> */}
                         <div className="mb-4">
                             <label htmlFor="source" className="block text-base font-medium text-gray-700 mb-2">
                                 Source:
