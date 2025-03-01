@@ -12,12 +12,12 @@
 - Set up generic view sets
 - Set up api urls with router
 
-TODO LATER : Look into best way to implement tagging system
-TODO LATER : Look into benefit of hyperlinking (performance)
+Denied : Look into best way to implement tagging system
+DONE : Look into benefit of hyperlinking (performance)
 
 --- At this point, basic API is set up for a few models
 
-TODO : 
+DONE : 
         Build some entries, populate database
         Set up proper testing
 
@@ -228,7 +228,7 @@ Today:
             -- Server side: use fetch with dynamic data
         ~~ If your Next.js app and DRF API are hosted on different domains, you might need to configure Cross-Origin Resource Sharing (CORS) on your API.
 
-    TODO : work on fetching data from API to populate Items list https://nextjs.org/learn/dashboard-app/fetching-data
+    DONE : work on fetching data from API to populate Items list https://nextjs.org/learn/dashboard-app/fetching-data
 
 1/4/2025
     Today we will be focusing on correctly retrieving data from our API, and formatting it to populate a list in Next.js 
@@ -291,7 +291,7 @@ Today:
 
     ** updated nextjs definition, api serializer
 
-    TODO Tomorrow:
+    DONE Tomorrow:
         Flesh out details for different categories
         Make it pretty
         Add search, pagination, filter
@@ -517,7 +517,7 @@ Today:
     DONE - Update Form
     DONE - Item Table Skeleton
 
-    TODO - Details layout
+    DONE - Details layout
     In Prog - Overall Page (especially when shrinking window)
 
 1/27
@@ -599,7 +599,7 @@ Today:
     Ok, so let's take a look at
         -- improved form validation
             ++ client-side validation good
-            .. TODO : server-side validation with DRF + front-end error handling
+            .. DONE : server-side validation with DRF + front-end error handling
         -- create/update - controlled vs uncontrolled component
             >> Select option from cat 'Food'
             >> Switch category to 'Dining' or 'Travel', Location will maintain selected value
@@ -620,13 +620,13 @@ Today:
         ++ updated pagination formatting
             >> moved pagination logic to its own component
             >> moved item limit selection to same row as filter buttons 
-        ** TODO : Make select options their own DB table instead of hardcoding
+        ** DONE : Make select options their own DB table instead of hardcoding
                 -- Category, Location, Music Source, Cuisine
 
     Accessibility (+ input form validation)
         ++ tabIndex on interactable elements such as filter buttons
         ++ client-side validation : added "required" keyword to required inputs
-        ** TODO : server-side validation
+        ** DONE : server-side validation
     
     Found bug where table scrollbar overlaps update/delete modals
         ++ adjusted z-index for each component to ensure proper stacking
@@ -829,7 +829,7 @@ Today:
         Apparently, it will be better to handle everything from a single API endpoint to keep things simple (less API overhead and front-end logic), and make sure that either both Item and CategoryTables are updated, or neither are.
         So we're going to update our Item ViewSet and Serializer to check the data's "category" field and handle each category appropriately.
 
-    Random thought -- TODO: want to make my Item Table sortable !
+    Random thought -- DONE: want to make my Item Table sortable !
 
 2/24
     Ok let's continue our database refactor.
@@ -942,3 +942,29 @@ Today:
     + Location Select populated via SelectOption fetch
     + Source Select populated via SelectOption fetch
     + Unused Select Options are deleted
+
+2/28
+    Alright, doing some final touches, making sure we did everything we wanted TODO.
+
+    1. Make Item Table sortable 
+        + added state to handle sort key + order
+        + added function to sort results
+        + added function to display sort arrow
+        + added style to header titles
+
+    2. Improve Details layout
+        + improve spacing
+        + improve links
+        - improve images
+            > clicking on image should open a full screen modal 
+    
+    3. Issue with updating results 
+        > When I go to page 2, it will load page 2 result then overwrite with page 1 results
+            + added check to ensure page state is updated properly
+        > If I'm on page 2 and click a filter, there's an error if that filter doesn't have enough pages
+            + reset page to '1' on filter click
+        *** New Bug ***
+        Basically there is an issue with the "Categories" dependency because it is an array and array is being re-created each render, so useEffect is running too many times
+        FIXED -- updated how "categories" are stored -> using a dictionary to track true/false rather than an array
+            ( was already kinda doing this, but built an array before sending to Item Table. Now we're just sending the dictionary.)
+        

@@ -39,7 +39,7 @@ const ItemsPage: React.FC = () => {
 
   const [createModal, setCreateModal] = useState<boolean>(false);
 
-  const [filterCheck, setFilterCheck] = useState<FilterChecks>({
+  const [filterCheck, setFilterCheck] = useState<{[key: string]: boolean}>({
     Dining: false,
     Food: false,
     Media: false,
@@ -52,6 +52,7 @@ const ItemsPage: React.FC = () => {
       ...prevState,
       [name]: checked,
     }));
+    setCurrentPage(1)
   };
 
   const handleLimitChange = (newLimit: number) => {
@@ -196,9 +197,7 @@ const ItemsPage: React.FC = () => {
             query={searchQuery}
             page={currentPage}
             limit={pageLimit}
-            categories={selectedCategories}
-            // onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
-            // onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+            categories={filterCheck}
             onRowClick={handleRowClick}
             setTotalItems={setTotalItems}
           />
@@ -208,8 +207,10 @@ const ItemsPage: React.FC = () => {
             page={currentPage}
             limit={pageLimit}
             totalItems={totalItems}
-            onPageChange={(newPage) => updateQueryParams(searchQuery, newPage, pageLimit)}
-            onLimitChange={(newLimit) => updateQueryParams(searchQuery, 1, newLimit)}
+            onPageChange={(newPage) => {
+              setCurrentPage(newPage); // Ensure state is updated
+              updateQueryParams(searchQuery, newPage, pageLimit);
+            }}
           />
         </div>
 
@@ -218,8 +219,6 @@ const ItemsPage: React.FC = () => {
           <ItemDetails item={item} />
         </div>
       </div>
-
-
 
       {createModal && (
         <CreateModal onClose={() => setCreateModal(false)} />

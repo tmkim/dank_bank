@@ -53,7 +53,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
     }
 
     const renderName = () => {
-        switch (item.category_data.item_url){
+        switch (item.category_data.website){
             case '':
                 return(
                     <div className="mt-2 flex items-center justify-between">
@@ -69,8 +69,18 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
             default:
                 return(
                     <div className="mt-2 flex items-center justify-between">
-                        <h2 className="text-2xl font-semibold"><Link href={String(item.category_data.item_url)} className="button">{item.name}</Link></h2>
+                        <h2 className="text-2xl font-semibold">
+                        <Link 
+                            href={getLink(item.category_data.website)} 
+                            className="button" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            {item.name}
+                        </Link>
+                        </h2>
                     </div>
+                    
                 )
         }
     }
@@ -84,6 +94,10 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
         return source.includes("Other") 
             ? source.substring(6) 
             : source;
+    }
+
+    const getLink = (url: string | number) => {
+        return String(url).startsWith("http") ? String(url) : `https://${url}`
     }
 
     const renderDetails = () => {
@@ -100,12 +114,17 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         </div>
                     </div>
                     <div className="text-sm">
-                        <Link href={String(item.category_data.gmap_url)} className="button">{item.category_data.address}</Link>
+                        <Link 
+                            href={getLink(item.category_data.gmap_url)} 
+                            className="button" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            {item.category_data.address}
+                        </Link>
                     </div>
-                    <div className="flex items-center justify-between">
-                        <div className="">
-                            {item.category_data.cuisine}
-                        </div>
+                    <div className="">
+                        Cuisine: {item.category_data.cuisine}
                     </div>
                     </>
                 )
@@ -121,7 +140,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         </div>
                     </div>
                     <div className="">
-                        {item.category_data.cuisine}
+                        Cuisine: {item.category_data.cuisine}
                     </div>
                     </>
                 )
@@ -129,10 +148,20 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                 return (
                     <>
                     <div className="text-sm">
-                        {item.category_data.artist}
+                        Artist: {item.category_data.artist}
+                    </div>
+                    <div className="text-sm">
+                        Genre: {item.category_data.genre}
                     </div>
                     <div className="">
-                        <Link href={String(item.category_data.item_url)}>{getSource(String(item.category_data.source))} link</Link>
+                        <Link 
+                            href={getLink(item.category_data.website)} 
+                            className="button" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            {item.category_data.source} Link
+                        </Link>
                         {/* Eventually would like to include an embed from appropriate source
                             Also maybe add album art or something for the image carousel
                         */}
@@ -146,10 +175,24 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
                         {item.category_data.location}
                     </div>
                     <div className="text-sm">
-                        <Link href={String(item.category_data.gmap_url)} className="button">{item.category_data.address}</Link>
+                        <Link 
+                            href={getLink(item.category_data.gmap_url)} 
+                            className="button" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            {item.category_data.address}
+                        </Link>
                     </div>
                     <div>
-                        <Link href={String(item.category_data.item_url)} className="button">Link to Website</Link>
+                        <Link 
+                            href={getLink(item.category_data.website)} 
+                            className="button" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                        >
+                            Link to Website
+                        </Link>
                     </div>
                     </>
                 )
@@ -162,7 +205,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ item }) => {
             <div className="inline-block min-w-full align-middle">
                 <div className="border-separate overflow-y-auto rounded-xl border-2 border-gray-400 border-4 border-solid flex flex-col text-xl"
                      style={{height: 'calc(102px + 70vh)'}}>
-                    <div className="px-4">
+                    <div className="px-4 pb-10">
                         <div className="flex justify-center gap-1 mt-2 mb-2">{getStarRating(item.rating)}</div>
                         {/* Name */}
                         <div>

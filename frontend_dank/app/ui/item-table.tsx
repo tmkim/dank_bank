@@ -1,5 +1,5 @@
 // components/ItemTable.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Item } from '@/app/lib/definitions';
 import clsx from 'clsx';
 import { lusitana } from '@/app/ui/fonts';
@@ -7,20 +7,25 @@ import { PencilIcon } from '@heroicons/react/20/solid';
 import UpdateModal from '@/app/ui/items/update-modal';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
-import ItemTableSkeleton from '@/app/ui/it_skeleton';
 
 type ItemTableProps = {
   query: string;
   page: number;
   limit: number;
-  categories: string[];
+  categories: {[key: string]: boolean};
   onRowClick: (item: Item) => void;
   setTotalItems: (count: number) => void;
 };
 
 const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onRowClick, setTotalItems }) => {
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  // const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setToken(localStorage.getItem("token"));
+    }
+  }, []);
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   // const [loading, setLoading] = useState<boolean>(true);
@@ -31,11 +36,14 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
   const [totalPages, setTotalPages] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
 
+  // ----------------------
+  const selectedCategories = Object.keys(categories).filter(category => categories[category]);
+
   useEffect(() => {
     const fetchItems = async () => {
       // setLoading(true)
       try {
-        const categoryParams = categories.length > 0 ? '&category=' + categories.join('&category=') : '';
+        const categoryParams = selectedCategories.length > 0 ? '&category=' + selectedCategories.join('&category=') : '';
         const response = await fetch(
           `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`
         );
@@ -45,6 +53,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         }
         const data = await response.json();
         console.log(data.results)
+        console.log(page)
         setResults(data.results); // Populate items with fetched data
         setTotalPages(Math.ceil(data.count / limit));
         setTotalItems(data.count)
@@ -98,14 +107,49 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     setIsDeleteModalOpen(false);
   };
 
-  // -------------- Handle Update Modal ----------------
-
   const handleUpdate = (updatedItem: Item) => {
     setResults((prevItems) =>
       prevItems.map((item) =>
         item.id === updatedItem.id ? updatedItem : item
       )
     );
+  };
+  type SortOrder = "asc" | "desc" | "def";
+  const [sortConfig, setSortConfig] = useState<{ key: keyof Item; sortOrder: SortOrder }>({key: "id", sortOrder: "def"});
+  const handleSort = (key: keyof Item) => {
+    let newOrder: SortOrder = "asc";
+
+    if (sortConfig.key === key) {
+      if (sortConfig.sortOrder === "asc") {
+        newOrder = "desc";
+      } else if (sortConfig.sortOrder === "desc") {
+          newOrder = "def"; // Reset to default sort
+      }
+    }
+
+    let sortedData = [...results]; // Start fresh each time when resetting to default
+
+    if (newOrder !== "def") {
+      sortedData.sort((a, b) => {
+        if (a[key] < b[key]) return newOrder === "asc" ? -1 : 1;
+        if (a[key] > b[key]) return newOrder === "asc" ? 1 : -1;
+        return 0;
+      });
+    } else {
+      sortedData.sort((a, b) => {
+        if (a["id"] < b["id"]) return newOrder === "def" ? -1 : 1;
+        if (a["id"] > b["id"]) return newOrder === "def" ? 1 : -1;
+        return 0;
+      }); // Reset to default (ID order)
+    }
+
+    setSortConfig({ key, sortOrder: newOrder });
+    setResults(sortedData);
+  }
+
+  const getSortArrow = (key: keyof Item) => {
+    if (sortConfig.key !== key) return "";
+    return sortConfig.sortOrder === "asc" ? "↑" : sortConfig.sortOrder === "desc" ? "↓" : "";
   };
 
   // if (loading) {
@@ -120,14 +164,14 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
             <table className="min-w-full table-fixed border-collapse text-gray-900">
               <thead className="bg-green-300 text-left text-md font-bold h-[5vh] z-10 border-b-2 border-gray-400">
                 <tr className="flex items-center justify-between py-4">
-                  <th className="px-4 py-2 text-left pl-9 w-3/5">
-                    Name
+                  <th className="px-4 py-2 text-left pl-5 w-3/5">
+                    <span className="hover:bg-green-500 cursor-pointer px-4 py-2 rounded-xl" onClick={() => handleSort("name")}>Name {getSortArrow("name")}</span>
                   </th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/5">
-                    Rating
+                  <th className="px-4 py-2 text-left pl-5 w-1/5">
+                  <span className="hover:bg-green-500 cursor-pointer px-4 py-2 rounded-xl" onClick={() => handleSort("name")}>Rating {getSortArrow("rating")}</span>
                   </th>
-                  <th className="px-4 py-2 text-right pr-7 w-1/8">
-                   {/* style={{ visibility: token ? 'visible' : 'hidden' }}> */}
+                  <th className="px-4 py-2 text-right pr-7 w-1/8"
+                   style={{ visibility: token ? 'visible' : 'hidden' }}>
                     Actions
                   </th>
                 </tr>
@@ -146,7 +190,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
                       <p className="truncate text-sm font-semibold md:text-base">{item.name}</p>
                       <p className="hidden text-sm text-gray-500 sm:block">{item.category}</p>
                     </td>
-                    <td className="w-1/5 text-right pr-5">
+                    <td className="w-1/5 text-left pl-7">
                       <p className={`${lusitana.className} truncate text-xl font-medium`}>
                         {item.rating} / 100
                       </p>

@@ -3,10 +3,9 @@ interface PaginationProps {
   limit: number;
   totalItems: number;
   onPageChange: (newPage: number) => void;
-  onLimitChange: (newLimit: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ page, limit, totalItems, onPageChange, onLimitChange }) => {
+const Pagination: React.FC<PaginationProps> = ({ page, limit, totalItems, onPageChange }) => {
   const totalPages = Math.ceil(totalItems / limit);
 
   return (
