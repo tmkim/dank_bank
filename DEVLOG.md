@@ -955,8 +955,9 @@ Today:
     2. Improve Details layout
         + improve spacing
         + improve links
-        - improve images
-            > clicking on image should open a full screen modal 
+        + improve images
+            > clicking on image now opens a full screen modal 
+            > fixed aspect ratio of non-modal images as well
     
     3. Issue with updating results 
         > When I go to page 2, it will load page 2 result then overwrite with page 1 results
