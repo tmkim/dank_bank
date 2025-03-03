@@ -1,0 +1,239 @@
+[
+    {
+        "model": "api_dank.item",
+        "pk": 1,
+        "fields": {
+            "category": "Dining",
+            "name": "Rice & Shine Restaurant",
+            "address": "No. 329號, Section 1, Dihua St, Datong District, Taipei City, Taiwan 103",
+            "location": "Datong District, Taipei City, Taiwan",
+            "gmap_url": "https://maps.app.goo.gl/XHwaJ2nzer9818r96",
+            "item_url": "https://www.ricenshine329.com/dihua",
+            "price_range": "$$",
+            "cuisine": "Taiwanese",
+            "review": "Great traditional taiwanese food with rice and sides",
+            "rating": "85"
+        }
+    },
+    {
+        "model": "api_dank.item",
+        "pk": 2,
+        "fields": {
+            "category": "Dining",
+            "name": "He Bao Fantuan Breakfast Restaurant",
+            "address": "No. 288號, Section 4, Yanping N Rd, Datong District, Taipei City, Taiwan 103",
+            "location": "Datong District, Taipei City, Taiwan",
+            "gmap_url": "https://maps.app.goo.gl/u6z4StBbgwt5J9MM7",
+            "price_range": "$",
+            "cuisine": "Taiwanese",
+            "rating": "90",
+            "review": "Great traditional taiwanese food with rice and sides"
+        }
+    },
+    {
+        "model": "api_dank.item",
+        "pk": 3,
+        "fields": {
+            "category": "Food",
+            "name": "Prawns with Salted Egg Sauce Set",
+            "location": "Rice & Shine Restaurant",
+            "cost": "13.00",
+            "review": "Dinner set with Prawns entree, rice, 3 sides dishes, and soup. Everything was delicious. Only negative was the prawns came with jicama, which was fine but did not make good use of the sauce",
+            "rating": "87"
+        }
+    },
+    {
+        "model": "api_dank.item",
+        "pk": 4,
+        "fields": {
+            "category": "Food",
+            "name": "Fantuan Jia Dan",
+            "location": "He Bao Fantuan Breakfast Restaurant",
+            "cost": "1.30",
+            "review": "Yummy breakfast wrapped in sticky rice, with egg added. Favorite quick breakfast to-go in Taipei. Fast and fresh. Very filling and delicious.",
+            "rating": "90"
+        }
+    },
+    {
+        "model": "api_dank.item",
+        "pk": 5,
+        "fields": {
+            "category": "Music",
+            "name": "ASS THROWERS ANONYMOUS: SESSION 2",
+            "artist": "Super Future & Wreckno",
+            "item_url": "https://soundcloud.com/superxfuture/ata2?si=ab7fb433a2434d96a1b9b11fdcd9e5cc",
+            "music_source": "SoundCloud",
+            "review": "Bass that makes your butt move",
+            "rating": "99"
+        }
+    },
+    {
+        "model": "api_dank.item",
+        "pk": 6,
+        "fields": {
+            "category": "Travel",
+            "name": "Osulloc Tea Museum",
+            "location": "Jeju-do, South Korea",
+            "address": "15 Sinhwayeoksa-ro, Andeok-myeon, 특별자치도, Seogwipo-si, Jeju-do, South Korea",
+            "item_url": "https://www.osulloc.com/kr/ko/museum",
+            "review": "Beautiful tea museum with delicious green tea and green tea based snacks",
+            "rating": "99"
+        }
+    },
+    {
+        "model": "api_dank.tag",
+        "pk": 1,
+        "fields": {
+            "name": "Dank"
+        }
+    },
+    {
+        "model": "api_dank.tag",
+        "pk": 2,
+        "fields": {
+            "name": "Breakfast"
+        }
+    },
+    {
+        "model": "api_dank.tag",
+        "pk": 3,
+        "fields": {
+            "name": "Lunch"
+        }
+    },
+    {
+        "model": "api_dank.tag",
+        "pk": 4,
+        "fields": {
+            "name": "Dinner"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "1",
+            "item_id": "1"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "1",
+            "item_id": "2"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "1",
+            "item_id": "3"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "1",
+            "item_id": "4"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "2",
+            "item_id": "2"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "3",
+            "item_id": "2"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "3",
+            "item_id": "1"
+        }
+    },
+    {
+        "model": "api_dank.tag2item",
+        "fields": {
+            "tag_id": "4",
+            "item_id": "1"
+        }
+    },
+    {
+        "model": "api_dank.image",
+        "pk": 1,
+        "fields": {
+            "img_url": "{Dank url}",
+            "description": "Dank Seal of Approval"
+        }
+    },
+    {
+        "model": "api_dank.image",
+        "pk": 2,
+        "fields": {
+            "img_url": "{Food url 1}",
+            "description": "Food 1"
+        }
+    },
+    {
+        "model": "api_dank.image",
+        "pk": 3,
+        "fields": {
+            "img_url": "{Food url 2}",
+            "description": "Food 2"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 1,
+        "fields": {
+            "image_id": "1",
+            "item_id": "1"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 2,
+        "fields": {
+            "image_id": "1",
+            "item_id": "3"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 3,
+        "fields": {
+            "image_id": "1",
+            "item_id": "5"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 4,
+        "fields": {
+            "image_id": "1",
+            "item_id": "6"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 5,
+        "fields": {
+            "image_id": "2",
+            "item_id": "3"
+        }
+    },
+    {
+        "model": "api_dank.image2item",
+        "pk": 6,
+        "fields": {
+            "image_id": "3",
+            "item_id": "1"
+        }
+    }
+]
