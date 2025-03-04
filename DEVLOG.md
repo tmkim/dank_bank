@@ -981,3 +981,12 @@ Today:
         -- backend wasn't running properly, something about gunicorn?
         -- was taking up a lot of space on my hard drive so had to purge data and try to reset in case space was causing issues with installs
         
+3/4
+    Got my docker up and running!
+    Found a small bug with location select:
+    - options not deleted on multi-select deletion
+        > "Food" other locations
+        > "Media" sources
+    +++ FIXED +++
+
+    Also - item list is not updating after actions

@@ -94,7 +94,7 @@ class ImageViewSet(viewsets.ModelViewSet):
             
             # Delete the file from the S3 bucket
             s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=f'images/{file_name}')
-            print(f"Deleted {file_name} from S3")
+            # print(f"Deleted {file_name} from S3")
 
             # Now delete the image record from the database
             image.delete()
@@ -104,7 +104,7 @@ class ImageViewSet(viewsets.ModelViewSet):
 
         except Exception as e:
             # If something goes wrong (e.g., file doesn't exist in S3), handle the error
-            print(f"Error deleting from S3: {e}")
+            # print(f"Error deleting from S3: {e}")
             return Response({"detail": "Failed to delete the image from S3"}, status=status.HTTP_400_BAD_REQUEST)
 
 # Create your views here.
@@ -165,19 +165,25 @@ class ItemViewSet(viewsets.ModelViewSet):
             "Media": Media,
             "Travel": Travel,
         }.get(instance.category)
-        
+
+        # Find the corresponding SelectOption entry
+        if instance.category in ['Dining', 'Travel']:
+            select_option = SelectOption.objects.filter(category="Location", name=instance.name).first()
+        if instance.category == 'Food':
+            food_location = Food.objects.filter(item=instance.id).first().location
+            select_option = SelectOption.objects.filter(category="Location", name=food_location).first() 
+        if instance.category == 'Media':
+            media_source = Media.objects.filter(item=instance.id).first().source
+            select_option = SelectOption.objects.filter(category="Location", name=media_source).first() 
+
         if category_model:
             category_model.objects.filter(item=instance).delete()
 
-        if instance.category in ['Dining', 'Travel']:
-            # Find the corresponding SelectOption entry
-            select_option = SelectOption.objects.filter(category="Location", name=instance.name).first()
-
-            if select_option:
-                # Check if any Food items are using this SelectOption as their location
-                if not Food.objects.filter(location=select_option.name).exists():
-                    # If no Food items are using this location, delete the SelectOption entry
-                    select_option.delete()
+        if select_option:
+            # Check if any Food items are using this SelectOption as their location
+            if not Food.objects.filter(location=select_option.name).exists():
+                # If no Food items are using this location, delete the SelectOption entry
+                select_option.delete()
 
 
         # Now delete the Item itself
@@ -210,18 +216,25 @@ class ItemViewSet(viewsets.ModelViewSet):
         # Delete all associated category data
         for item in items:
             cat_model = category_models.get(item.category)
+
+            # Find the corresponding SelectOption entry
+            if item.category in ['Dining', 'Travel']:
+                select_option = SelectOption.objects.filter(category="Location", name=item.name).first()
+            if item.category == 'Food':
+                food_location = Food.objects.filter(item=item.id).first().location
+                select_option = SelectOption.objects.filter(category="Location", name=food_location).first() 
+            if item.category == 'Media':
+                media_source = Media.objects.filter(item=item.id).first().source
+                select_option = SelectOption.objects.filter(category="Location", name=media_source).first() 
+
             if cat_model:
                 cat_model.objects.filter(item=item).delete()
 
-            if item.category in ['Dining', 'Travel']:
-                # Find the corresponding SelectOption entry
-                select_option = SelectOption.objects.filter(category="Location", name=item.name).first()
-
-                if select_option:
-                    # Check if any Food items are using this SelectOption as their location
-                    if not Food.objects.filter(location=select_option.name).exists():
-                        # If no Food items are using this location, delete the SelectOption entry
-                        select_option.delete()
+            if select_option:
+                # Check if any Food items are using this SelectOption as their location
+                if not Food.objects.filter(location=select_option.name).exists():
+                    # If no Food items are using this location, delete the SelectOption entry
+                    select_option.delete()
 
         # Delete item data
         items.delete()

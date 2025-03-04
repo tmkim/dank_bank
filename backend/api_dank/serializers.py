@@ -49,7 +49,7 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'category', 'review', 'rating', 'category_data']
 
     def create(self, validated_data):
-        print(validated_data)
+        # print(validated_data)
         category_data = validated_data.pop('category_data', None)
         item = Item.objects.create(**validated_data)
         # image_data = validated_data.pop('images', None)
@@ -163,7 +163,7 @@ class ItemSerializer(serializers.ModelSerializer):
             if not Media.objects.filter(source=old_source[6:]).exists():
                 SelectOption.objects.filter(category='Source', name=old_source[6:]).delete()
             if not Media.objects.filter(source=old_source).exists():
-                print(f"Delete {old_source}")
+                # print(f"Delete {old_source}")
                 SelectOption.objects.filter(category='Source', name=old_source).delete()
 
         # Handle name change for Dining and Travel categories (Location)

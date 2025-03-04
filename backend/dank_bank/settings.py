@@ -140,17 +140,27 @@ WSGI_APPLICATION = 'dank_bank.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "OPTIONS": {
+#             "service": "tcgbh_service",
+#             "passfile": ".pgpass",
+#         },
+#         "TEST": {
+#             "NAME": "test_db",
+#         }
+#     },
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "OPTIONS": {
-            "service": "tcgbh_service",
-            "passfile": ".pgpass",
-        },
-        "TEST": {
-            "NAME": "test_db",
-        }
-    },
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
+    }
 }
 
 
