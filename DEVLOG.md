@@ -990,3 +990,7 @@ Today:
     +++ FIXED +++
 
     Also - item list is not updating after actions
+    ++ FIXED ++
+    >> updated results fetching to use SWR
+        - fetch is done in page.tsx
+        - data is "mutated" after add/edit/delete

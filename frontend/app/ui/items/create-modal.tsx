@@ -10,13 +10,13 @@ import ImageUploader from '../upload';
 import { CategoryData, Item, Image } from '@/app/lib/definitions';
 
 interface CreateProps {
-    // item: Item;
     onClose: () => void;
-    // onUpdate: (updatedItem: Item) => void;
+    refreshData: () => void;
+    data: Item[]
 }
 
 {/* export default function Form() {   */ }
-const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
+const CreateModal: React.FC<CreateProps> = ({ onClose, data, refreshData }) => {
 
     // Category Select
     const categories: string[] = ['Dining', 'Food', 'Media', 'Travel'];
@@ -27,7 +27,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         setSelectedLocation('');
         setSelectedSource('');
         setSelectedPrice(0);
-        // setSelectedSource('');
     };
 
     // Price Range Select
@@ -169,7 +168,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
         const formObject = Object.fromEntries(formData.entries());
         
         const category = formObject.category as string;
-        console.log(category)
+        // console.log(category)
         let category_data: CategoryData = {};
 
         switch (category){
@@ -218,9 +217,6 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             review: formObject.review,
             rating: formObject.rating,
             category_data: category_data,
-            // ...(selectedLocation && {
-            //     location: selectedLocation === 'Other' ? "Other:" + customLocation : selectedLocation
-            // }),
             // images: selectedImages.map((file, index) => ({
             //     file: file.file,
             //     name: file.name,
@@ -228,7 +224,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             // })),
         };
 
-        console.log("Final Payload:", payload);
+        // console.log("Final Payload:", payload);
     
         try {
             // Step 1: Send Form Data (Including Image URLs)
@@ -282,6 +278,7 @@ const CreateModal: React.FC<CreateProps> = ({ onClose }) => {
             alert('Item created successfully!');
             setSelectedImages([]); // Clear selected files
             onClose(); // Close the modal
+            refreshData()
 
         } catch (error) {
             console.error('Network error:', error);

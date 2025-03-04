@@ -9,15 +9,12 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 import ConfirmDeleteModal from '@/app/ui/items/delete-modal';
 
 type ItemTableProps = {
-  query: string;
-  page: number;
-  limit: number;
-  categories: {[key: string]: boolean};
   onRowClick: (item: Item) => void;
-  setTotalItems: (count: number) => void;
+  data: Item[]
+  refreshData: () => void;
 };
 
-const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, onRowClick, setTotalItems }) => {
+const ItemTable: React.FC<ItemTableProps> = ({ onRowClick, data, refreshData }) => {
 
   // const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const [token, setToken] = useState<string | null>(null);
@@ -26,53 +23,20 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
       setToken(localStorage.getItem("token"));
     }
   }, []);
+  useEffect(() => {
+    setResults(data)
+  }, [data]);
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  // const [loading, setLoading] = useState<boolean>(true);
 
   // ------------ populate list with results -------------
 
-  const [results, setResults] = useState<Item[]>([]);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [error, setError] = useState<string | null>(null);
-
-  // ----------------------
-  const selectedCategories = Object.keys(categories).filter(category => categories[category]);
-
-  useEffect(() => {
-    const fetchItems = async () => {
-      // setLoading(true)
-      try {
-        const categoryParams = selectedCategories.length > 0 ? '&category=' + selectedCategories.join('&category=') : '';
-        const response = await fetch(
-          `http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`
-        );
-        // console.log(`http://localhost:8000/api_dank/items/?page=${page}&query=${query}&limit=${limit}${categoryParams}`)
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const data = await response.json();
-        console.log(data.results)
-        console.log(page)
-        setResults(data.results); // Populate items with fetched data
-        setTotalPages(Math.ceil(data.count / limit));
-        setTotalItems(data.count)
-      } catch (err) {
-        // console.error('Failed to fetch items:', err);
-        setError('Failed to load items.');
-      } finally {
-        // setLoading(false)
-      }
-    };
-
-    fetchItems(); // Fetch data on component mount
-  }, [page, query, limit, categories]); // Dependencies call useEffect() when changed
+  const [results, setResults] = useState<Item[]>(data);
 
   // ------------- Delete Item + Modal ---------------
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
-  const [items, setItems] = useState<Item[]>([]);
 
   const confirmDelete = (item: Item) => {
     setItemToDelete(item);
@@ -94,6 +58,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         }
   
         setResults((prevResults) => prevResults.filter((item) => item.id !== itemToDelete.id));
+        refreshData();
         setIsDeleteModalOpen(false); // Close the modal after deleting
   
       } catch (error) {
@@ -113,6 +78,7 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
         item.id === updatedItem.id ? updatedItem : item
       )
     );
+    refreshData();
   };
   type SortOrder = "asc" | "desc" | "def";
   const [sortConfig, setSortConfig] = useState<{ key: keyof Item; sortOrder: SortOrder }>({key: "id", sortOrder: "def"});
@@ -151,10 +117,6 @@ const ItemTable: React.FC<ItemTableProps> = ({ query, page, limit, categories, o
     if (sortConfig.key !== key) return "";
     return sortConfig.sortOrder === "asc" ? "↑" : sortConfig.sortOrder === "desc" ? "↓" : "";
   };
-
-  // if (loading) {
-  //   return (<ItemTableSkeleton />)
-  // }
 
   return (
     <>
