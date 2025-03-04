@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    env_file: ./backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+
+  db:
+    image: postgres:15
+    container_name: database
+    restart: always
+    environment:
+      POSTGRES_USER: default
+      POSTGRES_PASSWORD: jG1wuxptkc7E
+      POSTGRES_DB: verceldb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

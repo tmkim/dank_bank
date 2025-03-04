@@ -969,3 +969,15 @@ Today:
         FIXED -- updated how "categories" are stored -> using a dictionary to track true/false rather than an array
             ( was already kinda doing this, but built an array before sending to Item Table. Now we're just sending the dictionary.)
         
+3/3
+    OK so today we're trying to set up everything using Docker
+    -- made Dockerfile for backend and frontend separate
+    -- running into issue with npm run build for frontend
+        -- need suspense around useSearchParams()
+        ++ updated layout.tsx to wrap {children} with <Suspense>
+
+    Some success with making docker images and containers
+        -- able to see frontend work correctly
+        -- backend wasn't running properly, something about gunicorn?
+        -- was taking up a lot of space on my hard drive so had to purge data and try to reset in case space was causing issues with installs
+        

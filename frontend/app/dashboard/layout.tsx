@@ -1,4 +1,5 @@
 import Navbar from '@/app/ui/navbar';
+import { Suspense } from 'react';
  
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +8,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
       </div>
       {/* <div className="h-[80vh] flex-grow p-6 md:p-12">{children}</div> */}
-      <div className="flex-grow">{children}</div>
+      <Suspense>
+        <div className="flex-grow">{children}</div>
+      </Suspense>
     </div>
   );
 }

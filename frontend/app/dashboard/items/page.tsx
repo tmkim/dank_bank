@@ -27,7 +27,7 @@ const ItemsPage: React.FC = () => {
   }, []);
 
   const searchParams = useSearchParams();
-
+  
   const queryParam = searchParams.get('query') || '';
   const pageParam = searchParams.get('page') || '1';
   const limitParam = searchParams.get('limit') || '10';
@@ -135,17 +135,18 @@ const ItemsPage: React.FC = () => {
   return (
     <main className="w-full mx-auto px-4">
       <div className="flex flex-col lg:flex-row lg:space-x-4">
-        {/* <!-- Item Table --> */}
+        {/* <Suspense fallback={<div>Loading search input...</div>}> */}
+        {/* </Suspense> */}
         <div className="flex-grow flex-shrink-0 lg:basis-1/2">
           <div className="flex space-x-2 w-full">
-            <input
-              className="flex-grow w-3/4 p-2 border border-gray-300 rounded-md"
-              type="text"
-              placeholder="Search items"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}
-            />
+              <input
+                className="flex-grow w-3/4 p-2 border border-gray-300 rounded-md"
+                type="text"
+                placeholder="Search items"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onBlur={() => updateQueryParams(searchQuery, 1, pageLimit)}
+              />
             <button
               className="flex items-center justify-center min-w-[160px] p-2 text-lg font-semibold bg-green-500 text-white rounded-md hover:bg-green-600"
               onClick={() => setCreateModal(true)}
