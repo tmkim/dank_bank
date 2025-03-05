@@ -1,7 +1,7 @@
 // upload.tsx
 'use client';
 import { useEffect, useState } from 'react';
-import { Image } from '@/app/lib/definitions';
+import { Image } from '../lib/definitions';
 
 interface UploadProps {
   onImagesSelected: (files: Image[]) => void;

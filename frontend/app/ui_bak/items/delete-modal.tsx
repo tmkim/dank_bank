@@ -1,3 +1,4 @@
+// components/ConfirmDeleteModal.tsx
 import React from 'react';
 
 interface ConfirmDeleteModalProps {
