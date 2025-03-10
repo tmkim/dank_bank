@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.filters import OrderingFilter
 from .models import Image, Item, Dining, Food, Media, SelectOption, Travel
 from .serializers import ImageSerializer, ItemSerializer, SelectOptionSerializer
 import boto3
@@ -137,6 +138,8 @@ class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     pagination_class = ItemPagination
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['name', 'rating']
 
     def get_queryset(self):
         """
@@ -263,31 +266,3 @@ class SelectOptionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(category__in=categories)  
 
         return queryset
-    
-# class DiningViewSet(viewsets.ModelViewSet):
-#     queryset = Dining.objects
-#     serializer_class = DiningSerializer
-
-# class FoodViewSet(viewsets.ModelViewSet):
-#     queryset = Food.objects
-#     serializer_class = FoodSerializer
-
-# class MediaViewSet(viewsets.ModelViewSet):
-#     queryset = Media.objects
-#     serializer_class = MediaSerializer
-
-# class TravelViewSet(viewsets.ModelViewSet):
-#     queryset = Travel.objects
-#     serializer_class = TravelSerializer
-
-# class TagViewSet(viewsets.ModelViewSet):
-#     queryset = Tag.objects.all()
-#     serializer_class = TagSerializer
-
-# class Tag2ItemViewSet(viewsets.ModelViewSet):
-#     queryset = Tag2Item.objects.all()
-#     serializer_class = Tag2ItemSerializer
-
-# class ImageViewSet(viewsets.ModelViewSet):
-#     queryset = Image.objects.all()
-#     serializer_class = ImageSerializer

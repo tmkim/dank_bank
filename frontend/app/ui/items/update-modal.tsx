@@ -81,7 +81,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         // Fetch items with category "Dining"
         const fetchSelectOptions = async () => {
             try {
-              const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Location');
+              const response = await fetch('http://localhost:8000/dankbank_back/selectoption/?category=Location');
               const data = await response.json();
               console.log(data); // Log the data to inspect its structure
           
@@ -98,7 +98,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
             }
 
             try {
-                const response = await fetch('http://localhost:8000/api_dank/selectoption/?category=Source');
+                const response = await fetch('http://localhost:8000/dankbank_back/selectoption/?category=Source');
                 const data = await response.json();
                 console.log(data); // Log the data to inspect its structure
             
@@ -116,7 +116,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         };
 
         const fetchImages = async () => {
-            const response = await fetch(`http://localhost:8000/api_dank/image/?item=${item.id}`);
+            const response = await fetch(`http://localhost:8000/dankbank_back/image/?item=${item.id}`);
             const data = await response.json();
             // console.log(data)
             setSelectedImages(JSON.parse(JSON.stringify(data.results)));
@@ -237,7 +237,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           // Update the existing image
           console.log(`Update detected - ${newImage}`)
           updateRequests.push(
-            fetch(`http://localhost:8000/api_dank/image/${newImage.id}/`, {
+            fetch(`http://localhost:8000/dankbank_back/image/${newImage.id}/`, {
               method: 'PATCH',
               body: formData,
             })
@@ -256,7 +256,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
           // If the image no longer exists, delete it
           console.log(`Deletion detected`)
           deleteRequests.push(
-            fetch(`http://localhost:8000/api_dank/image/${originalImage.id}/`, {
+            fetch(`http://localhost:8000/dankbank_back/image/${originalImage.id}/`, {
               method: 'DELETE',
             })
           );
@@ -273,7 +273,7 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
         });
 
         console.log(imageFormData); 
-        addRequest.push(fetch('http://localhost:8000/api_dank/image/', {
+        addRequest.push(fetch('http://localhost:8000/dankbank_back/image/', {
             method: 'POST',
             body: imageFormData,
             })
@@ -290,8 +290,8 @@ const UpdateModal: React.FC<UpdateProps> = ({ item, onClose, onUpdate }) => {
 
     // Update item
     try {
-      console.log(`http://localhost:8000/api_dank/items/${item.id}/`)
-      const response = await fetch(`http://localhost:8000/api_dank/items/${item.id}/`, {
+      console.log(`http://localhost:8000/dankbank_back/items/${item.id}/`)
+      const response = await fetch(`http://localhost:8000/dankbank_back/items/${item.id}/`, {
         method: 'PUT', // Or 'PATCH' if you're doing partial updates
         headers: {
           'Content-Type': 'application/json',

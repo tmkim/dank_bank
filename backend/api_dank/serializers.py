@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
-import re
 from .models import Image, Item, Dining, Food, Media, SelectOption, Travel
 
 

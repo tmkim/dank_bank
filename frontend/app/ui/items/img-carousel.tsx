@@ -11,7 +11,7 @@ const ImageCarousel = ({ itemId }: { itemId: number }) => {
     // Fetch images when component mounts or when itemId changes
     useEffect(() => {
         const fetchImages = async () => {
-            const response = await fetch(`http://localhost:8000/api_dank/image/?item=${itemId}`);
+            const response = await fetch(`http://localhost:8000/dankbank_back/image/?item=${itemId}`);
             const data = await response.json();
             console.log(data)
             setImages(data.results); // Assuming your response contains the image data in "results"

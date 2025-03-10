@@ -30,7 +30,7 @@ const DeleteItemsButton: React.FC<MultiDeleteProps> = ({ refreshData }) => {
 
     const fetchItems = async () => {
       let allItems: Item[] = [];
-      let nextUrl: string | null = 'http://localhost:8000/api_dank/items/'; // Start with the first page
+      let nextUrl: string | null = 'http://localhost:8000/dankbank_back/items/'; // Start with the first page
     
       try {
         while (nextUrl) {
@@ -61,7 +61,7 @@ const DeleteItemsButton: React.FC<MultiDeleteProps> = ({ refreshData }) => {
     // Handle the delete action for selected items
     const handleDeleteSelectedItems = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api_dank/items/delete_multiple/', {
+        const response = await fetch('http://localhost:8000/dankbank_back/items/delete_multiple/', {
           method: 'DELETE', // Use DELETE for the batch deletion
           headers: {
             'Content-Type': 'application/json',
