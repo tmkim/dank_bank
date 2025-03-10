@@ -34,9 +34,8 @@ const ItemsPage: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    setToken(localStorage.getItem("token")); // Read token only on client
     window.dispatchEvent(new Event("storage")); 
-
+    setToken(localStorage.getItem("token")); // Read token only on client
   }, []);
 
   const searchParams = useSearchParams();

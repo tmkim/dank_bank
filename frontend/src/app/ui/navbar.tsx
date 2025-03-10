@@ -53,8 +53,7 @@ const Navbar = () => {
     if (isLoggedIn){
       localStorage.removeItem("token"); // Remove token
       setIsLoggedIn(false); // Update state
-      alert("Logged out successfully!");
-      router.push("/"); // Redirect to login
+      router.push("/redirect");
     } else{
       router.push("/login"); // Redirect to login
     }

@@ -35,8 +35,7 @@ export default function LoginPage() {
 
       const data = await response.json();
       localStorage.setItem("token", data.access); // Save token in localStorage
-      alert("Login successful!");
-      router.push('/')
+      router.push('/redirect')
     } catch (err) {
       setError("Something went wrong.");
     }
