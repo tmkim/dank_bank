@@ -4,7 +4,7 @@ Welcome to the Dank Bank!
 This is a simple website for tracking things that I may or may not consider dank
 The layout is quite simple
 
-    - No auth required : this is for me to share with the public. They don't need to log in to anything for that.
+    - No login required : this is for me to share with the public. They don't need to log in to anything for that.
 
     - Single view
         > To start with, everything will be displayed on a single page.
